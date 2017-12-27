@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class ScenarioManager {
     private String[] keyWords = {"IF","ELSE","FOR EACH"};
-    private String[] actors;
+    String[] actors;
     private LinkedList<Node> nodes = new LinkedList<>();
     //structure
 
@@ -17,5 +17,7 @@ public class ScenarioManager {
     private void pullOutActors(String header){
         actors = header.split(",");
     }
+
+
 
 }
