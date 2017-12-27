@@ -5,8 +5,8 @@ import java.util.LinkedList;
 public class Node {
 
     private int nestingLevel;
-    LinkedList<Node> children = new LinkedList<>();
-    String line;
+    private LinkedList<Node> children = new LinkedList<>();
+    private String line;
 
     //todo visitator
 
