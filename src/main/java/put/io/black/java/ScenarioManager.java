@@ -7,10 +7,10 @@ public class ScenarioManager {
     String[] keyWords = {"IF", "ELSE", "FOR EACH"};
     String[] actors;
     LinkedList<Node> nodes = new LinkedList<>();
-    //structure
 
-    public ScenarioManager(String scenario) {
-        //todo build structure and get key words
+    //TODO search in the tree
+
+    ScenarioManager(String scenario) {
         String[] scenarioLines = scenario.split("\n");
 
         pullOutActors(scenarioLines[0]);
@@ -50,21 +50,21 @@ public class ScenarioManager {
             Node actualNode = new Node(scenarioLines[1], 1);
             nodes.addLast(actualNode);
             for (int i = 2; i < scenarioLines.length; i++) {
-                while (stack.size() > countTabSign(scenarioLines[i])){
+                while (stack.size() > countTabSign(scenarioLines[i])) {
                     stack.pop();
                     if (stack.size() != 0) {
                         actualNode = stack.peek();
                     }
                 }
-                Node node = new Node(scenarioLines[i].replace("\t",""), stack.size() + 1);
+                Node node = new Node(scenarioLines[i].replace("\t", ""), stack.size() + 1);
                 if (lineStartFromKeyWord(scenarioLines[i])) {
                     stack.push(node);
                     actualNode = node;
                 }
 
-                if (node.getNestingLevel() == 1){
+                if (node.getNestingLevel() == 1) {
                     nodes.addLast(node);
-                }else {
+                } else {
                     actualNode.addChild(node);
                 }
             }

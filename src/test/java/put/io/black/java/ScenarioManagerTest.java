@@ -8,7 +8,18 @@ import static org.junit.Assert.*;
 public class ScenarioManagerTest {
 
     private ScenarioManager scenarioManager;
-    private String scenarioTextTest = "Develop,Boss\nscenario line 1\nIF scenario line 2\n\tline if 1\n\tline if 2\nELSE scenario line 3\n\tline else 1\nscenario line 4\nFOR EACH scenario line 5\n\tline for each 1\nscenario line 6";
+    private String scenarioTextTest =
+            "Develop,Boss\n" +
+            "scenario line 1\n" +
+            "IF scenario line 2\n" +
+            "\tline if 1\n" +
+            "\tline if 2\n" +
+            "ELSE scenario line 3\n" +
+            "\tline else 1\n" +
+            "scenario line 4\n" +
+            "FOR EACH scenario line 5\n" +
+            "\tline for each 1\n" +
+            "scenario line 6";
 
 
     @Before
@@ -18,65 +29,65 @@ public class ScenarioManagerTest {
 
 
     @Test
-    public void actorsAreFindingInHeader(){
-        assertEquals(2,scenarioManager.actors.length);
+    public void actorsAreFindingInHeader() {
+        assertEquals(2, scenarioManager.actors.length);
     }
 
     @Test
-    public void foundActorsAreCorrect(){
+    public void foundActorsAreCorrect() {
         assertEquals("Develop", scenarioManager.actors[0]);
         assertEquals("Boss", scenarioManager.actors[1]);
     }
 
     @Test
-    public void lineStartFromKeyWordTest(){
+    public void lineStartFromKeyWordTest() {
         String line = "IF scenario line 2";
         assertTrue(scenarioManager.lineStartFromKeyWord(line));
     }
 
     @Test
-    public void lineStartFromKeyWordWithTabulaturesTest(){
+    public void lineStartFromKeyWordWithTabulaturesTest() {
         String line = "\t\t\t\t\tIF scenario line 2";
         assertTrue(scenarioManager.lineStartFromKeyWord(line));
     }
 
     @Test
-    public void lineNoStartFromKeyWordTest(){
+    public void lineNoStartFromKeyWordTest() {
         String line = "\tscenario line 2";
         assertFalse(scenarioManager.lineStartFromKeyWord(line));
     }
 
     @Test
-    public void lineContainsTabulature(){
+    public void lineContainsTabulature() {
         String line = "\t\t\t\t\tIF scenario line 2";
         assertEquals(5, scenarioManager.countTabSign(line));
     }
 
     @Test
-    public void lineNoContainsTabulature(){
+    public void lineNoContainsTabulature() {
         String line = "IF scenario line 2";
         assertEquals(0, scenarioManager.countTabSign(line));
     }
 
     @Test
-    public void lineIsEmpty(){
+    public void lineIsEmpty() {
         String line = "";
         assertFalse(scenarioManager.lineStartFromKeyWord(line));
         assertEquals(0, scenarioManager.countTabSign(line));
     }
 
     @Test
-    public void scenarioContainSixNodes(){
+    public void scenarioContainSixNodes() {
         assertEquals(6, scenarioManager.nodes.size());
     }
 
     @Test
-    public void scenarioContainInSecondNodeTwoChildren(){
-        assertEquals(2,scenarioManager.nodes.get(1).getChildrenCount());
+    public void scenarioContainInSecondNodeTwoChildren() {
+        assertEquals(2, scenarioManager.nodes.get(1).getChildrenCount());
     }
 
     @Test
-    public void secondChildOfSecondNodeEquals(){
+    public void secondChildOfSecondNodeEquals() {
         String string = "line if 2";
         assertEquals(string, scenarioManager.nodes.get(1).getChildren().get(1).getLine());
     }
