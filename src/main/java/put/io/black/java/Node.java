@@ -27,4 +27,11 @@ public class Node {
         return nestingLevel;
     }
 
+    public String getLine() {
+        return line;
+    }
+
+    public LinkedList<Node> getChildren() {
+        return children;
+    }
 }
