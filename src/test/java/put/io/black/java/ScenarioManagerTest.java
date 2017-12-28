@@ -92,4 +92,9 @@ public class ScenarioManagerTest {
         assertEquals(string, scenarioManager.nodes.get(1).getChildren().get(1).getLine());
     }
 
+    @Test
+    public void secondChildOfSecondNodeHas2NestingLevel() {
+        assertEquals(2, scenarioManager.nodes.get(1).getChildren().get(1).getNestingLevel());
+    }
+
 }
