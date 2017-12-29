@@ -150,4 +150,9 @@ public class ScenarioManager {
         }
         return keyWordsInScenario;
     }
+
+    //TODO Sprawdzanie które węzły zaczynają się od aktora (zwraca stringa bez linijek z aktorami)
+    //TODO Numerowanie węzłów (całość z prefixem 1., 2.1.3 itd)
+    //TODO Pobranie scenariusz do określonego poziomu (wszystko do określonego poziomu, z tym poziomem)
+
 }

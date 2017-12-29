@@ -8,7 +8,7 @@ public class Node {
     private LinkedList<Node> children = new LinkedList<>();
     private String line;
 
-    //todo visitator
+    //TODO visitator
 
     public Node(String line, int nestingLevel){
         this.line = line;
