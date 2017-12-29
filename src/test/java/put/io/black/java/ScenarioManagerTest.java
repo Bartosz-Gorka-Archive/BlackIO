@@ -104,5 +104,21 @@ public class ScenarioManagerTest {
         assertEquals(3, scenarioManager.countScenarioNesting());
     }
 
+    @Test
+    public void scenarioDoesHasNotAnyLinesNestingEqualsZero(){
+        ScenarioManager scenarioManager = new ScenarioManager("");
+        assertEquals(0, scenarioManager.countScenarioNesting());
+    }
+    @Test
+    public void scenarioHasTwelveSteps(){
+        assertEquals(12, scenarioManager.countNumberOfScenarioSteps());
+    }
+
+    @Test
+    public void scenarioHasZeroSteps(){
+        ScenarioManager scenarioManager = new ScenarioManager("");
+        assertEquals(0, scenarioManager.countNumberOfScenarioSteps());
+    }
+
 
 }

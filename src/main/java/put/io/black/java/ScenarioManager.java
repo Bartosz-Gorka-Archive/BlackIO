@@ -8,7 +8,6 @@ public class ScenarioManager {
     String[] actors;
     LinkedList<Node> firstLevelNodes = new LinkedList<>();
 
-    //TODO search in the tree
 
     ScenarioManager(String scenario) {
         String[] scenarioLines = scenario.split("\n");
@@ -72,10 +71,27 @@ public class ScenarioManager {
         }
     }
 
-    private int searchTheNode(Node node, int maxNestingLevel){
+    public int countScenarioNesting() {
+        int maxNesting = 1;
+        if (firstLevelNodes.size() != 0) {
+            for (Node firstLevelNode : firstLevelNodes) {
+                if (firstLevelNode.getChildrenCount() != 0) {
+                    int level = searchTheNestingNode(firstLevelNode, maxNesting);
+                    if (level > maxNesting) {
+                        maxNesting = level;
+                    }
+                }
+            }
+            return maxNesting;
+        } else {
+            return 0;
+        }
+    }
+
+    private int searchTheNestingNode(Node node, int maxNestingLevel) {
         if (node.getChildrenCount() != 0) {
-            for (Node child: node.getChildren()) {
-                int level = searchTheNode(child, maxNestingLevel);
+            for (Node child : node.getChildren()) {
+                int level = searchTheNestingNode(child, maxNestingLevel);
                 if (level > maxNestingLevel) {
                     maxNestingLevel = level;
                 }
@@ -85,21 +101,29 @@ public class ScenarioManager {
         return node.getNestingLevel();
     }
 
-    public int countScenarioNesting() {
-        int maxNesting = 1;
+    public int countNumberOfScenarioSteps() {
+        int scenarioSteps = 0;
         if (firstLevelNodes.size() != 0) {
             for (Node firstLevelNode : firstLevelNodes) {
+                scenarioSteps++;
                 if (firstLevelNode.getChildrenCount() != 0) {
-                    int level = searchTheNode(firstLevelNode, maxNesting);
-                    if (level > maxNesting) {
-                        maxNesting = level;
-                    }
+                    scenarioSteps = searchTheNode(firstLevelNode, scenarioSteps);
                 }
             }
-            return maxNesting;
-        }else {
-            return -1;
+            return scenarioSteps;
+        } else {
+            return 0;
         }
     }
+
+    private int searchTheNode(Node node, int scenarioSteps) {
+        if (node.getChildrenCount() != 0) {
+            for (Node child : node.getChildren()) {
+                scenarioSteps = searchTheNode(child, ++scenarioSteps);
+            }
+        }
+        return scenarioSteps;
+    }
+
 
 }
