@@ -6,5 +6,15 @@ script:
   - "mvn cobertura:cobertura"
   - "mvn package"
 
+deploy:
+  provider: releases
+  api_key:
+    secure: GITHUB_TRAVIS_BLACK_IO
+  file:
+    - "/target/put.io.black.java-1.0-SNAPSHOT.jar"
+  skip_cleanup: true
+  on:
+    tags: true
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
