@@ -120,5 +120,16 @@ public class ScenarioManagerTest {
         assertEquals(0, scenarioManager.countNumberOfScenarioSteps());
     }
 
+    @Test
+    public void scenarioHasFourKeyWords(){
+        assertEquals(4, scenarioManager.countKeyWordsInScenario());
+    }
+
+    @Test
+    public void scenarioDoesNotHasKeyWords(){
+        ScenarioManager scenarioManager = new ScenarioManager("");
+        assertEquals(0, scenarioManager.countKeyWordsInScenario());
+    }
+
 
 }

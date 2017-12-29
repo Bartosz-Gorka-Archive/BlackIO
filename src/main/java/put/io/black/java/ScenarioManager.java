@@ -125,5 +125,29 @@ public class ScenarioManager {
         return scenarioSteps;
     }
 
+    public int countKeyWordsInScenario() {
+        int keyWordsInScenario = 0;
+        if (firstLevelNodes.size() != 0) {
+            for (Node firstLevelNode : firstLevelNodes) {
+                if (firstLevelNode.getChildrenCount() != 0) {
+                    keyWordsInScenario = searchTheKeyWordsNode(firstLevelNode, keyWordsInScenario);
+                }
+            }
+            return keyWordsInScenario;
+        } else {
+            return 0;
+        }
+    }
 
+    private int searchTheKeyWordsNode(Node node, int keyWordsInScenario) {
+        if (node.getChildrenCount() != 0) {
+            for (Node child : node.getChildren()) {
+                keyWordsInScenario = searchTheNode(child, keyWordsInScenario);
+            }
+        }
+        if (lineStartFromKeyWord(node.getLine())) {
+            keyWordsInScenario++;
+        }
+        return keyWordsInScenario;
+    }
 }
