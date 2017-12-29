@@ -12,13 +12,15 @@ public class ScenarioManagerTest {
             "Develop,Boss\n" +
             "scenario line 1\n" +
             "IF scenario line 2\n" +
-            "\tline if 1\n" +
-            "\tline if 2\n" +
+                "\tline if 1\n" +
+                "\tline if 2\n" +
             "ELSE scenario line 3\n" +
-            "\tline else 1\n" +
+                "\tline else 1\n" +
+                "\tIF line else 2\n" +
+                    "\t\tline else if 1\n" +
             "scenario line 4\n" +
             "FOR EACH scenario line 5\n" +
-            "\tline for each 1\n" +
+                "\tline for each 1\n" +
             "scenario line 6";
 
 
@@ -78,23 +80,29 @@ public class ScenarioManagerTest {
 
     @Test
     public void scenarioContainSixNodes() {
-        assertEquals(6, scenarioManager.nodes.size());
+        assertEquals(6, scenarioManager.firstLevelNodes.size());
     }
 
     @Test
     public void scenarioContainInSecondNodeTwoChildren() {
-        assertEquals(2, scenarioManager.nodes.get(1).getChildrenCount());
+        assertEquals(2, scenarioManager.firstLevelNodes.get(1).getChildrenCount());
     }
 
     @Test
     public void secondChildOfSecondNodeEquals() {
         String string = "line if 2";
-        assertEquals(string, scenarioManager.nodes.get(1).getChildren().get(1).getLine());
+        assertEquals(string, scenarioManager.firstLevelNodes.get(1).getChildren().get(1).getLine());
     }
 
     @Test
     public void secondChildOfSecondNodeHas2NestingLevel() {
-        assertEquals(2, scenarioManager.nodes.get(1).getChildren().get(1).getNestingLevel());
+        assertEquals(2, scenarioManager.firstLevelNodes.get(1).getChildren().get(1).getNestingLevel());
     }
+
+    @Test
+    public void scenarioNestingEqualsThree(){
+        assertEquals(3, scenarioManager.countScenarioNesting());
+    }
+
 
 }

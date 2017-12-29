@@ -6,7 +6,7 @@ import java.util.Stack;
 public class ScenarioManager {
     String[] keyWords = {"IF", "ELSE", "FOR EACH"};
     String[] actors;
-    LinkedList<Node> nodes = new LinkedList<>();
+    LinkedList<Node> firstLevelNodes = new LinkedList<>();
 
     //TODO search in the tree
 
@@ -15,7 +15,6 @@ public class ScenarioManager {
 
         pullOutActors(scenarioLines[0]);
         buildTreeStructure(scenarioLines);
-
     }
 
     private void pullOutActors(String header) {
@@ -46,30 +45,60 @@ public class ScenarioManager {
 
     private void buildTreeStructure(String[] scenarioLines) {
         if (scenarioLines.length > 1) {
-            Stack<Node> stack = new Stack<>();
-            Node actualNode = new Node(scenarioLines[1], 1);
-            nodes.addLast(actualNode);
-            for (int i = 2; i < scenarioLines.length; i++) {
-                while (stack.size() > countTabSign(scenarioLines[i])) {
-                    stack.pop();
-                    if (stack.size() != 0) {
-                        actualNode = stack.peek();
+            Stack<Node> stackNestingNode = new Stack<>();
+            Node actualFatherNode = new Node(scenarioLines[1], 1);
+            firstLevelNodes.addLast(actualFatherNode);
+            for (int lineNumber = 2; lineNumber < scenarioLines.length; lineNumber++) {
+                while (stackNestingNode.size() > countTabSign(scenarioLines[lineNumber])) {
+                    stackNestingNode.pop();
+                    if (stackNestingNode.size() != 0) {
+                        actualFatherNode = stackNestingNode.peek();
                     }
                 }
-                Node node = new Node(scenarioLines[i].replace("\t", ""), stack.size() + 1);
-                if (lineStartFromKeyWord(scenarioLines[i])) {
-                    stack.push(node);
-                    actualNode = node;
-                }
+                Node node = new Node(scenarioLines[lineNumber].replace("\t", ""), stackNestingNode.size() + 1);
 
                 if (node.getNestingLevel() == 1) {
-                    nodes.addLast(node);
+                    firstLevelNodes.addLast(node);
                 } else {
-                    actualNode.addChild(node);
+                    actualFatherNode.addChild(node);
+                }
+                if (lineStartFromKeyWord(scenarioLines[lineNumber])) {
+                    stackNestingNode.push(node);
+                    actualFatherNode = node;
                 }
             }
         } else {
             System.out.println("Too short scenario");
+        }
+    }
+
+    private int searchTheNode(Node node, int maxNestingLevel){
+        if (node.getChildrenCount() != 0) {
+            for (Node child: node.getChildren()) {
+                int level = searchTheNode(child, maxNestingLevel);
+                if (level > maxNestingLevel) {
+                    maxNestingLevel = level;
+                }
+            }
+            return maxNestingLevel;
+        }
+        return node.getNestingLevel();
+    }
+
+    public int countScenarioNesting() {
+        int maxNesting = 1;
+        if (firstLevelNodes.size() != 0) {
+            for (Node firstLevelNode : firstLevelNodes) {
+                if (firstLevelNode.getChildrenCount() != 0) {
+                    int level = searchTheNode(firstLevelNode, maxNesting);
+                    if (level > maxNesting) {
+                        maxNesting = level;
+                    }
+                }
+            }
+            return maxNesting;
+        }else {
+            return -1;
         }
     }
 

@@ -34,4 +34,13 @@ public class Node {
     public LinkedList<Node> getChildren() {
         return children;
     }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "nestingLevel=" + nestingLevel +
+                ", line='" + line + '\'' +
+                ", childCount= "+ getChildrenCount() +
+                '}';
+    }
 }
