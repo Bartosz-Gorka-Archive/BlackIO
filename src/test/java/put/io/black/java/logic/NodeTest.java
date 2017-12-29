@@ -1,6 +1,5 @@
-package put.io.black.java;
+package put.io.black.java.logic;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

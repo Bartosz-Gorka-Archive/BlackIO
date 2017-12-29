@@ -1,4 +1,4 @@
-package put.io.black.java;
+package put.io.black.java.logic;
 
 import org.junit.Before;
 import org.junit.Test;
