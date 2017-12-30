@@ -180,5 +180,29 @@ public class ScenarioManagerTest {
         assertEquals(scenarioWithCorrectNumeration, scenarioManager.getScenarioWithNumeration());
     }
 
+    @Test
+    public void getScenarioEqualsInputStringScenario(){
+        assertEquals(scenarioTextTest, scenarioManager.getScenario());
+    }
+
+    @Test
+    public void pullScenarioOnlyToTwoNestingLevel(){
+        String scenarioWithCorrectNumeration = "Develop,Boss\n" +
+                "scenario line 1\n" +
+                "IF scenario line 2\n" +
+                    "\tline if 1\n" +
+                    "\tline if 2\n" +
+                    "\tDevelop line if 3\n" +
+                "ELSE scenario line 3\n" +
+                    "\tline else 1\n" +
+                    "\tIF line else 2\n" +
+                "scenario line 4\n" +
+                "FOR EACH scenario line 5\n" +
+                    "\tline for each 1\n" +
+                "scenario line 6\n" +
+                "Boss scenario line 7";
+        assertEquals(scenarioWithCorrectNumeration, scenarioManager.getScenario(2));
+    }
+
 
 }

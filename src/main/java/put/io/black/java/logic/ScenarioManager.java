@@ -156,8 +156,8 @@ public class ScenarioManager {
         for (Node firstLevelNode : firstLevelNodes) {
             if (firstLevelNode.getChildrenCount() != 0) {
                 searchLineWithoutActors(firstLevelNode, scenarioWithoutActors);
-            } else if (!lineStartFromActor(firstLevelNode.getLine())){
-                String line = makeTabulaturePrefix(firstLevelNode.getNestingLevel())+firstLevelNode.getLine()+"\n";
+            } else if (!lineStartFromActor(firstLevelNode.getLine())) {
+                String line = makeTabulaturePrefix(firstLevelNode.getNestingLevel()) + firstLevelNode.getLine() + "\n";
                 scenarioWithoutActors.addLast(line);
             }
 
@@ -167,7 +167,7 @@ public class ScenarioManager {
 
     private void searchLineWithoutActors(Node node, LinkedList<String> scenarioWithoutActors) {
         if (!lineStartFromActor(node.getLine())) {
-            String line = makeTabulaturePrefix(node.getNestingLevel())+node.getLine()+"\n";
+            String line = makeTabulaturePrefix(node.getNestingLevel()) + node.getLine() + "\n";
             scenarioWithoutActors.addLast(line);
         }
         if (node.getChildrenCount() != 0) {
@@ -177,39 +177,39 @@ public class ScenarioManager {
         }
     }
 
-    private boolean lineStartFromActor(String line){
+    private boolean lineStartFromActor(String line) {
         String[] words = line.split(" ");
-        for (String actor: actors) {
-            if (words[0].equals(actor)){
+        for (String actor : actors) {
+            if (words[0].equals(actor)) {
                 return true;
             }
         }
         return false;
     }
 
-    private String makeTabulaturePrefix(int nestingLevel){
+    private String makeTabulaturePrefix(int nestingLevel) {
         String prefix = "";
-        for (int i = 1; i<nestingLevel; i++){
-            prefix+="\t";
+        for (int i = 1; i < nestingLevel; i++) {
+            prefix += "\t";
         }
         return prefix;
     }
 
-    private String changeLinkedListToString(LinkedList<String> scenario){
+    private String changeLinkedListToString(LinkedList<String> scenario) {
         String header = addActorsHeader();
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(header);
-        for (String line : scenario){
+        for (String line : scenario) {
             stringBuilder.append(line);
         }
-        return stringBuilder.substring(0,stringBuilder.length()-1).toString();
+        return stringBuilder.substring(0, stringBuilder.length() - 1).toString();
     }
 
-    private String addActorsHeader(){
+    private String addActorsHeader() {
         StringBuilder stringBuilder = new StringBuilder();
-        for (String actor : actors){
+        for (String actor : actors) {
             stringBuilder.append(actor);
-            if (!actor.equals(actors[actors.length-1])){
+            if (!actor.equals(actors[actors.length - 1])) {
                 stringBuilder.append(",");
             }
         }
@@ -220,11 +220,11 @@ public class ScenarioManager {
     public String getScenarioWithNumeration() {
         LinkedList<String> scenarioWithNumeration = new LinkedList<>();
         scenarioWithNumeration.addLast("");
-        for (int i = 0; i< firstLevelNodes.size(); i++) {
+        for (int i = 0; i < firstLevelNodes.size(); i++) {
             if (firstLevelNodes.get(i).getChildrenCount() != 0) {
-                addLineWithNumeration(firstLevelNodes.get(i),scenarioWithNumeration, (i+1)+".");
-            }else {
-                String line = makeTabulaturePrefix(firstLevelNodes.get(i).getNestingLevel())+(i+1)+"."+firstLevelNodes.get(i).getLine()+"\n";
+                addLineWithNumeration(firstLevelNodes.get(i), scenarioWithNumeration, (i + 1) + ".");
+            } else {
+                String line = makeTabulaturePrefix(firstLevelNodes.get(i).getNestingLevel()) + (i + 1) + "." + firstLevelNodes.get(i).getLine() + "\n";
                 scenarioWithNumeration.addLast(line);
             }
 
@@ -233,16 +233,66 @@ public class ScenarioManager {
     }
 
     private void addLineWithNumeration(Node node, LinkedList<String> scenarioWithNumeration, String prefix) {
-        String line = makeTabulaturePrefix(node.getNestingLevel())+prefix+node.getLine()+"\n";
+        String line = makeTabulaturePrefix(node.getNestingLevel()) + prefix + node.getLine() + "\n";
         scenarioWithNumeration.addLast(line);
         if (node.getChildrenCount() != 0) {
-            for (int i=0; i<node.getChildrenCount(); i++){
-                addLineWithNumeration(node.getChildren().get(i),scenarioWithNumeration, prefix+(i+1)+".");
+            for (int i = 0; i < node.getChildrenCount(); i++) {
+                addLineWithNumeration(node.getChildren().get(i), scenarioWithNumeration, prefix + (i + 1) + ".");
             }
         }
     }
 
+    public String getScenario() {
+        LinkedList<String> scenario = new LinkedList<>();
+        scenario.addLast("");
+        for (Node firstLevelNode : firstLevelNodes) {
+            if (firstLevelNode.getChildrenCount() != 0) {
+                addLine(firstLevelNode, scenario);
+            } else {
+                String line = makeTabulaturePrefix(firstLevelNode.getNestingLevel()) + firstLevelNode.getLine() + "\n";
+                scenario.addLast(line);
+            }
 
-    //TODO Pobranie scenariusz do określonego poziomu (wszystko do określonego poziomu, z tym poziomem)
+        }
+        return changeLinkedListToString(scenario);
+    }
+
+    private void addLine(Node node, LinkedList<String> scenarioWithNumeration) {
+        String line = makeTabulaturePrefix(node.getNestingLevel()) + node.getLine() + "\n";
+        scenarioWithNumeration.addLast(line);
+        if (node.getChildrenCount() != 0) {
+            for (Node child : node.getChildren()) {
+                addLine(child, scenarioWithNumeration);
+            }
+        }
+    }
+
+    public String getScenario(int maxNestingLevel) {
+        LinkedList<String> scenario = new LinkedList<>();
+        scenario.addLast("");
+        for (Node firstLevelNode : firstLevelNodes) {
+            if (firstLevelNode.getNestingLevel() <= maxNestingLevel) {
+                if (firstLevelNode.getChildrenCount() != 0) {
+                    addLine(firstLevelNode, scenario, maxNestingLevel);
+                } else {
+                    String line = makeTabulaturePrefix(firstLevelNode.getNestingLevel()) + firstLevelNode.getLine() + "\n";
+                    scenario.addLast(line);
+                }
+            }
+        }
+        return changeLinkedListToString(scenario);
+    }
+
+    private void addLine(Node node, LinkedList<String> scenarioWithNumeration, int maxNestingLevel) {
+        if (node.getNestingLevel() <= maxNestingLevel) {
+            String line = makeTabulaturePrefix(node.getNestingLevel()) + node.getLine() + "\n";
+            scenarioWithNumeration.addLast(line);
+            if (node.getChildrenCount() != 0) {
+                for (Node child : node.getChildren()) {
+                    addLine(child, scenarioWithNumeration, maxNestingLevel);
+                }
+            }
+        }
+    }
 
 }
