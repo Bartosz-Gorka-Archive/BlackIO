@@ -151,6 +151,74 @@ public class ScenarioManager {
         return keyWordsInScenario;
     }
 
+    public String cutActorsFromScenario() {
+        LinkedList<String> scenarioWithoutActors = new LinkedList<>();
+        scenarioWithoutActors.addLast("");
+        for (Node firstLevelNode : firstLevelNodes) {
+            if (firstLevelNode.getChildrenCount() != 0) {
+                searchLineWithoutActors(firstLevelNode, scenarioWithoutActors);
+            } else if (!lineStartFromActor(firstLevelNode.getLine())){
+                String line = makeTabulaturePrefix(firstLevelNode.getNestingLevel())+firstLevelNode.getLine()+"\n";
+                scenarioWithoutActors.addLast(line);
+            }
+
+        }
+        return changeLinkedListToString(scenarioWithoutActors);
+    }
+
+    private void searchLineWithoutActors(Node node, LinkedList<String> scenarioWithoutActors) {
+        if (!lineStartFromActor(node.getLine())) {
+            String line = makeTabulaturePrefix(node.getNestingLevel())+node.getLine()+"\n";
+            scenarioWithoutActors.addLast(line);
+        }
+        if (node.getChildrenCount() != 0) {
+            for (Node child : node.getChildren()) {
+                searchLineWithoutActors(child, scenarioWithoutActors);
+            }
+        }
+    }
+
+    private boolean lineStartFromActor(String line){
+        String[] words = line.split(" ");
+        for (String actor: actors) {
+            if (words[0].equals(actor)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String makeTabulaturePrefix(int nestingLevel){
+        String prefix = "";
+        for (int i = 1; i<nestingLevel; i++){
+            prefix+="\t";
+        }
+        return prefix;
+    }
+
+    private String changeLinkedListToString(LinkedList<String> scenario){
+        String header = addActorsHeader();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(header);
+        for (String line : scenario){
+            stringBuilder.append(line);
+        }
+        return stringBuilder.toString();
+    }
+
+    private String addActorsHeader(){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String actor : actors){
+            stringBuilder.append(actor);
+            if (!actor.equals(actors[actors.length-1])){
+                stringBuilder.append(",");
+            }
+        }
+        stringBuilder.append("\n");
+        return stringBuilder.toString();
+    }
+
+
     //TODO Sprawdzanie które węzły zaczynają się od aktora (zwraca stringa bez linijek z aktorami)
     //TODO Numerowanie węzłów (całość z prefixem 1., 2.1.3 itd)
     //TODO Pobranie scenariusz do określonego poziomu (wszystko do określonego poziomu, z tym poziomem)

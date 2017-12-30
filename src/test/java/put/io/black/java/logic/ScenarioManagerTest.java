@@ -14,6 +14,7 @@ public class ScenarioManagerTest {
             "IF scenario line 2\n" +
                 "\tline if 1\n" +
                 "\tline if 2\n" +
+                "\tDevelop line if 3\n" +
             "ELSE scenario line 3\n" +
                 "\tline else 1\n" +
                 "\tIF line else 2\n" +
@@ -21,7 +22,22 @@ public class ScenarioManagerTest {
             "scenario line 4\n" +
             "FOR EACH scenario line 5\n" +
                 "\tline for each 1\n" +
-            "scenario line 6";
+            "scenario line 6\n" +
+            "Boss scenario line 7";
+    private String scenarioTextWithoutActorsTest =
+            "Develop,Boss\n" +
+            "scenario line 1\n" +
+            "IF scenario line 2\n" +
+                "\tline if 1\n" +
+                "\tline if 2\n" +
+            "ELSE scenario line 3\n" +
+                "\tline else 1\n" +
+                "\tIF line else 2\n" +
+                    "\t\tline else if 1\n" +
+            "scenario line 4\n" +
+            "FOR EACH scenario line 5\n" +
+                "\tline for each 1\n" +
+            "scenario line 6\n";
 
 
     @Before
@@ -80,12 +96,12 @@ public class ScenarioManagerTest {
 
     @Test
     public void scenarioContainSixNodes() {
-        assertEquals(6, scenarioManager.firstLevelNodes.size());
+        assertEquals(7, scenarioManager.firstLevelNodes.size());
     }
 
     @Test
     public void scenarioContainInSecondNodeTwoChildren() {
-        assertEquals(2, scenarioManager.firstLevelNodes.get(1).getChildrenCount());
+        assertEquals(3, scenarioManager.firstLevelNodes.get(1).getChildrenCount());
     }
 
     @Test
@@ -111,7 +127,7 @@ public class ScenarioManagerTest {
     }
     @Test
     public void scenarioHasTwelveSteps(){
-        assertEquals(12, scenarioManager.countNumberOfScenarioSteps());
+        assertEquals(14, scenarioManager.countNumberOfScenarioSteps());
     }
 
     @Test
@@ -129,6 +145,11 @@ public class ScenarioManagerTest {
     public void scenarioDoesNotHasKeyWords(){
         ScenarioManager scenarioManager = new ScenarioManager("");
         assertEquals(0, scenarioManager.countKeyWordsInScenario());
+    }
+
+    @Test
+    public void testCutActorLinesFromScenario(){
+        assertEquals(scenarioTextWithoutActorsTest, scenarioManager.cutActorsFromScenario());
     }
 
 
