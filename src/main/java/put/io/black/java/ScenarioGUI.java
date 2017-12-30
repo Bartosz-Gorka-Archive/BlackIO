@@ -14,6 +14,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * GUI Class for work with logic in this package through REST API.
+ */
 public class ScenarioGUI {
     private JButton howManyStepsScenario;
     private JPanel panelMain;
@@ -34,6 +37,9 @@ public class ScenarioGUI {
 
     private static final Logger logger = LoggerFactory.getLogger(TextTransformerController.class);
 
+    /**
+     * Class to handle listener from GUI.
+     */
     public ScenarioGUI() {
         howManyStepsScenario.addMouseListener(new MouseAdapter() {
             @Override
@@ -122,6 +128,10 @@ public class ScenarioGUI {
         });
     }
 
+    /**
+     * Main class to run GUI.
+     * @param args for now args are for nothing.
+     */
     public static void main(String args[]) {
         JFrame frame = new JFrame("ScenarioGUI");
         frame.setContentPane(new ScenarioGUI().panelMain);
