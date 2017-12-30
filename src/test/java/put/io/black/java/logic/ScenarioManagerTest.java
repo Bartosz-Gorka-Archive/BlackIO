@@ -152,5 +152,14 @@ public class ScenarioManagerTest {
         assertEquals(scenarioTextWithoutActorsTest, scenarioManager.cutActorsFromScenario());
     }
 
+    @Test
+    public void cutActorsReturnEmptyStringIfScenarioContainsOnlyActorLines(){
+        String scenario = "Boss\n" +
+                "Boss line 1\n" +
+                "Boss line 2\n";
+        ScenarioManager scenarioManager = new ScenarioManager(scenario);
+        assertEquals("Boss\n", scenarioManager.cutActorsFromScenario());
+    }
+
 
 }
