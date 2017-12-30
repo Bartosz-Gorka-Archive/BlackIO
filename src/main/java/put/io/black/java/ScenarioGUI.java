@@ -28,7 +28,7 @@ public class ScenarioGUI {
     private JLabel outputLabel;
     private JButton howManyStepsKeyWord;
     private JButton whichStepsNotStartFromActor;
-    private JButton getScenariuWithNumber;
+    private JButton getScenarioWithNumber;
     private JButton getScenarioToXLevel;
     private JLabel levelLabel;
     private JTextField inputLevel;
@@ -74,7 +74,7 @@ public class ScenarioGUI {
                 outputField.setText("Dużo kroków w zaczyna się od aktora!");
             }
         });
-        getScenariuWithNumber.addMouseListener(new MouseAdapter() {
+        getScenarioWithNumber.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -125,7 +125,13 @@ public class ScenarioGUI {
     private String sendRequest(String scheme, String host, String port, String source) {
         String outputF = "";
         try {
-            UriComponents uriComponents = UriComponentsBuilder.newInstance().scheme(scheme).host(host).port(port).path("/" + source).build().encode();
+            UriComponents uriComponents = UriComponentsBuilder.newInstance()
+                    .scheme(scheme)
+                    .host(host)
+                    .port(port)
+                    .path("/" + source)
+                    .build()
+                    .encode();
             URL url = new URL(uriComponents.toUriString());
             logger.debug(url.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
