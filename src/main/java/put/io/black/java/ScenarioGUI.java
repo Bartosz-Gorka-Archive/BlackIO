@@ -1,8 +1,18 @@
 package put.io.black.java;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import put.io.black.java.rest.TextTransformerController;
+
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class ScenarioGUI {
     private JButton howManyStepsScenario;
@@ -20,13 +30,51 @@ public class ScenarioGUI {
     private JScrollPane inputFieldScroll;
     private JScrollPane outputFieldScroll;
 
+    private String localhost = "http://localhost:8080/";
+
+    private static final Logger logger = LoggerFactory.getLogger(TextTransformerController.class);
+
     public ScenarioGUI() {
         howManyStepsScenario.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                //TODO API liczba krokow w scenariuszu
-                outputField.setText("Dużo kroków w scenariuszu!");
+                //TODO API poprawna funkcje wlozyc (teraz jest stnadard co bylo w projektcie z moodle)
+                if (inputField.getText() == "") {
+                    JOptionPane.showMessageDialog(null, "Pole wejściowe scenariusza jest puste!");
+                    logger.error("Pole wejściowe scenariusza jest puste!");
+                } else {
+                    try {
+                        String prepareUrl = localhost + inputField.getText();
+                        URL url = new URL(prepareUrl);
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setRequestMethod("GET");
+                        conn.setRequestProperty("Accept", "application/json");
+
+                        if (conn.getResponseCode() != 200) {
+                            throw new RuntimeException("Failed : HTTP error code : "
+                                    + conn.getResponseCode());
+                        }
+                        logger.debug("Połączono z serwerem!");
+                        BufferedReader br = new BufferedReader(new InputStreamReader(
+                                (conn.getInputStream())));
+
+                        String output;
+                        String outputF = "";
+                        logger.debug("Output from Server ....");
+                        while ((output = br.readLine()) != null) {
+                            logger.debug(output);
+                            outputF += output;
+                        }
+                        outputField.setText(outputF);
+                        conn.disconnect();
+                        logger.debug("Rozłączono z serwerem!");
+                    } catch (MalformedURLException e1) {
+                        e1.printStackTrace();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
             }
         });
         howManyStepsKeyWord.addMouseListener(new MouseAdapter() {
@@ -68,17 +116,14 @@ public class ScenarioGUI {
                 } catch (NumberFormatException err) {
                     JOptionPane.showMessageDialog(null, "Liczba poziomów nie jest liczbą!");
                 }
-
             }
         });
     }
-
 
     public static void main(String args[]) {
         JFrame frame = new JFrame("ScenarioGUI");
         frame.setContentPane(new ScenarioGUI().panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
         frame.setVisible(true);
     }
 }
