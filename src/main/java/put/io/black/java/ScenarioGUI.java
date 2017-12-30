@@ -10,9 +10,7 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.*;
 
 /**
  * GUI Class for work with logic in this package through REST API.
@@ -52,8 +50,8 @@ public class ScenarioGUI {
                 } else {
                     try {
                         String prepareUrl = localhost + inputField.getText();
-                        prepareUrl = prepareUrl.replace(" ","%20"); // to handle with space ONLY in input
-                        URL url = new URL(prepareUrl);
+                        String correctUrl = stringToUrl(prepareUrl);
+                        URL url = new URL(correctUrl);
                         logger.debug(url.toString());
                         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                         conn.setRequestMethod("GET");
@@ -79,8 +77,13 @@ public class ScenarioGUI {
                         logger.debug("Rozłączono z serwerem!");
                     } catch (MalformedURLException e1) {
                         e1.printStackTrace();
+                        logger.error("MalformedURLException - see Stack");
                     } catch (IOException e1) {
                         e1.printStackTrace();
+                        logger.error("IOException - see Stack");
+                    } catch (URISyntaxException e1) {
+                        e1.printStackTrace();
+                        logger.error("URISyntaxException - see Stack");
                     }
                 }
             }
@@ -137,5 +140,11 @@ public class ScenarioGUI {
         frame.setContentPane(new ScenarioGUI().panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+    }
+
+    private String stringToUrl(String input) throws MalformedURLException, URISyntaxException {
+        URL url= new URL(input);
+        URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+        return uri.toASCIIString();
     }
 }
