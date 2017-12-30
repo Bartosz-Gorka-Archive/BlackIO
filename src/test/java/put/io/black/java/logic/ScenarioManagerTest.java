@@ -30,16 +30,15 @@ public class ScenarioManagerTest {
         scenarioManager = new ScenarioManager(scenarioTextTest);
     }
 
-
     @Test
     public void actorsAreFindingInHeader() {
-        assertEquals(2, scenarioManager.actors.length);
+        assertEquals(2, scenarioManager.getActors().length);
     }
 
     @Test
     public void foundActorsAreCorrect() {
-        assertEquals("Develop", scenarioManager.actors[0]);
-        assertEquals("Boss", scenarioManager.actors[1]);
+        assertEquals("Develop", scenarioManager.getActors()[0]);
+        assertEquals("Boss", scenarioManager.getActors()[1]);
     }
 
     @Test
@@ -81,23 +80,23 @@ public class ScenarioManagerTest {
 
     @Test
     public void scenarioContainSixNodes() {
-        assertEquals(7, scenarioManager.firstLevelNodes.size());
+        assertEquals(7, scenarioManager.getFirstLevelNodes().size());
     }
 
     @Test
     public void scenarioContainInSecondNodeTwoChildren() {
-        assertEquals(3, scenarioManager.firstLevelNodes.get(1).getChildrenCount());
+        assertEquals(3, scenarioManager.getFirstLevelNodes().get(1).getChildrenCount());
     }
 
     @Test
     public void secondChildOfSecondNodeEquals() {
         String string = "line if 2";
-        assertEquals(string, scenarioManager.firstLevelNodes.get(1).getChildren().get(1).getLine());
+        assertEquals(string, scenarioManager.getFirstLevelNodes().get(1).getChildren().get(1).getLine());
     }
 
     @Test
     public void secondChildOfSecondNodeHas2NestingLevel() {
-        assertEquals(2, scenarioManager.firstLevelNodes.get(1).getChildren().get(1).getNestingLevel());
+        assertEquals(2, scenarioManager.getFirstLevelNodes().get(1).getChildren().get(1).getNestingLevel());
     }
 
     @Test

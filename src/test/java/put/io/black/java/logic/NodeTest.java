@@ -1,6 +1,5 @@
 package put.io.black.java.logic;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,14 +10,9 @@ public class NodeTest {
     private String nodeTestText = "node text";
     private Node node;
 
-
     @Before
     public void setUp() throws Exception {
         node = new Node(nodeTestText, 1);
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

@@ -10,17 +10,21 @@ public class Node {
 
     //TODO visitator
 
-    public Node(String line, int nestingLevel){
+    public Node(String line, int nestingLevel) {
         this.line = line;
         this.nestingLevel = nestingLevel;
     }
 
-    public void addChild(Node child){
+    public void addChild(Node child) {
         children.add(child);
     }
 
-    public int getChildrenCount(){
+    public int getChildrenCount() {
         return children.size();
+    }
+
+    public boolean hasChildren() {
+        return children.size() != 0;
     }
 
     public int getNestingLevel() {
@@ -37,10 +41,8 @@ public class Node {
 
     @Override
     public String toString() {
-        return "Node{" +
-                "nestingLevel=" + nestingLevel +
+        return "Node{" + "nestingLevel=" + nestingLevel +
                 ", line='" + line + '\'' +
-                ", childCount= "+ getChildrenCount() +
-                '}';
+                ", childCount= " + getChildrenCount() + '}';
     }
 }
