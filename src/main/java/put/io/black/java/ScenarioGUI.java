@@ -1,10 +1,8 @@
 package put.io.black.java;
 
 import javax.swing.*;
-import javax.swing.text.NumberFormatter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.NumberFormat;
 
 public class ScenarioGUI {
     private JButton howManyStepsScenario;
@@ -59,15 +57,14 @@ public class ScenarioGUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                try{
+                try {
                     Integer numberLevel = Integer.parseInt(inputLevel.getText());
-                    if(numberLevel < 1){
+                    if (numberLevel < 1) {
                         JOptionPane.showMessageDialog(null, "Liczba poziomów nie jest liczbą dodatnią!");
                     } else {
                         //TODO API Scenariusz do pewnego poziomu
-                        outputField.setText("To jest scenariusz do "+numberLevel.toString()+" poziomu!");
+                        outputField.setText("To jest scenariusz do " + numberLevel.toString() + " poziomu!");
                     }
-
                 } catch (NumberFormatException err) {
                     JOptionPane.showMessageDialog(null, "Liczba poziomów nie jest liczbą!");
                 }
@@ -77,16 +74,11 @@ public class ScenarioGUI {
     }
 
 
-public static void main(String args[]){
-    JFrame frame = new JFrame("ScenarioGUI");
-    frame.setContentPane(new ScenarioGUI().panelMain);
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.pack();
-
-
-
-    frame.setVisible(true);
-}
-
-
+    public static void main(String args[]) {
+        JFrame frame = new JFrame("ScenarioGUI");
+        frame.setContentPane(new ScenarioGUI().panelMain);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
 }
