@@ -46,7 +46,9 @@ public class ScenarioGUI {
                 } else {
                     try {
                         String prepareUrl = localhost + inputField.getText();
+                        prepareUrl = prepareUrl.replace(" ","%20"); // to handle with space ONLY in input
                         URL url = new URL(prepareUrl);
+                        logger.debug(url.toString());
                         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                         conn.setRequestMethod("GET");
                         conn.setRequestProperty("Accept", "application/json");
