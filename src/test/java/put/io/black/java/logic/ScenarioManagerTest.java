@@ -24,21 +24,6 @@ public class ScenarioManagerTest {
                 "\tline for each 1\n" +
             "scenario line 6\n" +
             "Boss scenario line 7";
-    private String scenarioTextWithoutActorsTest =
-            "Develop,Boss\n" +
-            "scenario line 1\n" +
-            "IF scenario line 2\n" +
-                "\tline if 1\n" +
-                "\tline if 2\n" +
-            "ELSE scenario line 3\n" +
-                "\tline else 1\n" +
-                "\tIF line else 2\n" +
-                    "\t\tline else if 1\n" +
-            "scenario line 4\n" +
-            "FOR EACH scenario line 5\n" +
-                "\tline for each 1\n" +
-            "scenario line 6\n";
-
 
     @Before
     public void setUp() throws Exception {
@@ -149,6 +134,20 @@ public class ScenarioManagerTest {
 
     @Test
     public void testCutActorLinesFromScenario(){
+       String scenarioTextWithoutActorsTest =
+                        "Develop,Boss\n" +
+                        "scenario line 1\n" +
+                        "IF scenario line 2\n" +
+                            "\tline if 1\n" +
+                            "\tline if 2\n" +
+                        "ELSE scenario line 3\n" +
+                            "\tline else 1\n" +
+                            "\tIF line else 2\n" +
+                                "\t\tline else if 1\n" +
+                        "scenario line 4\n" +
+                        "FOR EACH scenario line 5\n" +
+                            "\tline for each 1\n" +
+                        "scenario line 6";
         assertEquals(scenarioTextWithoutActorsTest, scenarioManager.cutActorsFromScenario());
     }
 
@@ -156,9 +155,9 @@ public class ScenarioManagerTest {
     public void cutActorsReturnEmptyStringIfScenarioContainsOnlyActorLines(){
         String scenario = "Boss\n" +
                 "Boss line 1\n" +
-                "Boss line 2\n";
+                "Boss line 2";
         ScenarioManager scenarioManager = new ScenarioManager(scenario);
-        assertEquals("Boss\n", scenarioManager.cutActorsFromScenario());
+        assertEquals("Boss", scenarioManager.cutActorsFromScenario());
     }
 
     @Test
@@ -177,7 +176,7 @@ public class ScenarioManagerTest {
                 "5.FOR EACH scenario line 5\n" +
                     "\t5.1.line for each 1\n" +
                 "6.scenario line 6\n" +
-                "7.Boss scenario line 7\n";
+                "7.Boss scenario line 7";
         assertEquals(scenarioWithCorrectNumeration, scenarioManager.getScenarioWithNumeration());
     }
 

@@ -202,7 +202,7 @@ public class ScenarioManager {
         for (String line : scenario){
             stringBuilder.append(line);
         }
-        return stringBuilder.toString();
+        return stringBuilder.substring(0,stringBuilder.length()-1).toString();
     }
 
     private String addActorsHeader(){
