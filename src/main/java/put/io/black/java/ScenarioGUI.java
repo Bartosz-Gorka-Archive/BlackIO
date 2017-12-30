@@ -2,6 +2,8 @@ package put.io.black.java;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 import put.io.black.java.rest.TextTransformerController;
 
 import javax.swing.*;
@@ -10,7 +12,9 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * GUI Class for work with logic in this package through REST API.
@@ -31,60 +35,26 @@ public class ScenarioGUI {
     private JScrollPane inputFieldScroll;
     private JScrollPane outputFieldScroll;
 
-    private String localhost = "http://localhost:8080/";
+    private final String scheme = "http";
+    private final String host = "localhost";
+    private final String port = "8080";
 
     private static final Logger logger = LoggerFactory.getLogger(TextTransformerController.class);
 
     /**
-     * Class to handle listener from GUI.
+     * Function to set handle listener from GUI.
      */
     public ScenarioGUI() {
         howManyStepsScenario.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                //TODO API poprawna funkcje wlozyc (teraz jest stnadard co bylo w projektcie z moodle)
+                //TODO CORRECT API (name of functions)
                 if (inputField.getText() == "") {
                     JOptionPane.showMessageDialog(null, "Pole wejściowe scenariusza jest puste!");
                     logger.error("Pole wejściowe scenariusza jest puste!");
                 } else {
-                    try {
-                        String prepareUrl = localhost + inputField.getText();
-                        String correctUrl = stringToUrl(prepareUrl);
-                        URL url = new URL(correctUrl);
-                        logger.debug(url.toString());
-                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                        conn.setRequestMethod("GET");
-                        conn.setRequestProperty("Accept", "application/json");
-
-                        if (conn.getResponseCode() != 200) {
-                            throw new RuntimeException("Failed : HTTP error code : "
-                                    + conn.getResponseCode());
-                        }
-                        logger.debug("Połączono z serwerem!");
-                        BufferedReader br = new BufferedReader(new InputStreamReader(
-                                (conn.getInputStream())));
-
-                        String output;
-                        String outputF = "";
-                        logger.debug("Output from Server ....");
-                        while ((output = br.readLine()) != null) {
-                            logger.debug(output);
-                            outputF += output;
-                        }
-                        outputField.setText(outputF);
-                        conn.disconnect();
-                        logger.debug("Rozłączono z serwerem!");
-                    } catch (MalformedURLException e1) {
-                        e1.printStackTrace();
-                        logger.error("MalformedURLException - see Stack");
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                        logger.error("IOException - see Stack");
-                    } catch (URISyntaxException e1) {
-                        e1.printStackTrace();
-                        logger.error("URISyntaxException - see Stack");
-                    }
+                    outputField.setText(sendRequest(scheme, host, port, inputField.getText()));
                 }
             }
         });
@@ -92,7 +62,7 @@ public class ScenarioGUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                //TODO API liczba krokow zawierajace slowa kluczowe
+                //TODO CORRECT API (name of functions)
                 outputField.setText("Dużo kroków zawiera słowa kluczowe!");
             }
         });
@@ -100,7 +70,7 @@ public class ScenarioGUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                //TODO API liczba krokow zaczynajacych sie od aktora
+                //TODO CORRECT API (name of functions)
                 outputField.setText("Dużo kroków w zaczyna się od aktora!");
             }
         });
@@ -108,7 +78,7 @@ public class ScenarioGUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                //TODO API Scenariusz z numeracja
+                //TODO CORRECT API (name of functions)
                 outputField.setText("1. To jest scenariusz z numeracją!");
             }
         });
@@ -121,7 +91,7 @@ public class ScenarioGUI {
                     if (numberLevel < 1) {
                         JOptionPane.showMessageDialog(null, "Liczba poziomów nie jest liczbą dodatnią!");
                     } else {
-                        //TODO API Scenariusz do pewnego poziomu
+                        //TODO CORRECT API (name of functions)
                         outputField.setText("To jest scenariusz do " + numberLevel.toString() + " poziomu!");
                     }
                 } catch (NumberFormatException err) {
@@ -132,7 +102,8 @@ public class ScenarioGUI {
     }
 
     /**
-     * Main class to run GUI.
+     * Main function to run GUI.
+     *
      * @param args for now args are for nothing.
      */
     public static void main(String args[]) {
@@ -142,9 +113,48 @@ public class ScenarioGUI {
         frame.setVisible(true);
     }
 
-    private String stringToUrl(String input) throws MalformedURLException, URISyntaxException {
-        URL url= new URL(input);
-        URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
-        return uri.toASCIIString();
+    /**
+     * Function to send data
+     *
+     * @param scheme - scheme like http
+     * @param host   - name of serwer
+     * @param port   - connection port
+     * @param source - query
+     * @return - respond from server
+     */
+    private String sendRequest(String scheme, String host, String port, String source) {
+        String outputF = "";
+        try {
+            UriComponents uriComponents = UriComponentsBuilder.newInstance().scheme(scheme).host(host).port(port).path("/" + source).build().encode();
+            URL url = new URL(uriComponents.toUriString());
+            logger.debug(url.toString());
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + conn.getResponseCode());
+            }
+            logger.debug("Połączono z serwerem!");
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (conn.getInputStream())));
+
+            String output;
+            logger.debug("Output from Server ....");
+            while ((output = br.readLine()) != null) {
+                logger.debug(output);
+                outputF += output;
+            }
+            conn.disconnect();
+            logger.debug("Rozłączono z serwerem!");
+        } catch (MalformedURLException e1) {
+            e1.printStackTrace();
+            logger.error("MalformedURLException - see Stack");
+        } catch (IOException e1) {
+            e1.printStackTrace();
+            logger.error("IOException - see Stack");
+        }
+        return outputF;
     }
 }
