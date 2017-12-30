@@ -2,7 +2,7 @@ package put.io.black.java.logic;
 
 import java.util.LinkedList;
 
-public class Node {
+public class Node implements Visitable{
 
     private int nestingLevel;
     private LinkedList<Node> children = new LinkedList<>();
@@ -44,5 +44,10 @@ public class Node {
         return "Node{" + "nestingLevel=" + nestingLevel +
                 ", line='" + line + '\'' +
                 ", childCount= " + getChildrenCount() + '}';
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        //TODO what am i do
     }
 }

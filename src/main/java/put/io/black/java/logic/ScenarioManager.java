@@ -3,7 +3,7 @@ package put.io.black.java.logic;
 import java.util.LinkedList;
 import java.util.Stack;
 
-public class ScenarioManager {
+public class ScenarioManager implements Visitor {
     private String[] keyWords = {"IF", "ELSE", "FOR EACH"};
     private String[] actors;
     private LinkedList<Node> firstLevelNodes = new LinkedList<>();
@@ -289,5 +289,10 @@ public class ScenarioManager {
 
     public LinkedList<Node> getFirstLevelNodes() {
         return firstLevelNodes;
+    }
+
+    @Override
+    public void visit(Node node) {
+        //TODO what am i do
     }
 }
