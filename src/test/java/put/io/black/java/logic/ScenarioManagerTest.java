@@ -161,5 +161,25 @@ public class ScenarioManagerTest {
         assertEquals("Boss\n", scenarioManager.cutActorsFromScenario());
     }
 
+    @Test
+    public void scenarioHasCorrectNumeration(){
+        String scenarioWithCorrectNumeration = "Develop,Boss\n" +
+                "1.scenario line 1\n" +
+                "2.IF scenario line 2\n" +
+                    "\t2.1.line if 1\n" +
+                    "\t2.2.line if 2\n" +
+                    "\t2.3.Develop line if 3\n" +
+                "3.ELSE scenario line 3\n" +
+                    "\t3.1.line else 1\n" +
+                    "\t3.2.IF line else 2\n" +
+                        "\t\t3.2.1.line else if 1\n" +
+                "4.scenario line 4\n" +
+                "5.FOR EACH scenario line 5\n" +
+                    "\t5.1.line for each 1\n" +
+                "6.scenario line 6\n" +
+                "7.Boss scenario line 7\n";
+        assertEquals(scenarioWithCorrectNumeration, scenarioManager.getScenarioWithNumeration());
+    }
+
 
 }

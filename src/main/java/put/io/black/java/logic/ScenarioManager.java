@@ -41,7 +41,6 @@ public class ScenarioManager {
         return words.length - 1;
     }
 
-
     private void buildTreeStructure(String[] scenarioLines) {
         if (scenarioLines.length > 1) {
             Stack<Node> stackNestingNode = new Stack<>();
@@ -218,9 +217,32 @@ public class ScenarioManager {
         return stringBuilder.toString();
     }
 
+    public String getScenarioWithNumeration() {
+        LinkedList<String> scenarioWithNumeration = new LinkedList<>();
+        scenarioWithNumeration.addLast("");
+        for (int i = 0; i< firstLevelNodes.size(); i++) {
+            if (firstLevelNodes.get(i).getChildrenCount() != 0) {
+                addLineWithNumeration(firstLevelNodes.get(i),scenarioWithNumeration, (i+1)+".");
+            }else {
+                String line = makeTabulaturePrefix(firstLevelNodes.get(i).getNestingLevel())+(i+1)+"."+firstLevelNodes.get(i).getLine()+"\n";
+                scenarioWithNumeration.addLast(line);
+            }
 
-    //TODO Sprawdzanie które węzły zaczynają się od aktora (zwraca stringa bez linijek z aktorami)
-    //TODO Numerowanie węzłów (całość z prefixem 1., 2.1.3 itd)
+        }
+        return changeLinkedListToString(scenarioWithNumeration);
+    }
+
+    private void addLineWithNumeration(Node node, LinkedList<String> scenarioWithNumeration, String prefix) {
+        String line = makeTabulaturePrefix(node.getNestingLevel())+prefix+node.getLine()+"\n";
+        scenarioWithNumeration.addLast(line);
+        if (node.getChildrenCount() != 0) {
+            for (int i=0; i<node.getChildrenCount(); i++){
+                addLineWithNumeration(node.getChildren().get(i),scenarioWithNumeration, prefix+(i+1)+".");
+            }
+        }
+    }
+
+
     //TODO Pobranie scenariusz do określonego poziomu (wszystko do określonego poziomu, z tym poziomem)
 
 }
