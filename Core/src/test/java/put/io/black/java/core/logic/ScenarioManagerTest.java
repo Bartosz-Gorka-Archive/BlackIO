@@ -219,6 +219,24 @@ public class ScenarioManagerTest {
         scenarioManager.visit(visitor);
     }
 
+    @Test
+    public void nodesListIsEmpty(){
+        scenarioManager = new ScenarioManager("");
+        assertEquals(0, scenarioManager.getNodes().size());
+    }
+
+    @Test
+    public void nodesListIsNotEmpty(){
+        assertEquals(scenarioTextTest.split("\n").length-1, scenarioManager.getNodes().size());
+    }
+
+    @Test
+    public void visitorVisitNodes(){
+        Visitor visitor = new NodeViewer();
+        scenarioManager.visit(visitor);
+    }
+
+
 
 
 }

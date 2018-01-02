@@ -48,6 +48,6 @@ public class Node implements Visitable{
 
     @Override
     public void accept(Visitor visitor) {
-        //TODO what am i do
+        visitor.visit(this);
     }
 }
