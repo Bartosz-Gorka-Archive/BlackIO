@@ -7,7 +7,7 @@ public class ScenarioManager {
     private String[] keyWords = {"IF", "ELSE", "FOR EACH"};
     private String[] actors;
     private LinkedList<Node> firstLevelNodes = new LinkedList<>();
-    private LinkedList<Visitable> nodes = new LinkedList<>();;
+    private LinkedList<Visitable> nodes = new LinkedList<>();
 
     public ScenarioManager(String scenario) {
         String[] scenarioLines = scenario.split("\n");
@@ -22,8 +22,8 @@ public class ScenarioManager {
 
     public boolean lineStartFromKeyWord(String line) {
         String lineWithoutTabs = line.replace("\t", "");
-        for (String keyWord : keyWords){
-            if (lineWithoutTabs.matches(keyWord+"(.*)")){
+        for (String keyWord : keyWords) {
+            if (lineWithoutTabs.matches(keyWord + "(.*)")) {
                 return true;
             }
         }
@@ -297,8 +297,8 @@ public class ScenarioManager {
         return nodes;
     }
 
-    public void visit(Visitor visitor){
-        for (Visitable node: nodes) {
+    public void visit(Visitor visitor) {
+        for (Visitable node : nodes) {
             node.accept(visitor);
         }
     }
