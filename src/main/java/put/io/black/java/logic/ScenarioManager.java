@@ -3,10 +3,11 @@ package put.io.black.java.logic;
 import java.util.LinkedList;
 import java.util.Stack;
 
-public class ScenarioManager implements Visitor {
+public class ScenarioManager {
     private String[] keyWords = {"IF", "ELSE", "FOR EACH"};
     private String[] actors;
     private LinkedList<Node> firstLevelNodes = new LinkedList<>();
+    private LinkedList<Visitable> nodes = new LinkedList<>();;
 
     public ScenarioManager(String scenario) {
         String[] scenarioLines = scenario.split("\n");
@@ -38,6 +39,7 @@ public class ScenarioManager implements Visitor {
         if (scenarioLines.length > 1) {
             Stack<Node> stackNestingNode = new Stack<>();
             Node actualFatherNode = new Node(scenarioLines[1], 1);
+            nodes.addLast(actualFatherNode);
             getFirstLevelNodes().addLast(actualFatherNode);
             for (int lineNumber = 2; lineNumber < scenarioLines.length; lineNumber++) {
                 while (stackNestingNode.size() > countTabSign(scenarioLines[lineNumber])) {
@@ -47,7 +49,7 @@ public class ScenarioManager implements Visitor {
                     }
                 }
                 Node node = new Node(scenarioLines[lineNumber].replace("\t", ""), stackNestingNode.size() + 1);
-
+                nodes.addLast(node);
                 if (node.getNestingLevel() == 1) {
                     getFirstLevelNodes().addLast(node);
                 } else {
@@ -148,7 +150,7 @@ public class ScenarioManager implements Visitor {
         for (Node firstLevelNode : getFirstLevelNodes()) {
             if (firstLevelNode.hasChildren()) {
                 searchLineWithoutActors(firstLevelNode, scenarioWithoutActors);
-            } else if (!lineStartFromActor(firstLevelNode.getLine())) {
+            } else if (lineNotStartFromActor(firstLevelNode.getLine())) {
                 String line = makeTabulaturePrefix(firstLevelNode.getNestingLevel()) + firstLevelNode.getLine() + "\n";
                 scenarioWithoutActors.addLast(line);
             }
@@ -157,7 +159,7 @@ public class ScenarioManager implements Visitor {
     }
 
     private void searchLineWithoutActors(Node node, LinkedList<String> scenarioWithoutActors) {
-        if (!lineStartFromActor(node.getLine())) {
+        if (lineNotStartFromActor(node.getLine())) {
             String line = makeTabulaturePrefix(node.getNestingLevel()) + node.getLine() + "\n";
             scenarioWithoutActors.addLast(line);
         }
@@ -168,14 +170,14 @@ public class ScenarioManager implements Visitor {
         }
     }
 
-    private boolean lineStartFromActor(String line) {
+    private boolean lineNotStartFromActor(String line) {
         String[] words = line.split(" ");
         for (String actor : getActors()) {
             if (words[0].equals(actor)) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     private String makeTabulaturePrefix(int nestingLevel) {
@@ -291,8 +293,14 @@ public class ScenarioManager implements Visitor {
         return firstLevelNodes;
     }
 
-    @Override
-    public void visit(Node node) {
-        //TODO what am i do
+    public LinkedList<Visitable> getNodes() {
+        return nodes;
     }
+
+    public void visit(Visitor visitor){
+        for (Visitable node: nodes) {
+            node.accept(visitor);
+        }
+    }
+
 }
