@@ -2,7 +2,7 @@ package put.io.black.java.logic;
 
 import java.util.LinkedList;
 
-public class Node implements Visitable{
+public class Node implements Visitable {
 
     private int nestingLevel;
     private LinkedList<Node> children = new LinkedList<>();

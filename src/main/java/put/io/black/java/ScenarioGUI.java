@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
-import put.io.black.java.rest.TextTransformerController;
+import put.io.black.java.rest.ScenarioController;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -39,7 +39,7 @@ public class ScenarioGUI {
     private final String host = "localhost";
     private final String port = "8080";
 
-    private static final Logger logger = LoggerFactory.getLogger(TextTransformerController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ScenarioController.class);
 
     /**
      * Function to set handle listener from GUI.
