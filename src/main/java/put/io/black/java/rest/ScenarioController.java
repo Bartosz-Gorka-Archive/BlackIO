@@ -15,12 +15,8 @@ public class ScenarioController {
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public String get(@PathVariable String text, @RequestParam(value="transforms", defaultValue="upper,escape") String[] transforms) {
-
-        // log the parameters
         logger.debug(text);
         logger.debug(Arrays.toString(transforms));
-
-        // do the transformation, you should run your logic here, below just a silly example
         TextTransformer transformer = new TextTransformer(transforms);
         return transformer.transform(text);
     }
@@ -28,92 +24,62 @@ public class ScenarioController {
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")
     public String post(@PathVariable String text,
                       @RequestBody String[] transforms) {
-
-        // log the parameters
         logger.debug(text);
         logger.debug(Arrays.toString(transforms));
-
-        // do the transformation, you should run your logic here, below just a silly example
         TextTransformer transformer = new TextTransformer(transforms);
         return transformer.transform(text);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public String getScenarioWithNumeric(@PathVariable String text, @RequestParam(value="numeric", defaultValue="") String[] transforms) {
-
-        // log the parameters
         logger.debug(text);
         logger.debug(Arrays.toString(transforms));
-
-        // do the transformation, you should run your logic here, below just a silly example
         ScenarioManager scenarioManager = new ScenarioManager(text);
         return scenarioManager.getScenarioWithNumeration();
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public String getScenario(@PathVariable String text, @RequestParam(value="", defaultValue="") String[] transforms) {
-
-        // log the parameters
         logger.debug(text);
         logger.debug(Arrays.toString(transforms));
-
-        // do the transformation, you should run your logic here, below just a silly example
         ScenarioManager scenarioManager = new ScenarioManager(text);
         return scenarioManager.getScenario();
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public String getScenarioWithoutActors(@PathVariable String text, @RequestParam(value="withoutActors", defaultValue="") String[] transforms) {
-
-        // log the parameters
         logger.debug(text);
         logger.debug(Arrays.toString(transforms));
-
-        // do the transformation, you should run your logic here, below just a silly example
         ScenarioManager scenarioManager = new ScenarioManager(text);
         return scenarioManager.cutActorsFromScenario();
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public String getNumberKeyWords(@PathVariable String text, @RequestParam(value="numberKeyWords", defaultValue="") String[] transforms) {
-
-        // log the parameters
         logger.debug(text);
         logger.debug(Arrays.toString(transforms));
-
-        // do the transformation, you should run your logic here, below just a silly example
         ScenarioManager scenarioManager = new ScenarioManager(text);
         return Integer.toString(scenarioManager.countKeyWordsInScenario());
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public String getScenarioSteps(@PathVariable String text, @RequestParam(value="steps", defaultValue="") String[] transforms) {
-
-        // log the parameters
         logger.debug(text);
         logger.debug(Arrays.toString(transforms));
-
-        // do the transformation, you should run your logic here, below just a silly example
         ScenarioManager scenarioManager = new ScenarioManager(text);
         return Integer.toString(scenarioManager.countNumberOfScenarioSteps());
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public String getScenarioNesting(@PathVariable String text, @RequestParam(value="nesting", defaultValue="") String[] transforms) {
-
-        // log the parameters
         logger.debug(text);
         logger.debug(Arrays.toString(transforms));
-
-        // do the transformation, you should run your logic here, below just a silly example
         ScenarioManager scenarioManager = new ScenarioManager(text);
         return Integer.toString(scenarioManager.countScenarioNesting());
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public String getScenarioToLevel(@PathVariable String text, @RequestParam(value="level", defaultValue="1") String[] transforms) {
-
-        // log the parameters
         logger.debug(text);
         logger.debug(Arrays.toString(transforms));
         int level = 0;
@@ -123,10 +89,7 @@ public class ScenarioController {
             logger.debug(e.toString());
             return "";
         }
-        // do the transformation, you should run your logic here, below just a silly example
         ScenarioManager scenarioManager = new ScenarioManager(text);
         return scenarioManager.getScenario(level);
     }
-
-
 }
