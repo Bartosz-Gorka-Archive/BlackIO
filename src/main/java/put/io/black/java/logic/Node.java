@@ -10,6 +10,11 @@ public class Node implements Visitable {
 
     //TODO visitator
 
+    /**
+     * testowa dokumentacja
+     * @param line
+     * @param nestingLevel
+     */
     public Node(String line, int nestingLevel) {
         this.line = line;
         this.nestingLevel = nestingLevel;
