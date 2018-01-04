@@ -3,12 +3,24 @@ package put.io.black.java.logic;
 import java.util.LinkedList;
 import java.util.Stack;
 
+/**
+ * Class used to analyze the scenario
+ *
+ * keyWord - a word that generates nesting level in scenario
+ * actor - word from which every step begins, the action in the scenario is related to a specific actor
+ */
 public class ScenarioManager {
     private String[] keyWords = {"IF", "ELSE", "FOR EACH"};
     private String[] actors;
     private LinkedList<Node> firstLevelNodes = new LinkedList<>();
     private LinkedList<Visitable> nodes = new LinkedList<>();
 
+
+    /**
+     * Function which splits whole text to steps, extracts the actors in the scenario and builds the structure of the tree
+     *
+     * @param scenario - a string of characters that will be separated into steps
+     */
     public ScenarioManager(String scenario) {
         String[] scenarioLines = scenario.split("\n");
 
@@ -16,10 +28,20 @@ public class ScenarioManager {
         buildTreeStructure(scenarioLines);
     }
 
+    /**
+     * Function that defines the actors given in the script header
+     *
+     * @param header - name of specific actor
+     */
     private void pullOutActors(String header) {
         actors = header.split(",");
     }
 
+    /**
+     * Function that verifies if the line starts with the keyword
+     * @param line - single step from scenario
+     * @return true if line starts with keyword or false if not
+     */
     public boolean lineStartFromKeyWord(String line) {
         String lineWithoutTabs = line.replace("\t", "");
         for (String keyWord : keyWords) {
@@ -30,11 +52,20 @@ public class ScenarioManager {
         return false;
     }
 
+    /**
+     * Funtion that determines the nesting of a scenario step
+     * @param line - single step from scenario
+     * @return the number of tab characters in a given step
+     */
     public int countTabSign(String line) {
         String[] words = line.split("\t");
         return words.length - 1;
     }
 
+    /**
+     * Function that builds a tree structure of scenario
+     * @param scenarioLines - string array, step in the scenario
+     */
     private void buildTreeStructure(String[] scenarioLines) {
         if (scenarioLines.length > 1) {
             Stack<Node> stackNestingNode = new Stack<>();
@@ -66,6 +97,9 @@ public class ScenarioManager {
         }
     }
 
+    /**
+     * @return level of scenario nesting
+     */
     public int countScenarioNesting() {
         int maxNesting = 1;
         if (getFirstLevelNodes().size() != 0) {
@@ -83,6 +117,11 @@ public class ScenarioManager {
         }
     }
 
+    /**
+     * @param node
+     * @param maxNestingLevel
+     * @return nesting level for node
+     */
     private int searchTheNestingNode(Node node, int maxNestingLevel) {
         if (node.hasChildren()) {
             for (Node child : node.getChildren()) {
@@ -96,6 +135,9 @@ public class ScenarioManager {
         return node.getNestingLevel();
     }
 
+    /**
+     * @return scenario steps
+     */
     public int countNumberOfScenarioSteps() {
         int scenarioSteps = 0;
         if (getFirstLevelNodes().size() != 0) {
@@ -111,6 +153,11 @@ public class ScenarioManager {
         }
     }
 
+    /**
+     * @param node
+     * @param scenarioSteps
+     * @return scenario steps to find a node
+     */
     private int searchTheNode(Node node, int scenarioSteps) {
         if (node.hasChildren()) {
             for (Node child : node.getChildren()) {
@@ -120,6 +167,10 @@ public class ScenarioManager {
         return scenarioSteps;
     }
 
+    /**
+     *
+     * @return keywords in scenario
+     */
     public int countKeyWordsInScenario() {
         int keyWordsInScenario = 0;
         if (getFirstLevelNodes().size() != 0) {
@@ -132,6 +183,12 @@ public class ScenarioManager {
         return keyWordsInScenario;
     }
 
+    /**
+     *
+     * @param node
+     * @param keyWordsInScenario
+     * @return how many keywords are in node
+     */
     private int searchTheKeyWordsNode(Node node, int keyWordsInScenario) {
         if (node.hasChildren()) {
             for (Node child : node.getChildren()) {
@@ -144,6 +201,10 @@ public class ScenarioManager {
         return keyWordsInScenario;
     }
 
+    /**
+     *
+     * @return scenario without actors
+     */
     public String cutActorsFromScenario() {
         LinkedList<String> scenarioWithoutActors = new LinkedList<>();
         scenarioWithoutActors.addLast("");
@@ -158,6 +219,11 @@ public class ScenarioManager {
         return changeLinkedListToString(scenarioWithoutActors);
     }
 
+    /**
+     * This method checks if line does not contain some actor name
+     * @param node
+     * @param scenarioWithoutActors
+     */
     private void searchLineWithoutActors(Node node, LinkedList<String> scenarioWithoutActors) {
         if (lineNotStartFromActor(node.getLine())) {
             String line = makeTabulaturePrefix(node.getNestingLevel()) + node.getLine() + "\n";
@@ -170,6 +236,11 @@ public class ScenarioManager {
         }
     }
 
+    /**
+     * Function which checks if step/line in scenario is OK and begin with actor name
+     * @param line
+     * @return false if line not start from actor and true if not
+     */
     private boolean lineNotStartFromActor(String line) {
         String[] words = line.split(" ");
         for (String actor : getActors()) {
@@ -180,6 +251,11 @@ public class ScenarioManager {
         return true;
     }
 
+    /**
+     * Function that add tabulations nestingLevel-1 times
+     * @param nestingLevel
+     * @return string with tabulation
+     */
     private String makeTabulaturePrefix(int nestingLevel) {
         StringBuilder prefix = new StringBuilder();
         for (int i = 1; i < nestingLevel; i++) {
@@ -188,6 +264,11 @@ public class ScenarioManager {
         return prefix.toString();
     }
 
+    /**
+     * Method which changes linked list to string
+     * @param scenario
+     * @return string
+     */
     private String changeLinkedListToString(LinkedList<String> scenario) {
         String header = addActorsHeader();
         StringBuilder stringBuilder = new StringBuilder();
@@ -198,6 +279,10 @@ public class ScenarioManager {
         return stringBuilder.substring(0, stringBuilder.length() - 1);
     }
 
+    /**
+     *
+     * @return string which is a actors header
+     */
     private String addActorsHeader() {
         StringBuilder stringBuilder = new StringBuilder();
         for (String actor : getActors()) {
@@ -210,6 +295,10 @@ public class ScenarioManager {
         return stringBuilder.toString();
     }
 
+    /**
+     * It is a method for get numeration of scenario (not 1,2,3... but 1, 1.1, 2... if line with 1 has nested scenario
+     * @return linked list of scenario with numeration
+     */
     public String getScenarioWithNumeration() {
         LinkedList<String> scenarioWithNumeration = new LinkedList<>();
         for (int i = 0; i < getFirstLevelNodes().size(); i++) {
@@ -224,6 +313,12 @@ public class ScenarioManager {
         return changeLinkedListToString(scenarioWithNumeration);
     }
 
+    /**
+     * This method add numeration for each line
+     * @param node
+     * @param scenarioWithNumeration
+     * @param prefix
+     */
     private void addLineWithNumeration(Node node, LinkedList<String> scenarioWithNumeration, String prefix) {
         String line = makeTabulaturePrefix(node.getNestingLevel()) + prefix + node.getLine() + "\n";
         scenarioWithNumeration.addLast(line);
@@ -234,6 +329,10 @@ public class ScenarioManager {
         }
     }
 
+    /**
+     *
+     * @return scenario
+     */
     public String getScenario() {
         LinkedList<String> scenario = new LinkedList<>();
         for (Node firstLevelNode : getFirstLevelNodes()) {
@@ -248,6 +347,11 @@ public class ScenarioManager {
         return changeLinkedListToString(scenario);
     }
 
+    /**
+     * This method add line to specific node
+     * @param node
+     * @param scenarioWithNumeration - required because added line must have good numeration
+     */
     private void addLine(Node node, LinkedList<String> scenarioWithNumeration) {
         String line = makeTabulaturePrefix(node.getNestingLevel()) + node.getLine() + "\n";
         scenarioWithNumeration.addLast(line);
@@ -258,6 +362,11 @@ public class ScenarioManager {
         }
     }
 
+    /**
+     *
+     * @param maxNestingLevel
+     * @return scenario
+     */
     public String getScenario(int maxNestingLevel) {
         LinkedList<String> scenario = new LinkedList<>();
         for (Node firstLevelNode : getFirstLevelNodes()) {
@@ -273,6 +382,12 @@ public class ScenarioManager {
         return changeLinkedListToString(scenario);
     }
 
+    /**
+     *
+     * @param node
+     * @param scenarioWithNumeration
+     * @param maxNestingLevel
+     */
     private void addLine(Node node, LinkedList<String> scenarioWithNumeration, int maxNestingLevel) {
         if (node.getNestingLevel() <= maxNestingLevel) {
             String line = makeTabulaturePrefix(node.getNestingLevel()) + node.getLine() + "\n";
