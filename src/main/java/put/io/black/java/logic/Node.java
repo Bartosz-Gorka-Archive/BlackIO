@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 /**
  * Node - scenario line
- * @see put.io.black.java.logic.Visitable
+ * @see Visitable
  */
 public class Node implements Visitable {
 
