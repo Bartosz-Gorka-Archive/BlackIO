@@ -13,7 +13,7 @@ public class Node implements Visitable {
      */
     private int nestingLevel;
     /**
-     * List with Children -> Node with reference to next nodes
+     * List with Children - Node with reference to next nodes
      */
     private LinkedList<Node> children = new LinkedList<>();
     /**
