@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"put.io.black.java.logic","l":"Node"}]
