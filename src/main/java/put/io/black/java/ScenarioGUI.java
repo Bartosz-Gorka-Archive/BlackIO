@@ -35,10 +35,21 @@ public class ScenarioGUI {
     private JScrollPane inputFieldScroll;
     private JScrollPane outputFieldScroll;
 
+    /**
+     * Connection protocol (HTTP / HTTPS)
+     */
     private final String scheme = "http";
+    /**
+     * Host name
+     */
     private final String host = "localhost";
+    /**
+     * Host port
+     */
     private final String port = "8080";
-
+    /**
+     * GUI logger
+     */
     private static final Logger logger = LoggerFactory.getLogger(ScenarioController.class);
 
     /**
@@ -51,8 +62,8 @@ public class ScenarioGUI {
                 super.mouseClicked(e);
                 //TODO CORRECT API (name of functions)
                 if (inputField.getText() == "") {
-                    JOptionPane.showMessageDialog(null, "Pole wejściowe scenariusza jest puste!");
-                    logger.error("Pole wejściowe scenariusza jest puste!");
+                    JOptionPane.showMessageDialog(null, "Scenario input empty. Please insert scenario.");
+                    logger.error("Input field in scenario is empty!");
                 } else {
                     outputField.setText(sendRequest(scheme, host, port, inputField.getText()));
                 }
@@ -63,7 +74,7 @@ public class ScenarioGUI {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 //TODO CORRECT API (name of functions)
-                outputField.setText("Dużo kroków zawiera słowa kluczowe!");
+                outputField.setText("To many steps!");
             }
         });
         whichStepsNotStartFromActor.addMouseListener(new MouseAdapter() {
@@ -71,7 +82,7 @@ public class ScenarioGUI {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 //TODO CORRECT API (name of functions)
-                outputField.setText("Dużo kroków w zaczyna się od aktora!");
+                outputField.setText("Many staps with actors!");
             }
         });
         getScenarioWithNumber.addMouseListener(new MouseAdapter() {
@@ -79,7 +90,7 @@ public class ScenarioGUI {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 //TODO CORRECT API (name of functions)
-                outputField.setText("1. To jest scenariusz z numeracją!");
+                outputField.setText("1. Your scenario with numbers.");
             }
         });
         getScenarioToXLevel.addMouseListener(new MouseAdapter() {
@@ -89,13 +100,13 @@ public class ScenarioGUI {
                 try {
                     Integer numberLevel = Integer.parseInt(inputLevel.getText());
                     if (numberLevel < 1) {
-                        JOptionPane.showMessageDialog(null, "Liczba poziomów nie jest liczbą dodatnią!");
+                        JOptionPane.showMessageDialog(null, "Nesting level should be positive number!");
                     } else {
                         //TODO CORRECT API (name of functions)
-                        outputField.setText("To jest scenariusz do " + numberLevel.toString() + " poziomu!");
+                        outputField.setText("Scenario with limit " + numberLevel.toString() + " levels!");
                     }
                 } catch (NumberFormatException err) {
-                    JOptionPane.showMessageDialog(null, "Liczba poziomów nie jest liczbą!");
+                    JOptionPane.showMessageDialog(null, "Nesting level not positive number!");
                 }
             }
         });
@@ -103,7 +114,6 @@ public class ScenarioGUI {
 
     /**
      * Main function to run GUI.
-     *
      * @param args for now args are for nothing.
      */
     public static void main(String args[]) {
@@ -115,7 +125,6 @@ public class ScenarioGUI {
 
     /**
      * Function to send data
-     *
      * @param scheme - scheme like http
      * @param host   - name of serwer
      * @param port   - connection port
@@ -142,7 +151,7 @@ public class ScenarioGUI {
                 throw new RuntimeException("Failed : HTTP error code : "
                         + conn.getResponseCode());
             }
-            logger.debug("Połączono z serwerem!");
+            logger.debug("Connected!");
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     (conn.getInputStream())));
 
@@ -153,7 +162,7 @@ public class ScenarioGUI {
                 outputF += output;
             }
             conn.disconnect();
-            logger.debug("Rozłączono z serwerem!");
+            logger.debug("Disconnected!");
         } catch (MalformedURLException e1) {
             e1.printStackTrace();
             logger.error("MalformedURLException - see Stack");
