@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"put.io.black.java.logic"}]
