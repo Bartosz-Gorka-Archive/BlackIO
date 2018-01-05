@@ -14,7 +14,7 @@ deploy:
   file_glob: true
   file:
     - target/put.io.black.java-1.0-SNAPSHOT.jar
-    - target/apidocs/*
+    - target/site/apidocs/*
   on:
     repo: bartoszgorka/BlackIO
     tags: true
