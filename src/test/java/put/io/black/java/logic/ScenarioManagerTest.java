@@ -186,7 +186,7 @@ public class ScenarioManagerTest {
 
     @Test
     public void pullScenarioOnlyToTwoNestingLevel(){
-        String scenarioWithCorrectNumeration = "Develop,Boss\n" +
+        String scenarioToLevel2 = "Develop,Boss\n" +
                 "scenario line 1\n" +
                 "IF scenario line 2\n" +
                     "\tline if 1\n" +
@@ -200,7 +200,7 @@ public class ScenarioManagerTest {
                     "\tline for each 1\n" +
                 "scenario line 6\n" +
                 "Boss scenario line 7";
-        assertEquals(scenarioWithCorrectNumeration, scenarioManager.getScenario(2));
+        assertEquals(scenarioToLevel2, scenarioManager.getScenario(2));
     }
 
     @Test
