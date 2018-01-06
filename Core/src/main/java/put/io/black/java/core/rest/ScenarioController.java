@@ -13,49 +13,50 @@ public class ScenarioController {
 
 
     @RequestMapping(value = "/numeric/{text}", method = {RequestMethod.POST, RequestMethod.GET}, produces = "application/json")
-    public String getScenarioWithNumeric(@PathVariable String text) {
+    public String getScenarioWithNumeric(@PathVariable("text") String text) {
         logger.debug(text);
-        ScenarioManager scenarioManager = new ScenarioManager(text);
+
+        ScenarioManager scenarioManager = new ScenarioManager(decodeMessage(text));
         return scenarioManager.getScenarioWithNumeration();
     }
 
     @RequestMapping(value = "/{text}", method = {RequestMethod.POST, RequestMethod.GET}, produces = "application/json")
-    public String getScenario(@PathVariable String text) {
+    public String getScenario(@PathVariable("text") String text) {
         logger.debug(text);
-        ScenarioManager scenarioManager = new ScenarioManager(text);
+        ScenarioManager scenarioManager = new ScenarioManager(decodeMessage(text));
         return scenarioManager.getScenario();
     }
 
     @RequestMapping(value = "/without_actors/{text}", method = {RequestMethod.POST, RequestMethod.GET}, produces = "application/json")
-    public String getScenarioWithoutActors(@PathVariable String text) {
+    public String getScenarioWithoutActors(@PathVariable("text") String text) {
         logger.debug(text);
-        ScenarioManager scenarioManager = new ScenarioManager(text);
+        ScenarioManager scenarioManager = new ScenarioManager(decodeMessage(text));
         return scenarioManager.cutActorsFromScenario();
     }
 
     @RequestMapping(value = "/number_keywords/{text}", method = {RequestMethod.POST, RequestMethod.GET}, produces = "application/json")
-    public String getScenarioNumberKeyWords(@PathVariable String text) {
+    public String getScenarioNumberKeyWords(@PathVariable("text") String text) {
         logger.debug(text);
-        ScenarioManager scenarioManager = new ScenarioManager(text);
+        ScenarioManager scenarioManager = new ScenarioManager(decodeMessage(text));
         return Integer.toString(scenarioManager.countKeyWordsInScenario());
     }
 
     @RequestMapping(value = "/steps/{text}", method = {RequestMethod.POST, RequestMethod.GET}, produces = "application/json")
-    public String getScenarioSteps(@PathVariable String text) {
+    public String getScenarioSteps(@PathVariable("text") String text) {
         logger.debug(text);
-        ScenarioManager scenarioManager = new ScenarioManager(text);
+        ScenarioManager scenarioManager = new ScenarioManager(decodeMessage(text));
         return Integer.toString(scenarioManager.countNumberOfScenarioSteps());
     }
 
     @RequestMapping(value = "/nesting/{text}", method = {RequestMethod.POST, RequestMethod.GET}, produces = "application/json")
-    public String getScenarioNesting(@PathVariable String text) {
+    public String getScenarioNesting(@PathVariable("text") String text) {
         logger.debug(text);
-        ScenarioManager scenarioManager = new ScenarioManager(text);
+        ScenarioManager scenarioManager = new ScenarioManager(decodeMessage(text));
         return Integer.toString(scenarioManager.countScenarioNesting());
     }
 
     @RequestMapping(value = "/level/{text}", method = {RequestMethod.POST, RequestMethod.GET}, produces = "application/json")
-    public String getScenarioToLevel(@PathVariable String text, @RequestParam(value = "level", defaultValue = "1") String toLevel) {
+    public String getScenarioToLevel(@PathVariable("text") String text, @RequestParam(value = "level", defaultValue = "1") String toLevel) {
         logger.debug(text);
         logger.debug(toLevel);
         int level = 0;
@@ -64,7 +65,14 @@ public class ScenarioController {
         } catch (NumberFormatException e) {
             return ERROR_MESSAGE;
         }
-        ScenarioManager scenarioManager = new ScenarioManager(text);
+        ScenarioManager scenarioManager = new ScenarioManager(decodeMessage(text));
         return scenarioManager.getScenario(level);
+    }
+
+    private String decodeMessage(String message){
+        message = message.replace(" n ","\n");
+        message = message.replace(" t ","\t");
+        message = message.replace(" k ",".");
+        return message;
     }
 }
