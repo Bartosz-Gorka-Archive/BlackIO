@@ -1,7 +1,6 @@
 package put.io.black.java.gui;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -49,7 +48,7 @@ public class ScenarioGUI {
     /**
      * GUI logger
      */
-    private static final Logger logger = LoggerFactory.getLogger(ScenarioGUI.class);
+    private static final Logger logger = Logger.getLogger(ScenarioGUI.class.getName());
 
     /**
      * Function to set handle listener from GUI.
@@ -62,7 +61,7 @@ public class ScenarioGUI {
                 //TODO CORRECT API (name of functions)
                 if (inputField.getText() == "") {
                     JOptionPane.showMessageDialog(null, "Scenario input empty. Please insert scenario.");
-                    logger.error("Input field in scenario is empty!");
+                    logger.warning("Input field in scenario is empty!");
                 } else {
                     outputField.setText(sendRequest(scheme, host, port, inputField.getText()));
                 }
@@ -142,7 +141,7 @@ public class ScenarioGUI {
                     .build()
                     .encode();
             URL url = new URL(uriComponents.toUriString());
-            logger.debug(url.toString());
+            logger.warning(url.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
@@ -151,24 +150,24 @@ public class ScenarioGUI {
                 throw new RuntimeException("Failed : HTTP error code : "
                         + conn.getResponseCode());
             }
-            logger.debug("Connected!");
+            logger.warning("Connected!");
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     (conn.getInputStream())));
 
             String output;
-            logger.debug("Output from Server ....");
+            logger.warning("Output from Server ....");
             while ((output = br.readLine()) != null) {
-                logger.debug(output);
+                logger.warning(output);
                 outputF += output;
             }
             conn.disconnect();
-            logger.debug("Disconnected!");
+            logger.warning("Disconnected!");
         } catch (MalformedURLException e1) {
             e1.printStackTrace();
-            logger.error("MalformedURLException - see Stack");
+            logger.warning("MalformedURLException - see Stack");
         } catch (IOException e1) {
             e1.printStackTrace();
-            logger.error("IOException - see Stack");
+            logger.warning("IOException - see Stack");
         }
         return outputF;
     }
