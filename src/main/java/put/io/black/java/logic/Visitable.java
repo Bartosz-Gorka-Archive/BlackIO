@@ -8,7 +8,7 @@ public interface Visitable {
 
     /**
      * Accept visitor check
-     * @param visitor Visitor - guess
+     * @param visitor Visitor - guest
      */
     public void accept(Visitor visitor);
 }

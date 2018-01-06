@@ -26,7 +26,7 @@ public class ScenarioManager {
 
     /**
      * Method which splits whole text to steps, extracts the actors in the scenario and builds the structure of the tree
-     * @param scenario - Long scenario text lines separated \n
+     * @param scenario Long scenario text lines separated \n
      */
     public ScenarioManager(String scenario) {
         String[] scenarioLines = scenario.split("\n");
@@ -37,7 +37,7 @@ public class ScenarioManager {
 
     /**
      * Defines the actors given in the script header
-     * @param header - Scenario header to fetch actors
+     * @param header Scenario header to fetch actors
      */
     private void pullOutActors(String header) {
         actors = header.split(",");
@@ -45,8 +45,8 @@ public class ScenarioManager {
 
     /**
      * Verify if the line starts with the keyword
-     * @param line - single step from scenario
-     * @return true if line starts with keyword or false if not
+     * @param line Single step from scenario
+     * @return True if line starts with keyword or false if not
      */
     public boolean lineStartFromKeyWord(String line) {
         String lineWithoutTabs = line.replace("\t", "");
@@ -60,8 +60,8 @@ public class ScenarioManager {
 
     /**
      * Determine the nesting of a scenario step
-     * @param line - single step from scenario
-     * @return the number of tab characters in a given step
+     * @param line Single step from scenario
+     * @return The number of tab characters in a given step
      */
     public int countTabSign(String line) {
         String[] words = line.split("\t");
@@ -70,7 +70,7 @@ public class ScenarioManager {
 
     /**
      * Build a tree structure of scenario
-     * @param scenarioLines - string array, step in the scenario
+     * @param scenarioLines String array, step in the scenario
      */
     private void buildTreeStructure(String[] scenarioLines) {
         if (scenarioLines.length > 1) {
@@ -105,7 +105,7 @@ public class ScenarioManager {
 
     /**
      * Count scenario nesting level
-     * @return level of scenario nesting
+     * @return Level of scenario nesting
      */
     public int countScenarioNesting() {
         int maxNesting = 1;
@@ -128,7 +128,7 @@ public class ScenarioManager {
      * Search maximum nesting level from nodes
      * @param node Node to check
      * @param maxNestingLevel Actual max nesting level
-     * @return nesting level for node
+     * @return Nesting level for node
      */
     private int searchTheNestingNode(Node node, int maxNestingLevel) {
         if (node.hasChildren()) {
@@ -166,7 +166,7 @@ public class ScenarioManager {
      * Search steps in node
      * @param node Node to check
      * @param scenarioSteps Scenario steps
-     * @return scenario steps to find a node
+     * @return Scenario steps to find a node
      */
     private int searchTheNode(Node node, int scenarioSteps) {
         if (node.hasChildren()) {
@@ -212,8 +212,8 @@ public class ScenarioManager {
     }
 
     /**
-     *
-     * @return scenario without actors
+     * Cut actors from scenario text
+     * @return Scenario without actors
      */
     public String cutActorsFromScenario() {
         LinkedList<String> scenarioWithoutActors = new LinkedList<>();
@@ -232,7 +232,7 @@ public class ScenarioManager {
     /**
      * Validate lines in scenario. Require lines with actors
      * @param node Node to check
-     * @param scenarioWithoutActors  Scenario lines without actors
+     * @param scenarioWithoutActors Scenario lines without actors
      */
     private void searchLineWithoutActors(Node node, LinkedList<String> scenarioWithoutActors) {
         if (lineNotStartFromActor(node.getLine())) {
@@ -249,7 +249,7 @@ public class ScenarioManager {
     /**
      * Check line not start from actor
      * @param line Line to check
-     * @return false if line start from actor and true if not
+     * @return False if line start from actor and true if not
      */
     private boolean lineNotStartFromActor(String line) {
         String[] words = line.split(" ");
