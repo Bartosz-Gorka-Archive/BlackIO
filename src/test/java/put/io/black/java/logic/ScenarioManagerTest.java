@@ -2,6 +2,7 @@ package put.io.black.java.logic;
 
 import org.junit.Before;
 import org.junit.Test;
+import put.io.black.java.rest.ScenarioController;
 
 import static org.junit.Assert.*;
 
@@ -219,7 +220,6 @@ public class ScenarioManagerTest {
         Visitor visitor = new NodeViewer();
         scenarioManager.visit(visitor);
     }
-
 
 
 }

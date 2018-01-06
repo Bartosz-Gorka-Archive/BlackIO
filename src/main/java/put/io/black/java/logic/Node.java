@@ -8,8 +8,6 @@ public class Node implements Visitable {
     private LinkedList<Node> children = new LinkedList<>();
     private String line;
 
-    //TODO visitator
-
     public Node(String line, int nestingLevel) {
         this.line = line;
         this.nestingLevel = nestingLevel;

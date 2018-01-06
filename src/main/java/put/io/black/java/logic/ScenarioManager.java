@@ -248,12 +248,12 @@ public class ScenarioManager {
         return changeLinkedListToString(scenario);
     }
 
-    private void addLine(Node node, LinkedList<String> scenarioWithNumeration) {
+    private void addLine(Node node, LinkedList<String> scenario) {
         String line = makeTabulaturePrefix(node.getNestingLevel()) + node.getLine() + "\n";
-        scenarioWithNumeration.addLast(line);
+        scenario.addLast(line);
         if (node.hasChildren()) {
             for (Node child : node.getChildren()) {
-                addLine(child, scenarioWithNumeration);
+                addLine(child, scenario);
             }
         }
     }
