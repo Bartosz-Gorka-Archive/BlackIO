@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="put.io.black.java.gui.ScenarioGUI">
+  <grid id="27dc6" binding="panelMain" layout-manager="GridLayoutManager" row-count="10" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="10" left="10" bottom="10" right="10"/>
+    <constraints>
+      <xy x="20" y="20" width="866" height="522"/>
+    </constraints>
+    <properties/>
+    <border type="none">
+      <color color="-16537088"/>
+    </border>
+    <children>
+      <component id="93788" class="javax.swing.JLabel" binding="inputLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Poniżej wpisz treść scenariusza."/>
+        </properties>
+      </component>
+      <component id="23d80" class="javax.swing.JLabel" binding="outputLabel">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Poniżej zostanie wypisany wynik."/>
+        </properties>
+      </component>
+      <component id="c82c5" class="javax.swing.JButton" binding="getScenarioToXLevel">
+        <constraints>
+          <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <minimum-size width="300" height="25"/>
+            <preferred-size width="300" height="25"/>
+            <maximum-size width="300" height="25"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Pobierz scenariusz do określonego poziomu"/>
+        </properties>
+      </component>
+      <component id="11861" class="javax.swing.JButton" binding="getScenarioWithNumber">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <minimum-size width="300" height="25"/>
+            <preferred-size width="300" height="25"/>
+            <maximum-size width="300" height="25"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Pobierz scenariusz z numeracją"/>
+        </properties>
+      </component>
+      <component id="8daf0" class="javax.swing.JButton" binding="whichStepsNotStartFromActor">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <minimum-size width="300" height="25"/>
+            <preferred-size width="300" height="25"/>
+            <maximum-size width="300" height="25"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Które kroki nie rozpoczynają się od aktora?"/>
+        </properties>
+      </component>
+      <component id="9c9f1" class="javax.swing.JButton" binding="howManyStepsKeyWord">
+        <constraints>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <minimum-size width="300" height="25"/>
+            <preferred-size width="300" height="25"/>
+            <maximum-size width="300" height="25"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Ile króków zawiera słowa kluczowe?"/>
+        </properties>
+      </component>
+      <component id="ee349" class="javax.swing.JTextField" binding="inputLevel">
+        <constraints>
+          <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <minimum-size width="300" height="25"/>
+            <preferred-size width="300" height="25"/>
+            <maximum-size width="300" height="25"/>
+          </grid>
+        </constraints>
+        <properties>
+          <toolTipText value="Wpisz liczbę poziomów"/>
+        </properties>
+      </component>
+      <component id="d0102" class="javax.swing.JLabel" binding="levelLabel">
+        <constraints>
+          <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Wpisz liczbę poziomów:"/>
+        </properties>
+      </component>
+      <scrollpane id="bb340" binding="inputFieldScroll">
+        <constraints>
+          <grid row="1" column="0" row-span="4" col-span="1" vsize-policy="7" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <minimum-size width="300" height="200"/>
+            <preferred-size width="300" height="200"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="ccd0d" class="javax.swing.JTextArea" binding="inputField">
+            <constraints/>
+            <properties>
+              <lineWrap value="false"/>
+            </properties>
+          </component>
+        </children>
+      </scrollpane>
+      <scrollpane id="28d57" binding="outputFieldScroll">
+        <constraints>
+          <grid row="6" column="0" row-span="4" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <minimum-size width="300" height="200"/>
+            <preferred-size width="300" height="200"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="4b32e" class="javax.swing.JTextArea" binding="outputField">
+            <constraints/>
+            <properties>
+              <editable value="false"/>
+            </properties>
+          </component>
+        </children>
+      </scrollpane>
+      <component id="5c8c3" class="javax.swing.JButton" binding="howManyStepsScenario">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <minimum-size width="300" height="25"/>
+            <preferred-size width="300" height="25"/>
+            <maximum-size width="300" height="25"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Ile kroków zawiera scenariusz?"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
