@@ -5,7 +5,8 @@ script:
 - mvn cobertura:cobertura
 - mvn javadoc:javadoc
 after_success:
-- cd target/site/apidocs && zip -r javadocs-1.0-SNAPSHOT.zip * && cd ../../..
+- cd Core/target/site/apidocs && zip -r Core-javadocs-1.0-SNAPSHOT.zip * && cd ../../../..
+- cd GUI/target/site/apidocs && zip -r GUI-javadocs-1.0-SNAPSHOT.zip * && cd ../../../..
 - bash <(curl -s https://codecov.io/bash)
 deploy:
   provider: releases
@@ -13,8 +14,10 @@ deploy:
   api_key:
     secure: V77FujAsyvI8xwJg/w2o4SVTTcpWHq436w6zvUfXvowSo1F0t+UaI9FkLC8tpUtcx+w/qxYr6FCnQ0r75Bk2RqjQcNIletscd6FCl+vvIlOiZnLWY2YINaPSNAkpgs3KtQb5yfaGgvXqq2qx4y3nUsp2KI/sXTbTtD8ooGw9yiu/t7dgJGEq4xFXw1IkcCJKLH62u4YbVHzinpMajuZSJnpx+tlTMOfMxptHRqZG2lq6zWLH3/7Fk3yWtnijEoaDR1hnse2NZHPb/h3iidYxYLIiu+estZa03rd2Suz3ci6urnR9pjdi9CIRiyH7GLPurRMzFhYLvPOB2185C/7kTPSaEmMLdV7WrBwqGiEFQ/wH7oDi0lfHa7wU1kL5CT/opqeidrSNovowfk/M6TqJ1FNUN9VO1dBLsbLX9152eU9RbXxvmLegRyF6dtn445Y8OLEC2CN52PEQb76GOc+WK2nKnJxjxTIbLy8PZoA3LKJq7cCG/VuZDXJ2s5jD4Z4Ru5lewaRpLah4L4yFqF6SyBrmsn9iddsCro7Ol1Kelzr0hiPeyZw4AJ+HvVGTsE7x2K7FnjVlPWq0IoCW4ygys1UdKivUQf415KrDSDM8OUuVedqakPcliHQy1RPHmIQrg9NGAOaurDdw2ZiPlPkc9awZg47fKQKwAciFfNyJXLI=
   file:
-    - target/put.io.black.java-1.0-SNAPSHOT.jar
-    - target/site/apidocs/javadocs-1.0-SNAPSHOT.zip
+    - Core/target/Core-1.0-SNAPSHOT.jar
+    - Core/target/site/apidocs/Core-javadocs-1.0-SNAPSHOT.zip
+    - GUI/target/GUI-1.0-SNAPSHOT.jar
+    - GUI/target/site/apidocs/GUI-javadocs-1.0-SNAPSHOT.zip
   on:
     repo: bartoszgorka/BlackIO
     tags: true
