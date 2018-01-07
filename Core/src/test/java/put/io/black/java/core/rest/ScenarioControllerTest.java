@@ -111,7 +111,7 @@ public class ScenarioControllerTest {
     @Test
     public void getScenarioToLevelIsNotNumberTest(){
         String toLevel = "I am not number!";
-        String errorMessage = "Second param is not number.";
+        String errorMessage = "Nesting level is not a integer!";
         assertEquals(errorMessage, scenarioController.getScenarioToLevel(messageToAPI, toLevel));
     }
 

@@ -2,6 +2,8 @@ package put.io.black.java.core.logic;
 
 import java.util.LinkedList;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Class used to analyze the scenario
@@ -29,7 +31,7 @@ public class ScenarioManager {
      * @param scenario Long scenario text lines separated \n
      */
     public ScenarioManager(String scenario) {
-        String[] scenarioLines = scenario.split("\n");
+        String[] scenarioLines = scenario.split("\\r\\n|\\n|\\r");
 
         pullOutActors(scenarioLines[0]);
         buildTreeStructure(scenarioLines);
@@ -40,7 +42,7 @@ public class ScenarioManager {
      * @param header Scenario header to fetch actors
      */
     private void pullOutActors(String header) {
-        actors = header.split(",");
+        actors = header.split("\\s*,\\s*");
     }
 
     /**
