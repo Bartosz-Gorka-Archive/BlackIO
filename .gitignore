@@ -26,6 +26,3 @@ target/
 .idea_modules/
 *.iml
 .idea/
-
-# Docs
-docs/

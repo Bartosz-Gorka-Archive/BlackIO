@@ -120,7 +120,6 @@ public class ScenarioGUI {
         JFrame frame = new JFrame("ScenarioGUI");
         frame.setContentPane(scenarioGUI.panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
         frame.setVisible(true);
     }
 
