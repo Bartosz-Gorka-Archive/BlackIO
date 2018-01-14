@@ -153,7 +153,7 @@ public class ScenarioController {
         logger.debug(body);
 
         boolean success = false;
-        String result = "";
+        Integer result = 0;
 
         // Parser
         JsonElement scenarioElement = new JsonParser().parse(body).getAsJsonObject().get("scenario");
@@ -165,7 +165,7 @@ public class ScenarioController {
 
             // Calculate
             ScenarioManager scenarioManager = new ScenarioManager(scenario);
-            result = Integer.toString(scenarioManager.countKeyWordsInScenario());
+            result = scenarioManager.countKeyWordsInScenario();
 
             success = true;
         }
@@ -194,7 +194,7 @@ public class ScenarioController {
         logger.debug(body);
 
         boolean success = false;
-        String result = "";
+        Integer result = 0;
 
         // Parser
         JsonElement scenarioElement = new JsonParser().parse(body).getAsJsonObject().get("scenario");
@@ -206,7 +206,7 @@ public class ScenarioController {
 
             // Calculate
             ScenarioManager scenarioManager = new ScenarioManager(scenario);
-            result = Integer.toString(scenarioManager.countNumberOfScenarioSteps());
+            result = scenarioManager.countNumberOfScenarioSteps();
 
             success = true;
         }
@@ -235,7 +235,7 @@ public class ScenarioController {
         logger.debug(body);
 
         boolean success = false;
-        String result = "";
+        Integer result = 0;
 
         // Parser
         JsonElement scenarioElement = new JsonParser().parse(body).getAsJsonObject().get("scenario");
@@ -247,7 +247,7 @@ public class ScenarioController {
 
             // Calculate
             ScenarioManager scenarioManager = new ScenarioManager(scenario);
-            result = Integer.toString(scenarioManager.countScenarioNesting());
+            result = scenarioManager.countScenarioNesting();
 
             success = true;
         }
@@ -267,7 +267,6 @@ public class ScenarioController {
     /**
      * Scenario to limit nesting level
      * @param body Scenario text
-     * @param toLevel Nesting level limit
      * @return Scenario with limit of nesting level
      */
     @RequestMapping(value = "/level", method = RequestMethod.POST, produces = "application/json")
