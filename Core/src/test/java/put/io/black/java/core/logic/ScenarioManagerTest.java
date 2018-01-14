@@ -1,7 +1,13 @@
 package put.io.black.java.core.logic;
 
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -274,15 +280,25 @@ public class ScenarioManagerTest {
     }
 
     @Test
-    public void getListAvailableScenarioTest() {
+    public void getListSavedScenarioTest() {
         String list = "scenario1.txt\nscenario2.txt\n";
         FileManager mock = mock(FileManager.class);
         when(mock.listSavedScenario()).thenReturn(list);
 
         String mockReturn = mock.listSavedScenario();
 
-        verify(mock, times(1)).listSavedScenario();
         assertEquals(list, mockReturn);
+        verify(mock, times(1)).listSavedScenario();
+
+    }
+
+    @AfterClass
+    public static void tearDown() throws Exception {
+        for (File file : new File(FileManager.PATH).listFiles()) {
+            System.out.println("Del"+file.toPath().toString());
+            Files.delete(file.toPath());
+        }
+        Files.delete(Paths.get(FileManager.PATH));
     }
 
 
