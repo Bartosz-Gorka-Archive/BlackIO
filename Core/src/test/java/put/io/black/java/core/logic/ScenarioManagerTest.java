@@ -2,7 +2,9 @@ package put.io.black.java.core.logic;
 
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class ScenarioManagerTest {
 
@@ -84,56 +86,57 @@ public class ScenarioManagerTest {
 
     @Test
     public void scenarioContainInSecondNodeTwoChildren() {
-        assertEquals(3, ((KeyNode)scenarioManager.getFirstLevelNodes().get(1)).getChildrenCount());
+        assertEquals(3, ((KeyNode) scenarioManager.getFirstLevelNodes().get(1)).getChildrenCount());
     }
 
     @Test
     public void secondChildOfSecondNodeEquals() {
         String string = "line if 2";
-        assertEquals(string, ((KeyNode)scenarioManager.getFirstLevelNodes().get(1)).getChildren().get(1).getLine());
+        assertEquals(string, ((KeyNode) scenarioManager.getFirstLevelNodes().get(1)).getChildren().get(1).getLine());
     }
 
     @Test
     public void secondChildOfSecondNodeHas2NestingLevel() {
-        assertEquals(2, ((KeyNode)scenarioManager.getFirstLevelNodes().get(1)).getChildren().get(1).getNestingLevel());
+        assertEquals(2, ((KeyNode) scenarioManager.getFirstLevelNodes().get(1)).getChildren().get(1).getNestingLevel());
     }
 
     @Test
-    public void scenarioNestingEqualsThree(){
+    public void scenarioNestingEqualsThree() {
         assertEquals(3, scenarioManager.countScenarioNesting());
     }
 
     @Test
-    public void scenarioDoesHasNotAnyLinesNestingEqualsZero(){
+    public void scenarioDoesHasNotAnyLinesNestingEqualsZero() {
         ScenarioManager scenarioManager = new ScenarioManager("");
         assertEquals(0, scenarioManager.countScenarioNesting());
     }
+
     @Test
-    public void scenarioHasTwelveSteps(){
+    public void scenarioHasTwelveSteps() {
         assertEquals(14, scenarioManager.countNumberOfScenarioSteps());
     }
 
     @Test
-    public void scenarioHasZeroSteps(){
+    public void scenarioHasZeroSteps() {
         ScenarioManager scenarioManager = new ScenarioManager("");
         assertEquals(0, scenarioManager.countNumberOfScenarioSteps());
     }
 
     @Test
-    public void scenarioHasFourKeyWords(){
+    public void scenarioHasFourKeyWords() {
         assertEquals(4, scenarioManager.countKeyWordsInScenario());
     }
 
     @Test
-    public void scenarioDoesNotHasKeyWords(){
+    public void scenarioDoesNotHasKeyWords() {
         ScenarioManager scenarioManager = new ScenarioManager("");
         assertEquals(0, scenarioManager.countKeyWordsInScenario());
     }
 
     @Test
-    public void testCutActorLinesFromScenario(){
-       String scenarioTextWithoutActorsTest =
-                        "Develop,Boss\n" +
+    public void testCutActorLinesFromScenario() {
+        String scenarioTextWithoutActorsTest =
+                "Develop,Boss\n" +
                         "scenario line 1\n" +
                         "IF scenario line 2\n" +
                             "\tline if 1\n" +
@@ -150,7 +153,7 @@ public class ScenarioManagerTest {
     }
 
     @Test
-    public void cutActorsReturnEmptyStringIfScenarioContainsOnlyActorLines(){
+    public void cutActorsReturnEmptyStringIfScenarioContainsOnlyActorLines() {
         String scenario = "Boss\n" +
                 "Boss line 1\n" +
                 "Boss line 2";
@@ -159,7 +162,7 @@ public class ScenarioManagerTest {
     }
 
     @Test
-    public void scenarioHasCorrectNumeration(){
+    public void scenarioHasCorrectNumeration() {
         String scenarioWithCorrectNumeration = "Develop,Boss\n" +
                 "1.scenario line 1\n" +
                 "2.IF scenario line 2\n" +
@@ -179,12 +182,12 @@ public class ScenarioManagerTest {
     }
 
     @Test
-    public void getScenarioEqualsInputStringScenario(){
+    public void getScenarioEqualsInputStringScenario() {
         assertEquals(scenarioTextTest, scenarioManager.getScenario());
     }
 
     @Test
-    public void pullScenarioOnlyToTwoNestingLevel(){
+    public void pullScenarioOnlyToTwoNestingLevel() {
         String scenarioToLevel2 = "Develop,Boss\n" +
                 "scenario line 1\n" +
                 "IF scenario line 2\n" +
@@ -203,39 +206,84 @@ public class ScenarioManagerTest {
     }
 
     @Test
-    public void nodesListIsEmpty(){
+    public void nodesListIsEmpty() {
         scenarioManager = new ScenarioManager("");
         assertEquals(0, scenarioManager.getNodes().size());
     }
 
     @Test
-    public void nodesListIsNotEmpty(){
-        assertEquals(scenarioTextTest.split("\n").length-1, scenarioManager.getNodes().size());
+    public void nodesListIsNotEmpty() {
+        assertEquals(scenarioTextTest.split("\n").length - 1, scenarioManager.getNodes().size());
     }
 
     @Test
-    public void visitorVisitNodes(){
+    public void visitorVisitNodes() {
         Visitor visitor = new NodeViewer();
         scenarioManager.visit(visitor);
     }
 
     @Test
-    public void nodesListIsEmpty(){
-        scenarioManager = new ScenarioManager("");
-        assertEquals(0, scenarioManager.getNodes().size());
+    public void mockFileManagerIsReadySaveIsSucceedThenSuccess() {
+        String text = "test";
+        FileManager mock = mock(FileManager.class);
+        when(mock.isReady()).thenReturn(true);
+        when(mock.saveScenarioText(text, text)).thenReturn(true);
+
+        assertTrue(mock.isReady() && mock.saveScenarioText(text, text));
+        verify(mock, times(1)).isReady();
+        verify(mock, times(1)).saveScenarioText(text, text);
     }
 
     @Test
-    public void nodesListIsNotEmpty(){
-        assertEquals(scenarioTextTest.split("\n").length-1, scenarioManager.getNodes().size());
+    public void mockFileManagerIsNotReadySaveIsSucceedThenFail() {
+        String text = "test";
+        FileManager mock = mock(FileManager.class);
+        when(mock.isReady()).thenReturn(false);
+        when(mock.saveScenarioText(text, text)).thenReturn(true);
+
+        assertFalse(mock.isReady());
+        assertTrue(mock.saveScenarioText(text, text));
+        verify(mock, times(1)).isReady();
+        verify(mock, times(1)).saveScenarioText(text, text);
     }
 
     @Test
-    public void visitorVisitNodes(){
-        Visitor visitor = new NodeViewer();
-        scenarioManager.visit(visitor);
+    public void mockFileManagerIsReadyReadIsSucceedThenReturnScenario() {
+        String text = "test";
+        FileManager mock = mock(FileManager.class);
+        when(mock.isReady()).thenReturn(true);
+        when(mock.readScenario(text)).thenReturn(text);
+
+        assertTrue(mock.isReady());
+        assertEquals(text, mock.readScenario(text));
+        verify(mock, times(1)).isReady();
+        verify(mock, times(1)).readScenario(text);
     }
 
+    @Test
+    public void mockFileManagerIsNotReadyReadIsSucceedThenReturnEmtpyString() {
+        String text = "test";
+        FileManager mock = mock(FileManager.class);
+        when(mock.isReady()).thenReturn(false);
+        when(mock.readScenario(text)).thenReturn("");
+
+        assertFalse(mock.isReady());
+        assertEquals("", mock.readScenario(text));
+        verify(mock, times(1)).isReady();
+        verify(mock, times(1)).readScenario(text);
+    }
+
+    @Test
+    public void getListAvailableScenarioTest() {
+        String list = "scenario1.txt\nscenario2.txt\n";
+        FileManager mock = mock(FileManager.class);
+        when(mock.listSavedScenario()).thenReturn(list);
+
+        String mockReturn = mock.listSavedScenario();
+
+        verify(mock, times(1)).listSavedScenario();
+        assertEquals(list, mockReturn);
+    }
 
 
 }
