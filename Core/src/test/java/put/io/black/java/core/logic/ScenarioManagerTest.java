@@ -84,18 +84,18 @@ public class ScenarioManagerTest {
 
     @Test
     public void scenarioContainInSecondNodeTwoChildren() {
-        assertEquals(3, scenarioManager.getFirstLevelNodes().get(1).getChildrenCount());
+        assertEquals(3, ((KeyNode)scenarioManager.getFirstLevelNodes().get(1)).getChildrenCount());
     }
 
     @Test
     public void secondChildOfSecondNodeEquals() {
         String string = "line if 2";
-        assertEquals(string, scenarioManager.getFirstLevelNodes().get(1).getChildren().get(1).getLine());
+        assertEquals(string, ((KeyNode)scenarioManager.getFirstLevelNodes().get(1)).getChildren().get(1).getLine());
     }
 
     @Test
     public void secondChildOfSecondNodeHas2NestingLevel() {
-        assertEquals(2, scenarioManager.getFirstLevelNodes().get(1).getChildren().get(1).getNestingLevel());
+        assertEquals(2, ((KeyNode)scenarioManager.getFirstLevelNodes().get(1)).getChildren().get(1).getNestingLevel());
     }
 
     @Test
