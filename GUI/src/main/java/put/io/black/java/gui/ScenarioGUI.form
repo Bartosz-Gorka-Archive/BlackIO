@@ -15,7 +15,7 @@
           <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Poniżej wpisz treść scenariusza."/>
+          <text value="Write scenario in field below"/>
         </properties>
       </component>
       <component id="23d80" class="javax.swing.JLabel" binding="outputLabel">
@@ -23,7 +23,7 @@
           <grid row="5" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Poniżej zostanie wypisany wynik."/>
+          <text value="In field belowe you should receive response"/>
         </properties>
       </component>
       <component id="c82c5" class="javax.swing.JButton" binding="getScenarioToXLevel">
@@ -35,7 +35,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="Pobierz scenariusz do określonego poziomu"/>
+          <text value="Scenario to selected nesting level"/>
         </properties>
       </component>
       <component id="11861" class="javax.swing.JButton" binding="getScenarioWithNumber">
@@ -47,7 +47,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="Pobierz scenariusz z numeracją"/>
+          <text value="Scenario with numeric"/>
         </properties>
       </component>
       <component id="8daf0" class="javax.swing.JButton" binding="whichStepsNotStartFromActor">
@@ -59,7 +59,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="Które kroki nie rozpoczynają się od aktora?"/>
+          <text value="Check lines not start from actor"/>
         </properties>
       </component>
       <component id="9c9f1" class="javax.swing.JButton" binding="howManyStepsKeyWord">
@@ -71,7 +71,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="Ile króków zawiera słowa kluczowe?"/>
+          <text value="Count keywords in scenario"/>
         </properties>
       </component>
       <component id="ee349" class="javax.swing.JTextField" binding="inputLevel">
@@ -91,7 +91,7 @@
           <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Wpisz liczbę poziomów:"/>
+          <text value="Nesting level"/>
         </properties>
       </component>
       <scrollpane id="bb340" binding="inputFieldScroll">
@@ -139,7 +139,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="Ile kroków zawiera scenariusz?"/>
+          <text value="Count steps in scenario"/>
         </properties>
       </component>
     </children>
