@@ -4,6 +4,10 @@ import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import com.google.gson.JsonElement;
@@ -52,9 +56,11 @@ public class ScenarioGUI {
 
     /**
      * Call to API
-     * @param endpoint Endpoint from API to call
+     *
+     * @param endpoint   Endpoint from API to call
+     * @param parameters Optional parameters as Map with key, value (Both string)
      */
-    private void callAPI(String endpoint) {
+    private void callAPI(String endpoint, Map<String, String> parameters) {
         String text = inputField.getText().trim();
         if (text.equals("")) {
             JOptionPane.showMessageDialog(null, "Scenario input empty. Please insert scenario.");
@@ -63,6 +69,15 @@ public class ScenarioGUI {
             try {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("scenario", text);
+
+                if (parameters != null) {
+                    for (Map.Entry<String, String> entry : parameters.entrySet()) {
+                        String key = entry.getKey();
+                        String value = entry.getValue();
+
+                        jsonObject.addProperty(key, value);
+                    }
+                }
                 outputField.setText(sendRequest(endpoint, jsonObject.toString()));
             } catch (RuntimeException ex) {
                 ex.printStackTrace();
@@ -82,28 +97,28 @@ public class ScenarioGUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                callAPI("steps");
+                callAPI("steps", null);
             }
         });
         howManyStepsKeyWord.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                callAPI("number_keywords");
+                callAPI("number_keywords", null);
             }
         });
         whichStepsNotStartFromActor.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                callAPI("without_actors");
+                callAPI("without_actors", null);
             }
         });
         getScenarioWithNumber.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                callAPI("numeric");
+                callAPI("numeric", null);
             }
         });
         getScenarioToXLevel.addMouseListener(new MouseAdapter() {
@@ -115,8 +130,9 @@ public class ScenarioGUI {
                     if (numberLevel < 1) {
                         JOptionPane.showMessageDialog(null, "Nesting level should be positive number!");
                     } else {
-                        //TODO CORRECT API (name of functions)
-                        outputField.setText("Scenario with limit " + numberLevel.toString() + " levels!");
+                        LinkedHashMap<String, String> parameters = new LinkedHashMap<>();
+                        parameters.put("level", Integer.toString(numberLevel));
+                        callAPI("level", parameters);
                     }
                 } catch (NumberFormatException err) {
                     JOptionPane.showMessageDialog(null, "Nesting level not positive number!");
@@ -209,7 +225,7 @@ public class ScenarioGUI {
         outputLabel.setText("Poniżej zostanie wypisany wynik.");
         panelMain.add(outputLabel, new GridConstraints(5, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         getScenarioToXLevel = new JButton();
-        getScenarioToXLevel.setText("Pobierz scenariusz do określonego poziomu");
+        getScenarioToXLevel.setText("Pobierz scenariusz do podanego poziomu");
         panelMain.add(getScenarioToXLevel, new GridConstraints(9, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(300, 25), new Dimension(300, 25), new Dimension(300, 25), 0, false));
         getScenarioWithNumber = new JButton();
         getScenarioWithNumber.setText("Pobierz scenariusz z numeracją");
