@@ -1,5 +1,6 @@
 package put.io.black.java.core.rest;
 
+import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +17,6 @@ public class ScenarioController {
      * Controller's logger
      */
     private static final Logger logger = LoggerFactory.getLogger(ScenarioController.class);
-    /**
-     * Default error message in invalid nesting level request
-     */
-    private static final String ERROR_MESSAGE = "Nesting level is not a integer!";
 
     /**
      * Get scenario with numeric
@@ -28,9 +25,38 @@ public class ScenarioController {
      */
     @RequestMapping(value = "/numeric", method = RequestMethod.POST, produces = "application/json")
     public String getScenarioWithNumeric(@RequestBody String body) {
+        // Logs
+        logger.info("POST scenario with numeric");
         logger.debug(body);
-        ScenarioManager scenarioManager = new ScenarioManager(body);
-        return scenarioManager.getScenarioWithNumeration();
+
+        boolean success = false;
+        String result = "";
+
+        // Parser
+        JsonElement scenarioElement = new JsonParser().parse(body).getAsJsonObject().get("scenario");
+        if(scenarioElement != null) {
+            String scenario = scenarioElement.getAsString();
+
+            // Log scenario
+            logger.debug(scenario);
+
+            // Calculate
+            ScenarioManager scenarioManager = new ScenarioManager(scenario);
+            result = scenarioManager.getScenarioWithNumeration();
+
+            success = true;
+        }
+
+        // Response
+        JsonObject response = new JsonObject();
+        if(success) {
+            response.addProperty("status", "success");
+            response.addProperty("result", result);
+        } else {
+            response.addProperty("status", "error");
+            response.addProperty("message", "Missing scenario field in body.");
+        }
+        return response.toString();
     }
 
     /**
@@ -40,9 +66,38 @@ public class ScenarioController {
      */
     @RequestMapping(value = "scenario", method = RequestMethod.POST, produces = "application/json")
     public String getScenario(@RequestBody String body) {
+        // Logs
+        logger.info("POST scenario basic");
         logger.debug(body);
-        ScenarioManager scenarioManager = new ScenarioManager(body);
-        return scenarioManager.getScenario();
+
+        boolean success = false;
+        String result = "";
+
+        // Parser
+        JsonElement scenarioElement = new JsonParser().parse(body).getAsJsonObject().get("scenario");
+        if(scenarioElement != null) {
+            String scenario = scenarioElement.getAsString();
+
+            // Log scenario
+            logger.debug(scenario);
+
+            // Calculate
+            ScenarioManager scenarioManager = new ScenarioManager(scenario);
+            result = scenarioManager.getScenario();
+
+            success = true;
+        }
+
+        // Response
+        JsonObject response = new JsonObject();
+        if(success) {
+            response.addProperty("status", "success");
+            response.addProperty("result", result);
+        } else {
+            response.addProperty("status", "error");
+            response.addProperty("message", "Missing scenario field in body.");
+        }
+        return response.toString();
     }
 
     /**
@@ -52,9 +107,38 @@ public class ScenarioController {
      */
     @RequestMapping(value = "/without_actors", method = RequestMethod.POST, produces = "application/json")
     public String getScenarioWithoutActors(@RequestBody String body) {
+        // Logs
+        logger.info("POST scenario without actors");
         logger.debug(body);
-        ScenarioManager scenarioManager = new ScenarioManager(body);
-        return scenarioManager.cutActorsFromScenario();
+
+        boolean success = false;
+        String result = "";
+
+        // Parser
+        JsonElement scenarioElement = new JsonParser().parse(body).getAsJsonObject().get("scenario");
+        if(scenarioElement != null) {
+            String scenario = scenarioElement.getAsString();
+
+            // Log scenario
+            logger.debug(scenario);
+
+            // Calculate
+            ScenarioManager scenarioManager = new ScenarioManager(scenario);
+            result = scenarioManager.cutActorsFromScenario();
+
+            success = true;
+        }
+
+        // Response
+        JsonObject response = new JsonObject();
+        if(success) {
+            response.addProperty("status", "success");
+            response.addProperty("result", result);
+        } else {
+            response.addProperty("status", "error");
+            response.addProperty("message", "Missing scenario field in body.");
+        }
+        return response.toString();
     }
 
     /**
@@ -64,9 +148,38 @@ public class ScenarioController {
      */
     @RequestMapping(value = "/number_keywords", method = RequestMethod.POST, produces = "application/json")
     public String getScenarioNumberKeyWords(@RequestBody String body) {
+        // Logs
+        logger.info("POST count keywords in scenario");
         logger.debug(body);
-        ScenarioManager scenarioManager = new ScenarioManager(body);
-        return Integer.toString(scenarioManager.countKeyWordsInScenario());
+
+        boolean success = false;
+        Integer result = 0;
+
+        // Parser
+        JsonElement scenarioElement = new JsonParser().parse(body).getAsJsonObject().get("scenario");
+        if(scenarioElement != null) {
+            String scenario = scenarioElement.getAsString();
+
+            // Log scenario
+            logger.debug(scenario);
+
+            // Calculate
+            ScenarioManager scenarioManager = new ScenarioManager(scenario);
+            result = scenarioManager.countKeyWordsInScenario();
+
+            success = true;
+        }
+
+        // Response
+        JsonObject response = new JsonObject();
+        if(success) {
+            response.addProperty("status", "success");
+            response.addProperty("result", result);
+        } else {
+            response.addProperty("status", "error");
+            response.addProperty("message", "Missing scenario field in body.");
+        }
+        return response.toString();
     }
 
     /**
@@ -76,9 +189,38 @@ public class ScenarioController {
      */
     @RequestMapping(value = "/steps", method = RequestMethod.POST, produces = "application/json")
     public String getScenarioSteps(@RequestBody String body) {
+        // Logs
+        logger.info("POST count scenario steps");
         logger.debug(body);
-        ScenarioManager scenarioManager = new ScenarioManager(body);
-        return Integer.toString(scenarioManager.countNumberOfScenarioSteps());
+
+        boolean success = false;
+        Integer result = 0;
+
+        // Parser
+        JsonElement scenarioElement = new JsonParser().parse(body).getAsJsonObject().get("scenario");
+        if(scenarioElement != null) {
+            String scenario = scenarioElement.getAsString();
+
+            // Log scenario
+            logger.debug(scenario);
+
+            // Calculate
+            ScenarioManager scenarioManager = new ScenarioManager(scenario);
+            result = scenarioManager.countNumberOfScenarioSteps();
+
+            success = true;
+        }
+
+        // Response
+        JsonObject response = new JsonObject();
+        if(success) {
+            response.addProperty("status", "success");
+            response.addProperty("result", result);
+        } else {
+            response.addProperty("status", "error");
+            response.addProperty("message", "Missing scenario field in body.");
+        }
+        return response.toString();
     }
 
     /**
@@ -88,28 +230,99 @@ public class ScenarioController {
      */
     @RequestMapping(value = "/nesting", method = RequestMethod.POST, produces = "application/json")
     public String getScenarioNesting(@RequestBody String body) {
+        // Logs
+        logger.info("POST count scenario nesting");
         logger.debug(body);
-        ScenarioManager scenarioManager = new ScenarioManager(body);
-        return Integer.toString(scenarioManager.countScenarioNesting());
+
+        boolean success = false;
+        Integer result = 0;
+
+        // Parser
+        JsonElement scenarioElement = new JsonParser().parse(body).getAsJsonObject().get("scenario");
+        if(scenarioElement != null) {
+            String scenario = scenarioElement.getAsString();
+
+            // Log scenario
+            logger.debug(scenario);
+
+            // Calculate
+            ScenarioManager scenarioManager = new ScenarioManager(scenario);
+            result = scenarioManager.countScenarioNesting();
+
+            success = true;
+        }
+
+        // Response
+        JsonObject response = new JsonObject();
+        if(success) {
+            response.addProperty("status", "success");
+            response.addProperty("result", result);
+        } else {
+            response.addProperty("status", "error");
+            response.addProperty("message", "Missing scenario field in body.");
+        }
+        return response.toString();
     }
 
     /**
      * Scenario to limit nesting level
      * @param body Scenario text
-     * @param toLevel Nesting level limit
      * @return Scenario with limit of nesting level
      */
     @RequestMapping(value = "/level", method = RequestMethod.POST, produces = "application/json")
-    public String getScenarioToLevel(@RequestBody String body, @RequestParam(value = "level", defaultValue = "1") String toLevel) {
+    public String getScenarioToLevel(@RequestBody String body) {
+        // Logs
+        logger.info("POST scenario to nesting level");
         logger.debug(body);
-        logger.debug(toLevel);
+
+        boolean success = false;
+        boolean correctLevel = false;
         int level = 0;
-        try {
-            level = Integer.parseInt(toLevel);
-        } catch (NumberFormatException e) {
-            return ERROR_MESSAGE;
+        String result = "";
+
+        // Level
+        JsonElement levelElement = new JsonParser().parse(body).getAsJsonObject().get("level");
+        if(levelElement != null) {
+            // Try cast to int
+            try {
+                level = levelElement.getAsInt();
+
+                // Log
+                logger.debug(Integer.toString(level));
+
+                correctLevel = true;
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
+            }
         }
-        ScenarioManager scenarioManager = new ScenarioManager(body);
-        return scenarioManager.getScenario(level);
+
+        // Scenario
+        JsonElement scenarioElement = new JsonParser().parse(body).getAsJsonObject().get("scenario");
+        if(correctLevel && scenarioElement != null) {
+            String scenario = scenarioElement.getAsString();
+
+            // Log scenario
+            logger.debug(scenario);
+
+            // Calculate
+            ScenarioManager scenarioManager = new ScenarioManager(scenario);
+            result = scenarioManager.getScenario(level);
+
+            success = true;
+        }
+
+        // Response
+        JsonObject response = new JsonObject();
+        if(correctLevel && success) {
+            response.addProperty("status", "success");
+            response.addProperty("result", result);
+        } else if(!correctLevel) {
+            response.addProperty("status", "error");
+            response.addProperty("message", "Missing level field with correct number in body.");
+        } else {
+            response.addProperty("status", "error");
+            response.addProperty("message", "Missing scenario field in body.");
+        }
+        return response.toString();
     }
 }
