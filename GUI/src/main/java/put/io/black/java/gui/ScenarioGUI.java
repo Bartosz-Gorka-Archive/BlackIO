@@ -74,6 +74,10 @@ public class ScenarioGUI {
      * Function to set handle listener from GUI.
      */
     public ScenarioGUI() {
+        // Change tab size in fields
+        inputField.setTabSize(1);
+        outputField.setTabSize(1);
+
         howManyStepsScenario.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

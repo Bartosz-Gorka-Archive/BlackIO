@@ -35,7 +35,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="Pobierz scenariusz do określonego poziomu"/>
+          <text value="Pobierz scenariusz do podanego poziomu"/>
         </properties>
       </component>
       <component id="11861" class="javax.swing.JButton" binding="getScenarioWithNumber">
