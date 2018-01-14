@@ -51,6 +51,26 @@ public class ScenarioGUI {
     private static final Logger logger = Logger.getLogger(ScenarioGUI.class.getName());
 
     /**
+     * Call to API
+     * @param endpoint Endpoint from API to call
+     */
+    private void callAPI(String endpoint) {
+        String text = inputField.getText().trim();
+        if (text.equals("")) {
+            JOptionPane.showMessageDialog(null, "Scenario input empty. Please insert scenario.");
+            logger.warning("Input field in scenario is empty!");
+        } else {
+            try {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("scenario", text);
+                outputField.setText(sendRequest(endpoint, jsonObject.toString()));
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    /**
      * Function to set handle listener from GUI.
      */
     public ScenarioGUI() {
@@ -58,44 +78,28 @@ public class ScenarioGUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                String text = inputField.getText().trim();
-
-                if (text.equals("")) {
-                    JOptionPane.showMessageDialog(null, "Scenario input empty. Please insert scenario.");
-                    logger.warning("Input field in scenario is empty!");
-                } else {
-                    try {
-                        JsonObject jsonObject = new JsonObject();
-                        jsonObject.addProperty("scenario", text);
-                        outputField.setText(sendRequest("steps", jsonObject.toString()));
-                    } catch (RuntimeException ex) {
-                        ex.printStackTrace();
-                    }
-                }
+                callAPI("steps");
             }
         });
         howManyStepsKeyWord.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                //TODO CORRECT API (name of functions)
-                outputField.setText("To many steps!");
+                callAPI("number_keywords");
             }
         });
         whichStepsNotStartFromActor.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                //TODO CORRECT API (name of functions)
-                outputField.setText("Many staps with actors!");
+                callAPI("without_actors");
             }
         });
         getScenarioWithNumber.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                //TODO CORRECT API (name of functions)
-                outputField.setText("1. Your scenario with numbers.");
+                callAPI("numeric");
             }
         });
         getScenarioToXLevel.addMouseListener(new MouseAdapter() {
@@ -165,9 +169,9 @@ public class ScenarioGUI {
             JsonElement status = jsonObject.get("status");
             if (status != null) {
                 if (status.getAsString().trim().equals("success")) {
-                    return jsonObject.get("result").toString();
+                    return jsonObject.get("result").getAsString();
                 } else {
-                    return jsonObject.get("message").toString();
+                    return jsonObject.get("message").getAsString();
                 }
             } else {
                 return "No return from server";
