@@ -1,8 +1,14 @@
 package put.io.black.java.gui;
 
 import java.awt.*;
+import java.io.*;
+import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.springframework.web.util.UriComponents;
@@ -11,9 +17,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -22,6 +25,7 @@ import java.net.URL;
  * GUI Class for work with logic in this package through REST API.
  */
 public class ScenarioGUI {
+    // TODO GUI fields docs
     private JButton howManyStepsScenario;
     private JPanel panelMain;
     private JTextArea inputField;
@@ -38,17 +42,9 @@ public class ScenarioGUI {
     private JScrollPane outputFieldScroll;
 
     /**
-     * Connection protocol (HTTP / HTTPS)
+     * Server IP
      */
-    private final String scheme = "http";
-    /**
-     * Host name
-     */
-    private final String host = "localhost";
-    /**
-     * Host port
-     */
-    private final String port = "8080";
+    private final String serverIP = "http://localhost:8080/";
     /**
      * GUI logger
      */
@@ -62,12 +58,19 @@ public class ScenarioGUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                //TODO CORRECT API (name of functions)
-                if (inputField.getText() == "") {
+                String text = inputField.getText().trim();
+
+                if (text.equals("")) {
                     JOptionPane.showMessageDialog(null, "Scenario input empty. Please insert scenario.");
                     logger.warning("Input field in scenario is empty!");
                 } else {
-                    outputField.setText(sendRequest(scheme, host, port, inputField.getText()));
+                    try {
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("scenario", text);
+                        outputField.setText(sendRequest("steps", jsonObject.toString()));
+                    } catch (RuntimeException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         });
@@ -131,61 +134,63 @@ public class ScenarioGUI {
     /**
      * Function to send data
      *
-     * @param scheme - scheme like http
-     * @param host   - name of serwer
-     * @param port   - connection port
-     * @param source - query
-     * @return - respond from server
+     * @param endpoint API Endpoint
+     * @param source   Query
+     * @return Response from server
+     * @throws RuntimeException When can not connect with server
      */
-    private String sendRequest(String scheme, String host, String port, String source) {
-        String outputF = "";
+    private String sendRequest(String endpoint, String source) throws RuntimeException {
         try {
-            UriComponents uriComponents = UriComponentsBuilder.newInstance()
-                    .scheme(scheme)
-                    .host(host)
-                    .port(port)
-                    .path("/" + source)
-                    .build()
-                    .encode();
-            URL url = new URL(uriComponents.toUriString());
-            logger.warning(url.toString());
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Accept", "application/json");
-            conn.setRequestProperty("Content-Type", "application/json");
+            URL url = new URL(this.serverIP + endpoint);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : "
-                        + conn.getResponseCode());
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
+            writer.write(source);
+            writer.close();
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuffer jsonString = new StringBuffer();
+            String line;
+            while ((line = br.readLine()) != null) {
+                jsonString.append(line);
             }
-            logger.warning("Connected!");
-            BufferedReader br = new BufferedReader(new InputStreamReader(
-                    (conn.getInputStream())));
+            br.close();
+            connection.disconnect();
 
-            String output;
-            logger.warning("Output from Server ....");
-            while ((output = br.readLine()) != null) {
-                logger.warning(output);
-                outputF += output;
+            JsonObject jsonObject = new JsonParser().parse(jsonString.toString()).getAsJsonObject();
+            JsonElement status = jsonObject.get("status");
+            if (status != null) {
+                if (status.getAsString().trim().equals("success")) {
+                    return jsonObject.get("result").toString();
+                } else {
+                    return jsonObject.get("message").toString();
+                }
+            } else {
+                return "No return from server";
             }
-            conn.disconnect();
-            logger.warning("Disconnected!");
-        } catch (MalformedURLException e1) {
-            e1.printStackTrace();
-            logger.warning("MalformedURLException - see Stack");
-        } catch (IOException e1) {
-            e1.printStackTrace();
-            logger.warning("IOException - see Stack");
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
-        return outputF;
     }
 
     {
-    // GUI initializer generated by IntelliJ IDEA GUI Designer
-    // DO NOT EDIT OR ADD ANY CODE HERE!
+// GUI initializer generated by IntelliJ IDEA GUI Designer
+// >>> IMPORTANT!! <<<
+// DO NOT EDIT OR ADD ANY CODE HERE!
         $$$setupUI$$$();
     }
 
+    /**
+     * Method generated by IntelliJ IDEA GUI Designer
+     * >>> IMPORTANT!! <<<
+     * DO NOT edit this method OR call it in your code!
+     *
+     * @noinspection ALL
+     */
     private void $$$setupUI$$$() {
         panelMain = new JPanel();
         panelMain.setLayout(new GridLayoutManager(10, 2, new Insets(10, 10, 10, 10), -1, -1));
@@ -228,6 +233,9 @@ public class ScenarioGUI {
         panelMain.add(howManyStepsScenario, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(300, 25), new Dimension(300, 25), new Dimension(300, 25), 0, false));
     }
 
+    /**
+     * @noinspection ALL
+     */
     public JComponent $$$getRootComponent$$$() {
         return panelMain;
     }
