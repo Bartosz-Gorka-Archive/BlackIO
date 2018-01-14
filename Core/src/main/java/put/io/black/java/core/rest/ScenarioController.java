@@ -284,12 +284,16 @@ public class ScenarioController {
         JsonElement levelElement = new JsonParser().parse(body).getAsJsonObject().get("level");
         if(levelElement != null) {
             // Try cast to int
-            level = levelElement.getAsInt();
+            try {
+                level = levelElement.getAsInt();
 
-            // Log
-            logger.debug(Integer.toString(level));
+                // Log
+                logger.debug(Integer.toString(level));
 
-            correctLevel = true;
+                correctLevel = true;
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
+            }
         }
 
         // Scenario
@@ -314,7 +318,7 @@ public class ScenarioController {
             response.addProperty("result", result);
         } else if(!correctLevel) {
             response.addProperty("status", "error");
-            response.addProperty("message", "Missing level field in body.");
+            response.addProperty("message", "Missing level field with correct number in body.");
         } else {
             response.addProperty("status", "error");
             response.addProperty("message", "Missing scenario field in body.");
