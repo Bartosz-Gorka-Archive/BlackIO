@@ -9,8 +9,8 @@ import java.nio.file.Paths;
 
 public class FileManager {
 
-    static final String PATH = "Scenarios/";
-    static final String FILE_NOT_EXIST = "File not exist";
+    public static final String PATH = "Scenarios/";
+    public static final String FILE_NOT_EXIST = "File not exist";
 
     private boolean ready;
 

@@ -1,7 +1,14 @@
 package put.io.black.java.core.rest;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
+import put.io.black.java.core.logic.FileManager;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import static org.junit.Assert.*;
 
 public class ScenarioControllerTest {
@@ -114,5 +121,15 @@ public class ScenarioControllerTest {
         String errorMessage = "Nesting level is not a integer!";
         assertEquals(errorMessage, scenarioController.getScenarioToLevel(messageToAPI, toLevel));
     }
+
+    @AfterClass
+    public static void tearDown() throws Exception {
+        for (File file : new File(FileManager.PATH).listFiles()) {
+            System.out.println("Del"+file.toPath().toString());
+            Files.delete(file.toPath());
+        }
+        Files.delete(Paths.get(FileManager.PATH));
+    }
+
 
 }

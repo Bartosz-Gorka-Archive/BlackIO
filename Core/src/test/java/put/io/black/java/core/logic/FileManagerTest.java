@@ -1,6 +1,7 @@
 package put.io.black.java.core.logic;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +17,8 @@ public class FileManagerTest {
     private int fileIterator = 0;
 
     private int getFileIterator() {
-        return fileIterator++;
+        fileIterator++;
+        return fileIterator;
     }
 
     @Before
@@ -63,13 +65,13 @@ public class FileManagerTest {
     }
 
     @Test
-    public void listHasTwoFiles(){
+    public void listHasContainsSaveFiles(){
         String title = "title"+getFileIterator();
         String title2 = "title"+getFileIterator();
         fileManager.saveScenarioText(title,title);
         fileManager.saveScenarioText(title2,title2);
-        String response = title+".txt\n"+title2+".txt\n";
-        assertEquals(response, fileManager.listSavedScenario());
+        assertTrue(fileManager.listSavedScenario().contains(title));
+        assertTrue(fileManager.listSavedScenario().contains(title2));
     }
 
     @Test

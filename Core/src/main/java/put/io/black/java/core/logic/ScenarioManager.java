@@ -34,6 +34,17 @@ public class ScenarioManager {
 
         pullOutActors(scenarioLines[0]);
         buildTreeStructure(scenarioLines);
+        saveScenario(scenarioLines[0],scenario);
+    }
+
+    private boolean saveScenario(String titlePart, String scenario){
+        FileManager fileManager = new FileManager();
+        if (fileManager.isReady()){
+            fileManager.saveScenarioText("Scenario_with_"+titlePart.replace(",","_").replace(" ",""),scenario);
+            return true;
+        }else {
+            return false;
+        }
     }
 
     /**
