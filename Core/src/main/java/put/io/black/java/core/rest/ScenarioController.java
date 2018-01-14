@@ -28,6 +28,7 @@ public class ScenarioController {
      */
     @RequestMapping(value = "/numeric", method = RequestMethod.POST, produces = "application/json")
     public String getScenarioWithNumeric(@RequestBody String body) {
+        logger.info("POST scenario with numeric");
         logger.debug(body);
         ScenarioManager scenarioManager = new ScenarioManager(body);
         return scenarioManager.getScenarioWithNumeration();
@@ -40,6 +41,7 @@ public class ScenarioController {
      */
     @RequestMapping(value = "scenario", method = RequestMethod.POST, produces = "application/json")
     public String getScenario(@RequestBody String body) {
+        logger.info("POST scenario");
         logger.debug(body);
         ScenarioManager scenarioManager = new ScenarioManager(body);
         return scenarioManager.getScenario();
@@ -52,6 +54,7 @@ public class ScenarioController {
      */
     @RequestMapping(value = "/without_actors", method = RequestMethod.POST, produces = "application/json")
     public String getScenarioWithoutActors(@RequestBody String body) {
+        logger.info("POST scenario without actors");
         logger.debug(body);
         ScenarioManager scenarioManager = new ScenarioManager(body);
         return scenarioManager.cutActorsFromScenario();
@@ -64,6 +67,7 @@ public class ScenarioController {
      */
     @RequestMapping(value = "/number_keywords", method = RequestMethod.POST, produces = "application/json")
     public String getScenarioNumberKeyWords(@RequestBody String body) {
+        logger.info("POST scenario count keyword");
         logger.debug(body);
         ScenarioManager scenarioManager = new ScenarioManager(body);
         return Integer.toString(scenarioManager.countKeyWordsInScenario());
@@ -76,6 +80,7 @@ public class ScenarioController {
      */
     @RequestMapping(value = "/steps", method = RequestMethod.POST, produces = "application/json")
     public String getScenarioSteps(@RequestBody String body) {
+        logger.info("POST scenario steps");
         logger.debug(body);
         ScenarioManager scenarioManager = new ScenarioManager(body);
         return Integer.toString(scenarioManager.countNumberOfScenarioSteps());
@@ -88,6 +93,7 @@ public class ScenarioController {
      */
     @RequestMapping(value = "/nesting", method = RequestMethod.POST, produces = "application/json")
     public String getScenarioNesting(@RequestBody String body) {
+        logger.info("POST scenario nesting level");
         logger.debug(body);
         ScenarioManager scenarioManager = new ScenarioManager(body);
         return Integer.toString(scenarioManager.countScenarioNesting());
@@ -101,6 +107,7 @@ public class ScenarioController {
      */
     @RequestMapping(value = "/level", method = RequestMethod.POST, produces = "application/json")
     public String getScenarioToLevel(@RequestBody String body, @RequestParam(value = "level", defaultValue = "1") String toLevel) {
+        logger.info("POST scenario TO nesting level");
         logger.debug(body);
         logger.debug(toLevel);
         int level = 0;
