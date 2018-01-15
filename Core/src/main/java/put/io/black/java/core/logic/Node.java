@@ -1,6 +1,6 @@
 package put.io.black.java.core.logic;
 
-public abstract class Node implements Visitable{
+public abstract class Node implements Visitable {
 
     private int nestingLevel;
     private String line;
@@ -17,6 +17,5 @@ public abstract class Node implements Visitable{
     public String getLine() {
         return line;
     }
-
 
 }

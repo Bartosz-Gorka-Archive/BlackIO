@@ -19,7 +19,7 @@ public class KeyNode extends Node{
     }
 
     public boolean hasChildren() {
-        return children.size() != 0;
+        return !children.isEmpty();
     }
 
     public LinkedList<Node> getChildren() {

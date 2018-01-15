@@ -19,20 +19,20 @@ public class ScenarioManagerTest {
     private ScenarioManager scenarioManager;
     private String scenarioTextTest =
             "Develop,Boss\n" +
-            "scenario line 1\n" +
-            "IF scenario line 2\n" +
-                "\tline if 1\n" +
-                "\tline if 2\n" +
-                "\tDevelop line if 3\n" +
-            "ELSE scenario line 3\n" +
-                "\tline else 1\n" +
-                "\tIF line else 2\n" +
+                    "scenario line 1\n" +
+                    "IF scenario line 2\n" +
+                    "\tline if 1\n" +
+                    "\tline if 2\n" +
+                    "\tDevelop line if 3\n" +
+                    "ELSE scenario line 3\n" +
+                    "\tline else 1\n" +
+                    "\tIF line else 2\n" +
                     "\t\tline else if 1\n" +
-            "scenario line 4\n" +
-            "FOR EACH scenario line 5\n" +
-                "\tline for each 1\n" +
-            "scenario line 6\n" +
-            "Boss scenario line 7";
+                    "scenario line 4\n" +
+                    "FOR EACH scenario line 5\n" +
+                    "\tline for each 1\n" +
+                    "scenario line 6\n" +
+                    "Boss scenario line 7";
 
     @Before
     public void setUp() throws Exception {
@@ -120,7 +120,7 @@ public class ScenarioManagerTest {
     }
 
     @Test
-    public void scenarioHasTwelveSteps() {
+    public void scenarioHasMoreThenOneSteps() {
         assertEquals(14, scenarioManager.countNumberOfScenarioSteps());
     }
 
@@ -147,15 +147,15 @@ public class ScenarioManagerTest {
                 "Develop,Boss\n" +
                         "scenario line 1\n" +
                         "IF scenario line 2\n" +
-                            "\tline if 1\n" +
-                            "\tline if 2\n" +
+                        "\tline if 1\n" +
+                        "\tline if 2\n" +
                         "ELSE scenario line 3\n" +
-                            "\tline else 1\n" +
-                            "\tIF line else 2\n" +
-                                "\t\tline else if 1\n" +
+                        "\tline else 1\n" +
+                        "\tIF line else 2\n" +
+                        "\t\tline else if 1\n" +
                         "scenario line 4\n" +
                         "FOR EACH scenario line 5\n" +
-                            "\tline for each 1\n" +
+                        "\tline for each 1\n" +
                         "scenario line 6";
         assertEquals(scenarioTextWithoutActorsTest, scenarioManager.cutActorsFromScenario());
     }
@@ -174,16 +174,16 @@ public class ScenarioManagerTest {
         String scenarioWithCorrectNumeration = "Develop,Boss\n" +
                 "1.scenario line 1\n" +
                 "2.IF scenario line 2\n" +
-                    "\t2.1.line if 1\n" +
-                    "\t2.2.line if 2\n" +
-                    "\t2.3.Develop line if 3\n" +
+                "\t2.1.line if 1\n" +
+                "\t2.2.line if 2\n" +
+                "\t2.3.Develop line if 3\n" +
                 "3.ELSE scenario line 3\n" +
-                    "\t3.1.line else 1\n" +
-                    "\t3.2.IF line else 2\n" +
-                        "\t\t3.2.1.line else if 1\n" +
+                "\t3.1.line else 1\n" +
+                "\t3.2.IF line else 2\n" +
+                "\t\t3.2.1.line else if 1\n" +
                 "4.scenario line 4\n" +
                 "5.FOR EACH scenario line 5\n" +
-                    "\t5.1.line for each 1\n" +
+                "\t5.1.line for each 1\n" +
                 "6.scenario line 6\n" +
                 "7.Boss scenario line 7";
         assertEquals(scenarioWithCorrectNumeration, scenarioManager.getScenarioWithNumeration());
@@ -199,15 +199,15 @@ public class ScenarioManagerTest {
         String scenarioToLevel2 = "Develop,Boss\n" +
                 "scenario line 1\n" +
                 "IF scenario line 2\n" +
-                    "\tline if 1\n" +
-                    "\tline if 2\n" +
-                    "\tDevelop line if 3\n" +
+                "\tline if 1\n" +
+                "\tline if 2\n" +
+                "\tDevelop line if 3\n" +
                 "ELSE scenario line 3\n" +
-                    "\tline else 1\n" +
-                    "\tIF line else 2\n" +
+                "\tline else 1\n" +
+                "\tIF line else 2\n" +
                 "scenario line 4\n" +
                 "FOR EACH scenario line 5\n" +
-                    "\tline for each 1\n" +
+                "\tline for each 1\n" +
                 "scenario line 6\n" +
                 "Boss scenario line 7";
         assertEquals(scenarioToLevel2, scenarioManager.getScenario(2));
@@ -236,7 +236,7 @@ public class ScenarioManagerTest {
         FileManager mock = mock(FileManager.class);
         when(mock.saveScenarioText(text, text)).thenReturn("True");
 
-        assertEquals("True", mock.saveScenarioText(text,text));
+        assertEquals("True", mock.saveScenarioText(text, text));
         verify(mock, times(1)).saveScenarioText(text, text);
     }
 
@@ -263,10 +263,10 @@ public class ScenarioManagerTest {
     }
 
     @Test
-    public void saveFileWithTitle(){
+    public void saveFileWithTitle() {
         String title = "title";
         assertEquals(FileManager.FILE_WAS_SAVED, scenarioManager.saveScenarioToFile(title));
-        File file = new File(FileManager.PATH+title+".txt");
+        File file = new File(FileManager.PATH + title + ".txt");
         assertTrue(file.exists());
 
         try {
@@ -277,11 +277,11 @@ public class ScenarioManagerTest {
     }
 
     @Test
-    public void saveFileAlreadyExist(){
+    public void saveFileAlreadyExist() {
         String title = "title2";
         assertEquals(FileManager.FILE_WAS_SAVED, scenarioManager.saveScenarioToFile(title));
         assertEquals(FileManager.FILE_ALREADY_EXIST, scenarioManager.saveScenarioToFile(title));
-        File file = new File(FileManager.PATH+title+".txt");
+        File file = new File(FileManager.PATH + title + ".txt");
         assertTrue(file.exists());
 
         try {
@@ -292,25 +292,25 @@ public class ScenarioManagerTest {
     }
 
     @Test
-    public void listIsEmpty(){
+    public void listIsEmpty() {
         StringBuilder result = new StringBuilder();
         String[] names = scenarioManager.getListScenarioSaved();
-        for (String name : names){
+        for (String name : names) {
             result.append(name);
         }
         assertEquals("", result.toString());
     }
 
     @Test
-    public void listContainsFiles(){
+    public void listContainsFiles() {
         String title = "title3";
         scenarioManager.saveScenarioToFile(title);
         StringBuilder result = new StringBuilder();
         String[] names = scenarioManager.getListScenarioSaved();
-        for (String name : names){
+        for (String name : names) {
             result.append(name);
         }
-        File file = new File(FileManager.PATH+title+".txt");
+        File file = new File(FileManager.PATH + title + ".txt");
         assertTrue(file.exists());
         assertTrue(result.toString().contains(title));
 
@@ -322,10 +322,10 @@ public class ScenarioManagerTest {
     }
 
     @Test
-    public void scenarioReadTryReadExistFile(){
+    public void scenarioReadTryReadExistFile() {
         String title = "title4";
         scenarioManager.saveScenarioToFile(title);
-        File file = new File(FileManager.PATH+title+".txt");
+        File file = new File(FileManager.PATH + title + ".txt");
         assertTrue(file.exists());
         assertEquals(scenarioTextTest, scenarioManager.readScenario(title));
 
@@ -337,12 +337,12 @@ public class ScenarioManagerTest {
     }
 
     @Test
-    public void scenarioReadTryReadNotExistFile(){
+    public void scenarioReadTryReadNotExistFile() {
         String title = "title5";
         scenarioManager.saveScenarioToFile(title);
-        File file = new File(FileManager.PATH+title+".txt");
+        File file = new File(FileManager.PATH + title + ".txt");
         assertTrue(file.exists());
-        assertEquals(FileManager.FILE_NOT_EXIST, scenarioManager.readScenario(title+"1"));
+        assertEquals(FileManager.FILE_NOT_EXIST, scenarioManager.readScenario(title + "1"));
 
         try {
             Files.delete(file.toPath());
@@ -354,7 +354,7 @@ public class ScenarioManagerTest {
     @AfterClass
     public static void tearDown() throws Exception {
         for (File file : Objects.requireNonNull(new File(FileManager.PATH).listFiles())) {
-            System.out.println("Del"+file.toPath().toString());
+            System.out.println("Del" + file.toPath().toString());
             Files.delete(file.toPath());
         }
         Files.delete(Paths.get(FileManager.PATH));

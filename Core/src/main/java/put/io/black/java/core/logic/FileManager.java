@@ -52,7 +52,7 @@ public class FileManager {
     }
 
     private boolean fileExist(String title){
-        return new File(PATH+title+".txt").exists();
+        return new File(PATH + title + ".txt").exists();
     }
 
     public String listSavedScenario() {

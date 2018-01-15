@@ -45,33 +45,33 @@ public class FileManagerTest {
     }
 
     @Test
-    public void readExistFile(){
-        String title = "title"+getFileIterator();
+    public void readExistFile() {
+        String title = "title" + getFileIterator();
         String text = "text";
-        fileManager.saveScenarioText(title,text);
+        fileManager.saveScenarioText(title, text);
         assertEquals(text, fileManager.readScenario(title));
     }
 
     @Test
-    public void readNotExistFile(){
-        String title = "title"+getFileIterator();
+    public void readNotExistFile() {
+        String title = "title" + getFileIterator();
         assertEquals(FileManager.FILE_NOT_EXIST, fileManager.readScenario(title));
     }
 
     @Test
-    public void listHasContainsSaveFiles(){
-        String title = "title"+getFileIterator();
-        String title2 = "title"+getFileIterator();
-        fileManager.saveScenarioText(title,title);
-        fileManager.saveScenarioText(title2,title2);
+    public void listHasContainsSaveFiles() {
+        String title = "title" + getFileIterator();
+        String title2 = "title" + getFileIterator();
+        fileManager.saveScenarioText(title, title);
+        fileManager.saveScenarioText(title2, title2);
         assertTrue(fileManager.listSavedScenario().contains(title));
         assertTrue(fileManager.listSavedScenario().contains(title2));
         assertFalse(fileManager.listSavedScenario().contains(".txt"));
     }
 
     @Test
-    public void listIsEmpty(){
-        assertEquals("",fileManager.listSavedScenario());
+    public void listIsEmpty() {
+        assertEquals("", fileManager.listSavedScenario());
     }
 
     @After

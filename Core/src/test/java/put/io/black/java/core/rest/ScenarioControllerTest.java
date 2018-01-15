@@ -37,7 +37,7 @@ public class ScenarioControllerTest {
     }
 
     @Test
-    public void getScenarioTest(){
+    public void getScenarioTest() {
         String expectedResult = "{\"status\":\"success\",\"result\":\"Develop,Boss\\n" +
                 "scenario line 1\\n" +
                 "IF scenario line 2\\n" +
@@ -57,7 +57,7 @@ public class ScenarioControllerTest {
     }
 
     @Test
-    public void getScenarioWithNumericTest(){
+    public void getScenarioWithNumericTest() {
         String expectedResult = "{\"status\":\"success\",\"result\":\"Develop,Boss\\n" +
                 "1.scenario line 1\\n" +
                 "2.IF scenario line 2\\n" +
@@ -77,7 +77,7 @@ public class ScenarioControllerTest {
     }
 
     @Test
-    public void getScenarioWithoutActorsTest(){
+    public void getScenarioWithoutActorsTest() {
         String expectedResult = "{\"status\":\"success\",\"result\":\"Develop,Boss\\n" +
                 "scenario line 1\\n" +
                 "IF scenario line 2\\n" +
@@ -95,25 +95,25 @@ public class ScenarioControllerTest {
     }
 
     @Test
-    public void getScenarioNumberKeyWordsTest(){
+    public void getScenarioNumberKeyWordsTest() {
         String expectedResult = "{\"status\":\"success\",\"result\":4}";
         assertEquals(expectedResult, scenarioController.getScenarioNumberKeyWords(messageToAPI));
     }
 
     @Test
-    public void getScenarioStepsTest(){
+    public void getScenarioStepsTest() {
         String expectedResult = "{\"status\":\"success\",\"result\":14}";
         assertEquals(expectedResult, scenarioController.getScenarioSteps(messageToAPI));
     }
 
     @Test
-    public void getScenarioNestingTest(){
+    public void getScenarioNestingTest() {
         String expectedResult = "{\"status\":\"success\",\"result\":3}";
         assertEquals(expectedResult, scenarioController.getScenarioNesting(messageToAPI));
     }
 
     @Test
-    public void getScenarioToLevel2Test(){
+    public void getScenarioToLevel2Test() {
         String expectedResult = "{\"status\":\"success\",\"result\":\"Develop,Boss\\n" +
                 "scenario line 1\\n" +
                 "IF scenario line 2\\n" +
@@ -132,7 +132,7 @@ public class ScenarioControllerTest {
     }
 
     @Test
-    public void missingBody(){
+    public void missingBody() {
         String request = "{\"level\": 2, \"title\": \"my scenario\", " + "\"NOT_SCENARIO\": \"Develop,Boss\n" +
                 "scenario line 1\n" +
                 "IF scenario line 2\n" +
