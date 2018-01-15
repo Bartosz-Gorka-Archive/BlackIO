@@ -151,15 +151,4 @@ public class ScenarioControllerTest {
         String expectedResult = "{\"status\":\"error\",\"message\":\"Missing scenario field in body.\"}";
         assertEquals(expectedResult, scenarioController.getScenarioToLevel(request));
     }
-
-    @AfterClass
-    public static void tearDown() throws Exception {
-        for (File file : new File(FileManager.PATH).listFiles()) {
-            System.out.println("Del"+file.toPath().toString());
-            Files.delete(file.toPath());
-        }
-        Files.delete(Paths.get(FileManager.PATH));
-    }
-
-
 }

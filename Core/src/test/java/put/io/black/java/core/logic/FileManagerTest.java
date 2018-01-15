@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 import static org.junit.Assert.*;
 
@@ -27,15 +28,9 @@ public class FileManagerTest {
     }
 
     @Test
-    public void fileManagerIsReadyTest() {
-        assertTrue(fileManager.isReady());
-    }
-
-    @Test
     public void fileManagerSaveTest() {
         String title = "title" + getFileIterator();
         String text = "test";
-        assertTrue(fileManager.isReady());
         fileManager.saveScenarioText(title, text);
         assertTrue(new File(fileManager.PATH + title + ".txt").exists());
     }
@@ -45,9 +40,8 @@ public class FileManagerTest {
         String text = "text";
         String title = "title" + getFileIterator();
         String title2 = "title" + (getFileIterator() - 1);
-        assertTrue(fileManager.isReady());
-        assertTrue(fileManager.saveScenarioText(title, text));
-        assertFalse(fileManager.saveScenarioText(title2, text));
+        assertEquals(FileManager.FILE_WAS_SAVED, fileManager.saveScenarioText(title, text));
+        assertEquals(FileManager.FILE_ALREADY_EXIST, fileManager.saveScenarioText(title2, text));
     }
 
     @Test
@@ -72,6 +66,7 @@ public class FileManagerTest {
         fileManager.saveScenarioText(title2,title2);
         assertTrue(fileManager.listSavedScenario().contains(title));
         assertTrue(fileManager.listSavedScenario().contains(title2));
+        assertFalse(fileManager.listSavedScenario().contains(".txt"));
     }
 
     @Test
@@ -81,7 +76,7 @@ public class FileManagerTest {
 
     @After
     public void tearDown() throws Exception {
-        for (File file : new File(FileManager.PATH).listFiles()) {
+        for (File file : Objects.requireNonNull(new File(FileManager.PATH).listFiles())) {
             Files.delete(file.toPath());
         }
         Files.delete(Paths.get(FileManager.PATH));

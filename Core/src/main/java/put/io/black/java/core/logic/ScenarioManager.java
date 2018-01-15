@@ -33,17 +33,6 @@ public class ScenarioManager {
 
         pullOutActors(scenarioLines[0]);
         buildTreeStructure(scenarioLines);
-        saveScenario(scenarioLines[0],scenario);
-    }
-
-    private boolean saveScenario(String titlePart, String scenario){
-        FileManager fileManager = new FileManager();
-        if (fileManager.isReady()){
-            fileManager.saveScenarioText("Scenario_with_"+titlePart.replace(",","_").replace(" ",""),scenario);
-            return true;
-        }else {
-            return false;
-        }
     }
 
     /**
@@ -377,6 +366,15 @@ public class ScenarioManager {
     }
 
     /**
+     * Save scenario in ScenarioManager to file
+     * @param title title file
+     * @return execution status
+     */
+    public String saveScenarioToFile(String title){
+        return new FileManager().saveScenarioText(title,getScenario());
+    }
+
+    /**
      * Return a scenario in base form
      * @return Scenario as text
      */
@@ -453,6 +451,24 @@ public class ScenarioManager {
                 }
             }
         }
+    }
+
+    /**
+     * Read scenario from exist source
+     * @param title name scenario
+     * @return scenario contents or error status
+     */
+    public String readScenario(String title){
+        FileManager fileManager = new FileManager();
+        return fileManager.readScenario(title);
+    }
+
+    /**
+     * Get exist scenario names
+     * @return list scenario names
+     */
+    public String[] getListScenarioSaved(){
+        return new FileManager().listSavedScenario().split("\n");
     }
 
     /**

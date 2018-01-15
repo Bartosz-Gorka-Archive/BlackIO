@@ -6,8 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -229,53 +231,22 @@ public class ScenarioManagerTest {
     }
 
     @Test
-    public void mockFileManagerIsReadySaveIsSucceedThenSuccess() {
+    public void mockFileManagerSaveIsSucceedThenSuccess() {
         String text = "test";
         FileManager mock = mock(FileManager.class);
-        when(mock.isReady()).thenReturn(true);
-        when(mock.saveScenarioText(text, text)).thenReturn(true);
+        when(mock.saveScenarioText(text, text)).thenReturn("True");
 
-        assertTrue(mock.isReady() && mock.saveScenarioText(text, text));
-        verify(mock, times(1)).isReady();
+        assertEquals("True", mock.saveScenarioText(text,text));
         verify(mock, times(1)).saveScenarioText(text, text);
     }
 
     @Test
-    public void mockFileManagerIsNotReadySaveIsSucceedThenFail() {
+    public void mockFileManagerReadIsSucceedThenReturnScenario() {
         String text = "test";
         FileManager mock = mock(FileManager.class);
-        when(mock.isReady()).thenReturn(false);
-        when(mock.saveScenarioText(text, text)).thenReturn(true);
-
-        assertFalse(mock.isReady());
-        assertTrue(mock.saveScenarioText(text, text));
-        verify(mock, times(1)).isReady();
-        verify(mock, times(1)).saveScenarioText(text, text);
-    }
-
-    @Test
-    public void mockFileManagerIsReadyReadIsSucceedThenReturnScenario() {
-        String text = "test";
-        FileManager mock = mock(FileManager.class);
-        when(mock.isReady()).thenReturn(true);
         when(mock.readScenario(text)).thenReturn(text);
 
-        assertTrue(mock.isReady());
         assertEquals(text, mock.readScenario(text));
-        verify(mock, times(1)).isReady();
-        verify(mock, times(1)).readScenario(text);
-    }
-
-    @Test
-    public void mockFileManagerIsNotReadyReadIsSucceedThenReturnEmtpyString() {
-        String text = "test";
-        FileManager mock = mock(FileManager.class);
-        when(mock.isReady()).thenReturn(false);
-        when(mock.readScenario(text)).thenReturn("");
-
-        assertFalse(mock.isReady());
-        assertEquals("", mock.readScenario(text));
-        verify(mock, times(1)).isReady();
         verify(mock, times(1)).readScenario(text);
     }
 
@@ -289,17 +260,103 @@ public class ScenarioManagerTest {
 
         assertEquals(list, mockReturn);
         verify(mock, times(1)).listSavedScenario();
+    }
 
+    @Test
+    public void saveFileWithTitle(){
+        String title = "title";
+        assertEquals(FileManager.FILE_WAS_SAVED, scenarioManager.saveScenarioToFile(title));
+        File file = new File(FileManager.PATH+title+".txt");
+        assertTrue(file.exists());
+
+        try {
+            Files.delete(file.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void saveFileAlreadyExist(){
+        String title = "title2";
+        assertEquals(FileManager.FILE_WAS_SAVED, scenarioManager.saveScenarioToFile(title));
+        assertEquals(FileManager.FILE_ALREADY_EXIST, scenarioManager.saveScenarioToFile(title));
+        File file = new File(FileManager.PATH+title+".txt");
+        assertTrue(file.exists());
+
+        try {
+            Files.delete(file.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void listIsEmpty(){
+        StringBuilder result = new StringBuilder();
+        String[] names = scenarioManager.getListScenarioSaved();
+        for (String name : names){
+            result.append(name);
+        }
+        assertEquals("", result.toString());
+    }
+
+    @Test
+    public void listContainsFiles(){
+        String title = "title3";
+        scenarioManager.saveScenarioToFile(title);
+        StringBuilder result = new StringBuilder();
+        String[] names = scenarioManager.getListScenarioSaved();
+        for (String name : names){
+            result.append(name);
+        }
+        File file = new File(FileManager.PATH+title+".txt");
+        assertTrue(file.exists());
+        assertTrue(result.toString().contains(title));
+
+        try {
+            Files.delete(file.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void scenarioReadTryReadExistFile(){
+        String title = "title4";
+        scenarioManager.saveScenarioToFile(title);
+        File file = new File(FileManager.PATH+title+".txt");
+        assertTrue(file.exists());
+        assertEquals(scenarioTextTest, scenarioManager.readScenario(title));
+
+        try {
+            Files.delete(file.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void scenarioReadTryReadNotExistFile(){
+        String title = "title5";
+        scenarioManager.saveScenarioToFile(title);
+        File file = new File(FileManager.PATH+title+".txt");
+        assertTrue(file.exists());
+        assertEquals(FileManager.FILE_NOT_EXIST, scenarioManager.readScenario(title+"1"));
+
+        try {
+            Files.delete(file.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @AfterClass
     public static void tearDown() throws Exception {
-        for (File file : new File(FileManager.PATH).listFiles()) {
+        for (File file : Objects.requireNonNull(new File(FileManager.PATH).listFiles())) {
             System.out.println("Del"+file.toPath().toString());
             Files.delete(file.toPath());
         }
         Files.delete(Paths.get(FileManager.PATH));
     }
-
-
 }
