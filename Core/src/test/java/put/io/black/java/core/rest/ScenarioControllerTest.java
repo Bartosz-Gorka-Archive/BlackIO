@@ -6,8 +6,10 @@ import org.junit.Test;
 import put.io.black.java.core.logic.FileManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 import static org.junit.Assert.*;
 
@@ -150,5 +152,30 @@ public class ScenarioControllerTest {
                 "Boss scenario line 7\"}";
         String expectedResult = "{\"status\":\"error\",\"message\":\"Missing scenario field in body.\"}";
         assertEquals(expectedResult, scenarioController.getScenarioToLevel(request));
+    }
+
+    @Test
+    public void saveScenarioTest() throws IOException {
+        String expectedResult = "{\"status\":\"success\",\"result\":\"File was saved.\"}";
+        assertEquals(expectedResult, scenarioController.saveScenario(messageToAPI));
+
+        // Clear
+        for (File file : Objects.requireNonNull(new File(FileManager.PATH).listFiles())) {
+            Files.delete(file.toPath());
+        }
+    }
+
+    @Test
+    public void saveScenarioExistsFileTest() throws IOException {
+        String expectedResult = "{\"status\":\"success\",\"result\":\"File was saved.\"}";
+        assertEquals(expectedResult, scenarioController.saveScenario(messageToAPI));
+
+        expectedResult = "{\"status\":\"error\",\"message\":\"File already exist.\"}";
+        assertEquals(expectedResult, scenarioController.saveScenario(messageToAPI));
+
+        // Clear
+        for (File file : Objects.requireNonNull(new File(FileManager.PATH).listFiles())) {
+            Files.delete(file.toPath());
+        }
     }
 }

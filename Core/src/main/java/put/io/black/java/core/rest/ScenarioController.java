@@ -64,6 +64,52 @@ public class ScenarioController {
      * @param body Test of scenario
      * @return Scenario in base form
      */
+    @RequestMapping(value = "save_scenario", method = RequestMethod.POST, produces = "application/json")
+    public String saveScenario(@RequestBody String body) {
+        // Logs
+        logger.info("POST scenario basic");
+        logger.debug(body);
+        String result = "";
+
+        // Parser
+        JsonElement scenarioElement = new JsonParser().parse(body).getAsJsonObject().get("scenario");
+        JsonElement titleElement = new JsonParser().parse(body).getAsJsonObject().get("title");
+        if(scenarioElement != null && titleElement != null) {
+            String scenario = scenarioElement.getAsString();
+            String title = titleElement.getAsString();
+
+            // Log scenario
+            logger.debug(scenario);
+            logger.debug(title);
+
+            // Calculate
+            ScenarioManager scenarioManager = new ScenarioManager(scenario);
+            result = scenarioManager.saveScenarioToFile(title);
+        }
+
+        // Response
+        JsonObject response = new JsonObject();
+        if(scenarioElement == null) {
+            response.addProperty("status", "error");
+            response.addProperty("message", "Missing scenario field in body.");
+        } else if(titleElement == null) {
+            response.addProperty("status", "error");
+            response.addProperty("message", "Missing title field in body.");
+        } else if(result.equals("File was saved.")) {
+            response.addProperty("status", "success");
+            response.addProperty("result", result);
+        } else {
+            response.addProperty("status", "error");
+            response.addProperty("message", result);
+        }
+        return response.toString();
+    }
+
+    /**
+     * Get scenario in base form
+     * @param body Test of scenario
+     * @return Scenario in base form
+     */
     @RequestMapping(value = "scenario", method = RequestMethod.POST, produces = "application/json")
     public String getScenario(@RequestBody String body) {
         // Logs
