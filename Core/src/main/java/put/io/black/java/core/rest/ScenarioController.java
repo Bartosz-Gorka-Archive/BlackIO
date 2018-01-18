@@ -4,6 +4,7 @@ import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+import put.io.black.java.core.logic.FileManager;
 import put.io.black.java.core.logic.ScenarioManager;
 
 /**
@@ -60,14 +61,14 @@ public class ScenarioController {
     }
 
     /**
-     * Get scenario in base form
-     * @param body Test of scenario
-     * @return Scenario in base form
+     * Save scenario in base
+     * @param body JSON body with title and scenario fields
+     * @return Status of save action
      */
     @RequestMapping(value = "save_scenario", method = RequestMethod.POST, produces = "application/json")
     public String saveScenario(@RequestBody String body) {
         // Logs
-        logger.info("POST scenario basic");
+        logger.info("POST scenario save");
         logger.debug(body);
         String result = "";
 
@@ -106,8 +107,31 @@ public class ScenarioController {
     }
 
     /**
+     * Listing scenarios already inserted to application
+     * @return Status of save action
+     */
+    @RequestMapping(value = "listing_scenarios", method = RequestMethod.POST, produces = "application/json")
+    public String listingScenarios() {
+        logger.info("POST scenario listing files");
+
+        FileManager fileManager = new FileManager();
+        String result = fileManager.listSavedScenario();
+
+        JsonObject response = new JsonObject();
+        if(result.isEmpty()) {
+            response.addProperty("status", "error");
+            response.addProperty("message", "None inserted scenarios.");
+        } else {
+            response.addProperty("status", "success");
+            response.addProperty("result", result);
+        }
+
+        return response.toString();
+    }
+
+    /**
      * Get scenario in base form
-     * @param body Test of scenario
+     * @param body Text of scenario
      * @return Scenario in base form
      */
     @RequestMapping(value = "scenario", method = RequestMethod.POST, produces = "application/json")

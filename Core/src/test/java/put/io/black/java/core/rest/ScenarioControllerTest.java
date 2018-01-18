@@ -1,6 +1,5 @@
 package put.io.black.java.core.rest;
 
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import put.io.black.java.core.logic.FileManager;
@@ -8,7 +7,6 @@ import put.io.black.java.core.logic.FileManager;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Objects;
 
 import static org.junit.Assert.*;
@@ -159,10 +157,7 @@ public class ScenarioControllerTest {
         String expectedResult = "{\"status\":\"success\",\"result\":\"File was saved.\"}";
         assertEquals(expectedResult, scenarioController.saveScenario(messageToAPI));
 
-        // Clear
-        for (File file : Objects.requireNonNull(new File(FileManager.PATH).listFiles())) {
-            Files.delete(file.toPath());
-        }
+        clearEnv();
     }
 
     @Test
@@ -173,9 +168,36 @@ public class ScenarioControllerTest {
         expectedResult = "{\"status\":\"error\",\"message\":\"File already exist.\"}";
         assertEquals(expectedResult, scenarioController.saveScenario(messageToAPI));
 
-        // Clear
+        clearEnv();
+    }
+
+    @Test
+    public void listingScenariosNoScenarioTest() {
+        String expectedResult = "{\"status\":\"error\",\"message\":\"None inserted scenarios.\"}";
+        assertEquals(expectedResult, scenarioController.listingScenarios());
+    }
+
+    @Test
+    public void listingScenariosTest() throws IOException {
+        String expectedResult = "{\"status\":\"success\",\"result\":\"File was saved.\"}";
+        assertEquals(expectedResult, scenarioController.saveScenario(messageToAPI));
+
+        expectedResult = "{\"status\":\"success\",\"result\":\"my scenario\\n\"}";
+        assertEquals(expectedResult, scenarioController.listingScenarios());
+
+        clearEnv();
+    }
+
+    /**
+     * Clear env in tests
+     */
+    private void clearEnv() {
         for (File file : Objects.requireNonNull(new File(FileManager.PATH).listFiles())) {
-            Files.delete(file.toPath());
+            try {
+                Files.delete(file.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
