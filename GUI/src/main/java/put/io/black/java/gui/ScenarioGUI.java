@@ -260,15 +260,15 @@ public class ScenarioGUI {
             writer.write(source);
             writer.close();
             BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuffer jsonString = new StringBuffer();
+            StringBuffer stringBuffer = new StringBuffer();
             String line;
             while ((line = br.readLine()) != null) {
-                jsonString.append(line);
+                stringBuffer.append(line);
             }
             br.close();
             connection.disconnect();
 
-            JsonObject jsonObject = new JsonParser().parse(jsonString.toString()).getAsJsonObject();
+            JsonObject jsonObject = new JsonParser().parse(stringBuffer.toString()).getAsJsonObject();
             JsonElement status = jsonObject.get("status");
             if (status != null) {
                 if (status.getAsString().trim().equals("success")) {
