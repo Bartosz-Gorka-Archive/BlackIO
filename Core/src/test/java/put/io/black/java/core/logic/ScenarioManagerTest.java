@@ -16,7 +16,7 @@ public class ScenarioManagerTest {
 
     private ScenarioManager scenarioManager;
     private String scenarioTextTest =
-            "Develop,Boss\n" +
+            "Develop, Boss\n" +
                     "scenario line 1\n" +
                     "IF scenario line 2\n" +
                     "\tline if 1\n" +
@@ -142,7 +142,7 @@ public class ScenarioManagerTest {
     @Test
     public void testCutActorLinesFromScenario() {
         String scenarioTextWithoutActorsTest =
-                "Develop,Boss\n" +
+                "Develop, Boss\n" +
                         "scenario line 1\n" +
                         "IF scenario line 2\n" +
                         "\tline if 1\n" +
@@ -169,7 +169,7 @@ public class ScenarioManagerTest {
 
     @Test
     public void scenarioHasCorrectNumeration() {
-        String scenarioWithCorrectNumeration = "Develop,Boss\n" +
+        String scenarioWithCorrectNumeration = "Develop, Boss\n" +
                 "1.scenario line 1\n" +
                 "2.IF scenario line 2\n" +
                 "\t2.1.line if 1\n" +
@@ -194,7 +194,7 @@ public class ScenarioManagerTest {
 
     @Test
     public void pullScenarioOnlyToTwoNestingLevel() {
-        String scenarioToLevel2 = "Develop,Boss\n" +
+        String scenarioToLevel2 = "Develop, Boss\n" +
                 "scenario line 1\n" +
                 "IF scenario line 2\n" +
                 "\tline if 1\n" +
@@ -250,14 +250,13 @@ public class ScenarioManagerTest {
 
     @Test
     public void getListSavedScenarioTest() {
-        String list = "scenario1.txt\nscenario2.txt\n";
+        String files = "scenario1.txt\nscenario2.txt\n";
         FileManager mock = mock(FileManager.class);
-        when(mock.listSavedScenario()).thenReturn(list);
+        when(mock.listSavedScenario()).thenReturn(files);
 
         String mockReturn = mock.listSavedScenario();
-
-        assertEquals(list, mockReturn);
-        verify(mock, times(1)).listSavedScenario();
+        assertEquals(files, mockReturn);
+        verify(mock).listSavedScenario();
     }
 
     @Test

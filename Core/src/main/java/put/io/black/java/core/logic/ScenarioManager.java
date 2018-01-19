@@ -332,7 +332,7 @@ public class ScenarioManager {
         for (String actor : getActors()) {
             stringBuilder.append(actor);
             if (!actor.equals(getActors()[getActors().length - 1])) {
-                stringBuilder.append(",");
+                stringBuilder.append(", ");
             }
         }
         stringBuilder.append("\n");
@@ -480,7 +480,7 @@ public class ScenarioManager {
      * @return list scenario names
      */
     public String[] getListScenarioSaved(){
-        return new FileManager().listSavedScenario().split("\n.+");
+        return new FileManager().listSavedScenario().split("\n");
     }
 
     /**

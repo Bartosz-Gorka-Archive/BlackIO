@@ -16,7 +16,7 @@ public class ScenarioControllerTest {
 
     private ScenarioController scenarioController;
     private String messageToAPI =
-            "{\"level\": 2, \"title\": \"my scenario\", " + "\"scenario\": \"Develop,Boss\n" +
+            "{\"level\": 2, \"title\": \"my scenario\", " + "\"scenario\": \"Develop, Boss\n" +
                     "scenario line 1\n" +
                     "IF scenario line 2\n" +
                     "\tline if 1\n" +
@@ -39,7 +39,7 @@ public class ScenarioControllerTest {
 
     @Test
     public void getScenarioTest() {
-        String expectedResult = "{\"status\":\"success\",\"result\":\"Develop,Boss\\n" +
+        String expectedResult = "{\"status\":\"success\",\"result\":\"Develop, Boss\\n" +
                 "scenario line 1\\n" +
                 "IF scenario line 2\\n" +
                 "\\tline if 1\\n" +
@@ -59,7 +59,7 @@ public class ScenarioControllerTest {
 
     @Test
     public void getScenarioWithNumericTest() {
-        String expectedResult = "{\"status\":\"success\",\"result\":\"Develop,Boss\\n" +
+        String expectedResult = "{\"status\":\"success\",\"result\":\"Develop, Boss\\n" +
                 "1.scenario line 1\\n" +
                 "2.IF scenario line 2\\n" +
                 "\\t2.1.line if 1\\n" +
@@ -79,7 +79,7 @@ public class ScenarioControllerTest {
 
     @Test
     public void getScenarioWithoutActorsTest() {
-        String expectedResult = "{\"status\":\"success\",\"result\":\"Develop,Boss\\n" +
+        String expectedResult = "{\"status\":\"success\",\"result\":\"Develop, Boss\\n" +
                 "scenario line 1\\n" +
                 "IF scenario line 2\\n" +
                 "\\tline if 1\\n" +
@@ -115,7 +115,7 @@ public class ScenarioControllerTest {
 
     @Test
     public void getScenarioToLevel2Test() {
-        String expectedResult = "{\"status\":\"success\",\"result\":\"Develop,Boss\\n" +
+        String expectedResult = "{\"status\":\"success\",\"result\":\"Develop, Boss\\n" +
                 "scenario line 1\\n" +
                 "IF scenario line 2\\n" +
                 "\\tline if 1\\n" +
@@ -134,7 +134,7 @@ public class ScenarioControllerTest {
 
     @Test
     public void missingBody() {
-        String request = "{\"level\": 2, \"title\": \"my scenario\", " + "\"NOT_SCENARIO\": \"Develop,Boss\n" +
+        String request = "{\"level\": 2, \"title\": \"my scenario\", " + "\"NOT_SCENARIO\": \"Develop, Boss\n" +
                 "scenario line 1\n" +
                 "IF scenario line 2\n" +
                 "\tline if 1\n" +
@@ -179,7 +179,7 @@ public class ScenarioControllerTest {
         String expectedResult = "{\"status\":\"success\",\"result\":\"File was saved.\"}";
         assertEquals(expectedResult, scenarioController.saveScenario(messageToAPI));
 
-        expectedResult = "{\"status\":\"success\",\"result\":\"my scenario\\n\"}";
+        expectedResult = "{\"status\":\"success\",\"result\":\"my scenario\"}";
         assertEquals(expectedResult, scenarioController.listingScenarios());
     }
 
@@ -187,7 +187,7 @@ public class ScenarioControllerTest {
     public void readScenarioCorrectTest() {
         scenarioController.saveScenario(messageToAPI);
 
-        String expectedResult = "{\"status\":\"success\",\"result\":\"Develop,Boss\\n" +
+        String expectedResult = "{\"status\":\"success\",\"result\":\"Develop, Boss\\n" +
                 "scenario line 1\\n" +
                 "IF scenario line 2\\n" +
                 "\\tline if 1\\n" +

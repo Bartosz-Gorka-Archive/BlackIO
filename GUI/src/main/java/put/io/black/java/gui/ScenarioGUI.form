@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="put.io.black.java.gui.ScenarioGUI">
-  <grid id="27dc6" binding="panelMain" layout-manager="GridLayoutManager" row-count="11" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="panelMain" layout-manager="GridLayoutManager" row-count="15" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
       <xy x="20" y="20" width="866" height="522"/>
@@ -16,26 +16,6 @@
         </constraints>
         <properties>
           <text value="Your insert"/>
-        </properties>
-      </component>
-      <component id="23d80" class="javax.swing.JLabel" binding="outputLabel">
-        <constraints>
-          <grid row="6" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="In field belowe you should receive response"/>
-        </properties>
-      </component>
-      <component id="c82c5" class="javax.swing.JButton" binding="getScenarioToXLevel">
-        <constraints>
-          <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false">
-            <minimum-size width="300" height="25"/>
-            <preferred-size width="300" height="25"/>
-            <maximum-size width="300" height="25"/>
-          </grid>
-        </constraints>
-        <properties>
-          <text value="Scenario to selected nesting level"/>
         </properties>
       </component>
       <component id="11861" class="javax.swing.JButton" binding="getScenarioWithNumber">
@@ -74,21 +54,22 @@
           <text value="Count keywords in scenario"/>
         </properties>
       </component>
-      <component id="ee349" class="javax.swing.JTextField" binding="inputLevel">
+      <component id="64f" class="javax.swing.JTextField" binding="scenarioTitleTextField" default-binding="true">
         <constraints>
-          <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+          <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
             <minimum-size width="300" height="25"/>
             <preferred-size width="300" height="25"/>
             <maximum-size width="300" height="25"/>
           </grid>
         </constraints>
         <properties>
+          <text value=""/>
           <toolTipText value="Wpisz liczbę poziomów"/>
         </properties>
       </component>
       <component id="d0102" class="javax.swing.JLabel" binding="levelLabel">
         <constraints>
-          <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Nesting level"/>
@@ -114,7 +95,7 @@
       </scrollpane>
       <scrollpane id="28d57" binding="outputFieldScroll">
         <constraints>
-          <grid row="7" column="0" row-span="4" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="7" column="0" row-span="8" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <minimum-size width="300" height="200"/>
             <preferred-size width="300" height="200"/>
           </grid>
@@ -152,6 +133,72 @@
         </constraints>
         <properties>
           <text value="Load list of scenarios"/>
+        </properties>
+      </component>
+      <component id="4a7e8" class="javax.swing.JButton" binding="loadScenarioWithSelectedButton" default-binding="true">
+        <constraints>
+          <grid row="13" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <minimum-size width="300" height="25"/>
+            <preferred-size width="300" height="25"/>
+            <maximum-size width="300" height="25"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Load scenario with selected title"/>
+        </properties>
+      </component>
+      <component id="27b1f" class="javax.swing.JButton" binding="saveScenarioButton" default-binding="true">
+        <constraints>
+          <grid row="14" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <minimum-size width="300" height="25"/>
+            <preferred-size width="300" height="25"/>
+            <maximum-size width="300" height="25"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Save scenario"/>
+        </properties>
+      </component>
+      <component id="4e70e" class="javax.swing.JLabel" binding="scenarioTitleLabel" default-binding="true">
+        <constraints>
+          <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <labelFor value="64f"/>
+          <text value="Scenario title"/>
+        </properties>
+      </component>
+      <component id="ee349" class="javax.swing.JTextField" binding="inputLevel">
+        <constraints>
+          <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <minimum-size width="300" height="25"/>
+            <preferred-size width="300" height="25"/>
+            <maximum-size width="300" height="25"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value=""/>
+          <toolTipText value="Wpisz liczbę poziomów"/>
+        </properties>
+      </component>
+      <component id="c82c5" class="javax.swing.JButton" binding="getScenarioToXLevel">
+        <constraints>
+          <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <minimum-size width="300" height="25"/>
+            <preferred-size width="300" height="25"/>
+            <maximum-size width="300" height="25"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Scenario to selected nesting level"/>
+        </properties>
+      </component>
+      <component id="23d80" class="javax.swing.JLabel" binding="outputLabel">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="In field belowe you should receive response"/>
         </properties>
       </component>
     </children>

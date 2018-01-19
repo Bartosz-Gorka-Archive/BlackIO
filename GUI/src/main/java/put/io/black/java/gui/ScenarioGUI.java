@@ -82,6 +82,22 @@ public class ScenarioGUI {
      * Listing scenarios inserted in API
      */
     private JButton loadListOfScenariosButton;
+    /**
+     * Scenario title text field
+     */
+    private JTextField scenarioTitleTextField;
+    /**
+     * Button - load scenario with selected title
+     */
+    private JButton loadScenarioWithSelectedButton;
+    /**
+     * Scenario title label
+     */
+    private JLabel scenarioTitleLabel;
+    /**
+     * Button - save scenario in API
+     */
+    private JButton saveScenarioButton;
 
     /**
      * Server IP
@@ -99,15 +115,21 @@ public class ScenarioGUI {
      * @param parameters Optional parameters as Map with key, value (Both string)
      * @param checkInput Check input field - not empty required when true
      */
-    private void callAPI(String endpoint, Map<String, String> parameters, boolean checkInput) {
-        String text = inputField.getText().trim();
-        if (checkInput && text.equals("")) {
+    private void callAPI(String endpoint, Map<String, String> parameters, boolean checkInput, boolean checkScenarioTitle) {
+        String scenarioText = inputField.getText().trim();
+        String title = scenarioTitleTextField.getText().trim();
+
+        if (checkInput && scenarioText.equals("")) {
             JOptionPane.showMessageDialog(null, "Scenario input empty. Please insert scenario.");
-            logger.warning("Input field in scenario is empty!");
+            logger.warning("Body field in scenario is empty!");
+        } else if (checkScenarioTitle && title.equals("")) {
+            JOptionPane.showMessageDialog(null, "Scenario title empty. Please insert title.");
+            logger.warning("Scenario title field is empty!");
         } else {
             try {
                 JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("scenario", text);
+                jsonObject.addProperty("scenario", scenarioText);
+                jsonObject.addProperty("title", title);
 
                 if (parameters != null) {
                     for (Map.Entry<String, String> entry : parameters.entrySet()) {
@@ -117,6 +139,7 @@ public class ScenarioGUI {
                         jsonObject.addProperty(key, value);
                     }
                 }
+
                 outputField.setText(sendRequest(endpoint, jsonObject.toString()));
             } catch (RuntimeException ex) {
                 ex.printStackTrace();
@@ -136,28 +159,28 @@ public class ScenarioGUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                callAPI("steps", null, true);
+                callAPI("steps", null, true, false);
             }
         });
         howManyStepsKeyWord.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                callAPI("number_keywords", null, true);
+                callAPI("number_keywords", null, true, false);
             }
         });
         whichStepsNotStartFromActor.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                callAPI("without_actors", null, true);
+                callAPI("without_actors", null, true, false);
             }
         });
         getScenarioWithNumber.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                callAPI("numeric", null, true);
+                callAPI("numeric", null, true, false);
             }
         });
         getScenarioToXLevel.addMouseListener(new MouseAdapter() {
@@ -171,7 +194,7 @@ public class ScenarioGUI {
                     } else {
                         LinkedHashMap<String, String> parameters = new LinkedHashMap<>();
                         parameters.put("level", Integer.toString(numberLevel));
-                        callAPI("level", parameters, true);
+                        callAPI("level", parameters, true, false);
                     }
                 } catch (NumberFormatException err) {
                     JOptionPane.showMessageDialog(null, "Nesting level not positive number!");
@@ -182,7 +205,21 @@ public class ScenarioGUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                callAPI("listing_scenarios", null, false);
+                callAPI("listing_scenarios", null, false, false);
+            }
+        });
+        loadScenarioWithSelectedButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                callAPI("read_scenario", null, false, true);
+            }
+        });
+        saveScenarioButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                callAPI("save_scenario", null, true, true);
             }
         });
     }
@@ -253,16 +290,10 @@ public class ScenarioGUI {
 
     private void $$$setupUI$$$() {
         panelMain = new JPanel();
-        panelMain.setLayout(new GridLayoutManager(11, 2, new Insets(10, 10, 10, 10), -1, -1));
+        panelMain.setLayout(new GridLayoutManager(15, 2, new Insets(10, 10, 10, 10), -1, -1));
         inputLabel = new JLabel();
         inputLabel.setText("Your insert");
         panelMain.add(inputLabel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        outputLabel = new JLabel();
-        outputLabel.setText("In field belowe you should receive response");
-        panelMain.add(outputLabel, new GridConstraints(6, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        getScenarioToXLevel = new JButton();
-        getScenarioToXLevel.setText("Scenario to selected nesting level");
-        panelMain.add(getScenarioToXLevel, new GridConstraints(10, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(300, 25), new Dimension(300, 25), new Dimension(300, 25), 0, false));
         getScenarioWithNumber = new JButton();
         getScenarioWithNumber.setText("Scenario with numeric");
         panelMain.add(getScenarioWithNumber, new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(300, 25), new Dimension(300, 25), new Dimension(300, 25), 0, false));
@@ -272,19 +303,20 @@ public class ScenarioGUI {
         howManyStepsKeyWord = new JButton();
         howManyStepsKeyWord.setText("Count keywords in scenario");
         panelMain.add(howManyStepsKeyWord, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(300, 25), new Dimension(300, 25), new Dimension(300, 25), 0, false));
-        inputLevel = new JTextField();
-        inputLevel.setToolTipText("Wpisz liczbę poziomów");
-        panelMain.add(inputLevel, new GridConstraints(9, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(300, 25), new Dimension(300, 25), new Dimension(300, 25), 0, false));
+        scenarioTitleTextField = new JTextField();
+        scenarioTitleTextField.setText("");
+        scenarioTitleTextField.setToolTipText("Insert scenario title");
+        panelMain.add(scenarioTitleTextField, new GridConstraints(12, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(300, 25), new Dimension(300, 25), new Dimension(300, 25), 0, false));
         levelLabel = new JLabel();
         levelLabel.setText("Nesting level");
-        panelMain.add(levelLabel, new GridConstraints(8, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panelMain.add(levelLabel, new GridConstraints(7, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         inputFieldScroll = new JScrollPane();
         panelMain.add(inputFieldScroll, new GridConstraints(1, 0, 5, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(300, 200), new Dimension(300, 200), null, 0, false));
         inputField = new JTextArea();
         inputField.setLineWrap(false);
         inputFieldScroll.setViewportView(inputField);
         outputFieldScroll = new JScrollPane();
-        panelMain.add(outputFieldScroll, new GridConstraints(7, 0, 4, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(300, 200), new Dimension(300, 200), null, 0, false));
+        panelMain.add(outputFieldScroll, new GridConstraints(7, 0, 8, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(300, 200), new Dimension(300, 200), null, 0, false));
         outputField = new JTextArea();
         outputField.setEditable(false);
         outputFieldScroll.setViewportView(outputField);
@@ -294,6 +326,26 @@ public class ScenarioGUI {
         loadListOfScenariosButton = new JButton();
         loadListOfScenariosButton.setText("Load list of scenarios");
         panelMain.add(loadListOfScenariosButton, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(300, 25), new Dimension(300, 25), new Dimension(300, 25), 0, false));
+        loadScenarioWithSelectedButton = new JButton();
+        loadScenarioWithSelectedButton.setText("Load scenario with selected title");
+        panelMain.add(loadScenarioWithSelectedButton, new GridConstraints(13, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(300, 25), new Dimension(300, 25), new Dimension(300, 25), 0, false));
+        saveScenarioButton = new JButton();
+        saveScenarioButton.setText("Save scenario");
+        panelMain.add(saveScenarioButton, new GridConstraints(14, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(300, 25), new Dimension(300, 25), new Dimension(300, 25), 0, false));
+        scenarioTitleLabel = new JLabel();
+        scenarioTitleLabel.setText("Scenario title");
+        panelMain.add(scenarioTitleLabel, new GridConstraints(11, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        inputLevel = new JTextField();
+        inputLevel.setText("");
+        inputLevel.setToolTipText("Insert scenario body");
+        panelMain.add(inputLevel, new GridConstraints(8, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(300, 25), new Dimension(300, 25), new Dimension(300, 25), 0, false));
+        getScenarioToXLevel = new JButton();
+        getScenarioToXLevel.setText("Scenario to selected nesting level");
+        panelMain.add(getScenarioToXLevel, new GridConstraints(9, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(300, 25), new Dimension(300, 25), new Dimension(300, 25), 0, false));
+        outputLabel = new JLabel();
+        outputLabel.setText("In field below you should receive response");
+        panelMain.add(outputLabel, new GridConstraints(6, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        scenarioTitleLabel.setLabelFor(scenarioTitleTextField);
     }
 
     public JComponent $$$getRootComponent$$$() {
