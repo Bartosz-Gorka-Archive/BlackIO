@@ -106,6 +106,40 @@ public class ScenarioController {
     }
 
     /**
+     * Read scenario from API
+     * @param body JSON body with scenario title
+     * @return Scenario or message about not existing file
+     */
+    @RequestMapping(value = "read_scenario", method = RequestMethod.POST, produces = "application/json")
+    public String readScenario(@RequestBody String body) {
+        logger.info("POST scenario read file");
+        logger.debug(body);
+        String result = "";
+
+        JsonElement titleElement = new JsonParser().parse(body).getAsJsonObject().get("title");
+        if(titleElement != null) {
+            String title = titleElement.getAsString();
+            logger.debug(title);
+
+            ScenarioManager scenarioManager = new ScenarioManager();
+            result = scenarioManager.readScenario(title);
+        }
+
+        JsonObject response = new JsonObject();
+        if(titleElement == null) {
+            response.addProperty("status", "error");
+            response.addProperty("message", "Missing title field in body.");
+        } else if(result.equals("File not exist.") || result.equals("File can't be read.")) {
+            response.addProperty("status", "error");
+            response.addProperty("message", result);
+        } else {
+            response.addProperty("status", "success");
+            response.addProperty("result", result);
+        }
+        return response.toString();
+    }
+
+    /**
      * Listing scenarios already inserted to application
      * @return Status of save action
      * @since 1.8

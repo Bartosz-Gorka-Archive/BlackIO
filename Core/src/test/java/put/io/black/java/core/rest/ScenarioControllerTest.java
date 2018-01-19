@@ -183,6 +183,41 @@ public class ScenarioControllerTest {
         assertEquals(expectedResult, scenarioController.listingScenarios());
     }
 
+    @Test
+    public void readScenarioCorrectTest() {
+        scenarioController.saveScenario(messageToAPI);
+
+        String expectedResult = "{\"status\":\"success\",\"result\":\"Develop,Boss\\n" +
+                "scenario line 1\\n" +
+                "IF scenario line 2\\n" +
+                "\\tline if 1\\n" +
+                "\\tline if 2\\n" +
+                "\\tDevelop line if 3\\n" +
+                "ELSE scenario line 3\\n" +
+                "\\tline else 1\\n" +
+                "\\tIF line else 2\\n" +
+                "\\t\\tline else if 1\\n" +
+                "scenario line 4\\n" +
+                "FOR EACH scenario line 5\\n" +
+                "\\tline for each 1\\n" +
+                "scenario line 6\\n" +
+                "Boss scenario line 7\"}";
+        assertEquals(expectedResult, scenarioController.readScenario(messageToAPI));
+    }
+
+    @Test
+    public void readScenarioNoFileTest() {
+        String expectedResult = "{\"status\":\"error\",\"message\":\"File not exist.\"}";
+        assertEquals(expectedResult, scenarioController.readScenario(messageToAPI));
+    }
+
+    @Test
+    public void readScenarioNoTitleTest() {
+        String requestBody = "{\"noTitleField\": \"Missing title\"}";
+        String expectedResult = "{\"status\":\"error\",\"message\":\"Missing title field in body.\"}";
+        assertEquals(expectedResult, scenarioController.readScenario(requestBody));
+    }
+
     @After
     public void tearDown() throws Exception {
         for (File file : Objects.requireNonNull(new File(FileManager.dirPath).listFiles())) {
