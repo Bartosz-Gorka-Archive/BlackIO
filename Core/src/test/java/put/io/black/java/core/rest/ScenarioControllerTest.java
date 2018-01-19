@@ -78,6 +78,62 @@ public class ScenarioControllerTest {
     }
 
     @Test
+    public void tryGetNumericScenarioWithoutScenarioInBodyTest() {
+        String expectedResult = "{\"status\":\"error\",\"message\":\"Missing scenario field in body.\"}";
+        assertEquals(expectedResult, scenarioController.getScenarioWithNumeric(expectedResult));
+    }
+
+    @Test
+    public void tryGetSaveScenarioWithoutScenarioInBodyTest() {
+        String expectedResult = "{\"status\":\"error\",\"message\":\"Missing scenario field in body.\"}";
+        assertEquals(expectedResult, scenarioController.saveScenario(expectedResult));
+    }
+
+    @Test
+    public void tryGetScenarioWithoutScenarioInBodyTest() {
+        String expectedResult = "{\"status\":\"error\",\"message\":\"Missing scenario field in body.\"}";
+        assertEquals(expectedResult, scenarioController.getScenario(expectedResult));
+    }
+
+    @Test
+    public void tryCutActorsWithoutScenarioInBodyTest() {
+        String expectedResult = "{\"status\":\"error\",\"message\":\"Missing scenario field in body.\"}";
+        assertEquals(expectedResult, scenarioController.getScenarioWithoutActors(expectedResult));
+    }
+
+    @Test
+    public void tryCountKeywordsWithoutScenarioInBodyTest() {
+        String expectedResult = "{\"status\":\"error\",\"message\":\"Missing scenario field in body.\"}";
+        assertEquals(expectedResult, scenarioController.getScenarioNumberKeyWords(expectedResult));
+    }
+
+    @Test
+    public void tryCountStepsWithoutScenarioInBodyTest() {
+        String expectedResult = "{\"status\":\"error\",\"message\":\"Missing scenario field in body.\"}";
+        assertEquals(expectedResult, scenarioController.getScenarioSteps(expectedResult));
+    }
+
+    @Test
+    public void tryCountScenarioNestingLevelWithoutScenarioInBodyTest() {
+        String expectedResult = "{\"status\":\"error\",\"message\":\"Missing scenario field in body.\"}";
+        assertEquals(expectedResult, scenarioController.getScenarioNesting(expectedResult));
+    }
+
+    @Test
+    public void tryGetSaveScenarioWithoutTitleInBodyTest() {
+        String request = "{\"scenario\":\"John Example\"}";
+        String expectedResult = "{\"status\":\"error\",\"message\":\"Missing title field in body.\"}";
+        assertEquals(expectedResult, scenarioController.saveScenario(request));
+    }
+
+    @Test
+    public void tryGetScenarioToNestingLevelWithoutCorrectLevelInBodyTest() {
+        String request = "{\"scenario\":\"John Example\", \"level\":\"InvalidNumber\"}";
+        String expectedResult = "{\"status\":\"error\",\"message\":\"Missing level field with correct number in body.\"}";
+        assertEquals(expectedResult, scenarioController.getScenarioToLevel(request));
+    }
+
+    @Test
     public void getScenarioWithoutActorsTest() {
         String expectedResult = "{\"status\":\"success\",\"result\":\"Develop, Boss\\n" +
                 "scenario line 1\\n" +

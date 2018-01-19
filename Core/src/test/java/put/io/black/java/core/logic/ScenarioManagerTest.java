@@ -118,6 +118,16 @@ public class ScenarioManagerTest {
     }
 
     @Test
+    public void countScenarioNestingWithKeyNoteWithoutChildren() {
+        ScenarioManager scenarioManager = new ScenarioManager("Develop, Boss\n" +
+            "scenario line 1\n" +
+            "IF scenario line 2\n" +
+            "ELSE scenario line 3\n" +
+            "Boss scenario line 4");
+        assertEquals(1, scenarioManager.countScenarioNesting());
+    }
+
+    @Test
     public void scenarioHasMoreThenOneSteps() {
         assertEquals(14, scenarioManager.countNumberOfScenarioSteps());
     }

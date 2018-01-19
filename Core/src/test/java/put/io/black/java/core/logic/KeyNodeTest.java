@@ -22,12 +22,19 @@ public class KeyNodeTest {
 
     @Test
     public void nodeHasChild(){
-        NormalNode nodechild1 = new NormalNode( 1,nodeTestText);
-        KeyNode nodechild2 = new KeyNode( 1,nodeTestText);
+        NormalNode nodechild1 = new NormalNode( 1, nodeTestText);
+        KeyNode nodechild2 = new KeyNode( 1, nodeTestText);
         keyNode.addChild(nodechild1);
         keyNode.addChild(nodechild2);
         assertEquals(2, keyNode.getChildrenCount());
         assertTrue(keyNode.hasChildren());
+    }
+
+    @Test
+    public void nodeWithoutChildren(){
+        KeyNode node = new KeyNode( 1, nodeTestText);
+        assertEquals(0, node.getChildrenCount());
+        assertFalse(node.hasChildren());
     }
 
     @Test

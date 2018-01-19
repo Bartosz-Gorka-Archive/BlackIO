@@ -60,7 +60,7 @@ public class FileManager {
                 return "File not exist.";
             }
             return new String(Files.readAllBytes(Paths.get(dirPath + scenarioName + ".txt")));
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return "File can't be read.";
