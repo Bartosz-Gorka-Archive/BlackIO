@@ -25,6 +25,13 @@ public class ScenarioManager {
     private LinkedList<Visitable> nodes = new LinkedList<>();
 
     /**
+     * Empty scenario manager to connection with FileManager service
+     */
+    public ScenarioManager() {
+
+    }
+
+    /**
      * Method which splits whole text to steps, extracts the actors in the scenario and builds the structure of the tree
      * @param scenario Long scenario text lines separated \n
      */
@@ -473,7 +480,7 @@ public class ScenarioManager {
      * @return list scenario names
      */
     public String[] getListScenarioSaved(){
-        return new FileManager().listSavedScenario().split("\n");
+        return new FileManager().listSavedScenario().split("\n.+");
     }
 
     /**

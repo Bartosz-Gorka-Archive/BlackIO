@@ -4,7 +4,6 @@ import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import put.io.black.java.core.logic.FileManager;
 import put.io.black.java.core.logic.ScenarioManager;
 
 /**
@@ -109,21 +108,22 @@ public class ScenarioController {
     /**
      * Listing scenarios already inserted to application
      * @return Status of save action
+     * @since 1.8
      */
     @RequestMapping(value = "listing_scenarios", method = RequestMethod.POST, produces = "application/json")
     public String listingScenarios() {
         logger.info("POST scenario listing files");
 
-        FileManager fileManager = new FileManager();
-        String result = fileManager.listSavedScenario();
+        ScenarioManager scenarioManager = new ScenarioManager();
+        String[] result = scenarioManager.getListScenarioSaved();
 
         JsonObject response = new JsonObject();
-        if(result.isEmpty()) {
+        if(result.length == 1 && result[0].equals("")) {
             response.addProperty("status", "error");
             response.addProperty("message", "None inserted scenarios.");
         } else {
             response.addProperty("status", "success");
-            response.addProperty("result", result);
+            response.addProperty("result", String.join("\n", result));
         }
 
         return response.toString();
