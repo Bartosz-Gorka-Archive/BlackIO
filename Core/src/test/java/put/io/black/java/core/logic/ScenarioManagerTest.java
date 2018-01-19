@@ -1,14 +1,12 @@
 package put.io.black.java.core.logic;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Objects;
 
 import static org.junit.Assert.*;
@@ -265,30 +263,18 @@ public class ScenarioManagerTest {
     @Test
     public void saveFileWithTitle() {
         String title = "title";
-        assertEquals(FileManager.FILE_WAS_SAVED, scenarioManager.saveScenarioToFile(title));
-        File file = new File(FileManager.PATH + title + ".txt");
+        assertEquals("File was saved.", scenarioManager.saveScenarioToFile(title));
+        File file = new File(FileManager.dirPath + title + ".txt");
         assertTrue(file.exists());
-
-        try {
-            Files.delete(file.toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
     public void saveFileAlreadyExist() {
         String title = "title2";
-        assertEquals(FileManager.FILE_WAS_SAVED, scenarioManager.saveScenarioToFile(title));
-        assertEquals(FileManager.FILE_ALREADY_EXIST, scenarioManager.saveScenarioToFile(title));
-        File file = new File(FileManager.PATH + title + ".txt");
+        assertEquals("File was saved.", scenarioManager.saveScenarioToFile(title));
+        assertEquals("File already exist.", scenarioManager.saveScenarioToFile(title));
+        File file = new File(FileManager.dirPath + title + ".txt");
         assertTrue(file.exists());
-
-        try {
-            Files.delete(file.toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
@@ -310,53 +296,37 @@ public class ScenarioManagerTest {
         for (String name : names) {
             result.append(name);
         }
-        File file = new File(FileManager.PATH + title + ".txt");
+        File file = new File(FileManager.dirPath + title + ".txt");
         assertTrue(file.exists());
         assertTrue(result.toString().contains(title));
-
-        try {
-            Files.delete(file.toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
     public void scenarioReadTryReadExistFile() {
         String title = "title4";
         scenarioManager.saveScenarioToFile(title);
-        File file = new File(FileManager.PATH + title + ".txt");
+        File file = new File(FileManager.dirPath + title + ".txt");
         assertTrue(file.exists());
         assertEquals(scenarioTextTest, scenarioManager.readScenario(title));
-
-        try {
-            Files.delete(file.toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
     public void scenarioReadTryReadNotExistFile() {
         String title = "title5";
         scenarioManager.saveScenarioToFile(title);
-        File file = new File(FileManager.PATH + title + ".txt");
+        File file = new File(FileManager.dirPath + title + ".txt");
         assertTrue(file.exists());
-        assertEquals(FileManager.FILE_NOT_EXIST, scenarioManager.readScenario(title + "1"));
-
-        try {
-            Files.delete(file.toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        assertEquals("File not exist.", scenarioManager.readScenario(title + "1"));
     }
 
-    @AfterClass
-    public static void tearDown() throws Exception {
-        for (File file : Objects.requireNonNull(new File(FileManager.PATH).listFiles())) {
-            System.out.println("Del" + file.toPath().toString());
-            Files.delete(file.toPath());
+    @After
+    public void tearDown() throws Exception {
+        for (File file : Objects.requireNonNull(new File(FileManager.dirPath).listFiles())) {
+            try {
+                Files.delete(file.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        Files.delete(Paths.get(FileManager.PATH));
     }
 }

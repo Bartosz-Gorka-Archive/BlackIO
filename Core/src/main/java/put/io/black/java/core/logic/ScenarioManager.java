@@ -70,7 +70,7 @@ public class ScenarioManager {
 
     /**
      * Build a tree structure of scenario
-     * @param scenarioLines String array, step in the scenario
+     * @param scenarioLines String array, steps in the scenario
      */
     private void buildTreeStructure(String[] scenarioLines) {
         if (scenarioLines.length > 1) {
@@ -85,6 +85,7 @@ public class ScenarioManager {
                         actualFatherNormalNode = stackNestingNormalNode.peek();
                     }
                 }
+
                 Node node;
                 if (lineStartFromKeyWord(scenarioLines[lineNumber])) {
                     node = new KeyNode(stackNestingNormalNode.size() + 1, scenarioLines[lineNumber].replace("\t", ""));
@@ -93,6 +94,7 @@ public class ScenarioManager {
                 }
 
                 nodes.addLast(node);
+
                 if (node.getNestingLevel() == 1) {
                     getFirstLevelNodes().addLast(node);
                 } else {
@@ -115,7 +117,7 @@ public class ScenarioManager {
      */
     public int countScenarioNesting() {
         int maxNesting = 1;
-        if (getFirstLevelNodes().size() != 0) {
+        if (!getFirstLevelNodes().isEmpty()) {
             for (Node firstLevelNode : getFirstLevelNodes()) {
                 if (firstLevelNode instanceof KeyNode) {
                     if (((KeyNode) firstLevelNode).hasChildren()) {
@@ -159,7 +161,7 @@ public class ScenarioManager {
      */
     public int countNumberOfScenarioSteps() {
         int scenarioSteps = 0;
-        if (getFirstLevelNodes().size() != 0) {
+        if (!getFirstLevelNodes().isEmpty()) {
             for (Node firstLevelNode : getFirstLevelNodes()) {
                 scenarioSteps++;
                 if (firstLevelNode instanceof KeyNode) {
@@ -168,10 +170,9 @@ public class ScenarioManager {
                     }
                 }
             }
-            return scenarioSteps;
-        } else {
-            return 0;
         }
+
+        return scenarioSteps;
     }
 
     /**
@@ -188,6 +189,7 @@ public class ScenarioManager {
                 }
             }
         }
+
         return scenarioSteps;
     }
 
@@ -197,7 +199,7 @@ public class ScenarioManager {
      */
     public int countKeyWordsInScenario() {
         int keyWordsInScenario = 0;
-        if (getFirstLevelNodes().size() != 0) {
+        if (!getFirstLevelNodes().isEmpty()) {
             for (Node firstLevelNode : getFirstLevelNodes()) {
                 if (firstLevelNode instanceof KeyNode) {
                     if (((KeyNode) firstLevelNode).hasChildren()) {
@@ -206,6 +208,7 @@ public class ScenarioManager {
                 }
             }
         }
+
         return keyWordsInScenario;
     }
 
@@ -223,9 +226,11 @@ public class ScenarioManager {
                 }
             }
         }
+
         if (lineStartFromKeyWord(node.getLine())) {
             keyWordsInScenario++;
         }
+
         return keyWordsInScenario;
     }
 
@@ -371,7 +376,7 @@ public class ScenarioManager {
      * @return execution status
      */
     public String saveScenarioToFile(String title){
-        return new FileManager().saveScenarioText(title,getScenario());
+        return new FileManager().saveScenarioText(title, getScenario());
     }
 
     /**

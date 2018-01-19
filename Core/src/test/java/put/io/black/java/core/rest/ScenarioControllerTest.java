@@ -1,5 +1,6 @@
 package put.io.black.java.core.rest;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import put.io.black.java.core.logic.FileManager;
@@ -156,8 +157,6 @@ public class ScenarioControllerTest {
     public void saveScenarioTest() throws IOException {
         String expectedResult = "{\"status\":\"success\",\"result\":\"File was saved.\"}";
         assertEquals(expectedResult, scenarioController.saveScenario(messageToAPI));
-
-        clearEnv();
     }
 
     @Test
@@ -167,8 +166,6 @@ public class ScenarioControllerTest {
 
         expectedResult = "{\"status\":\"error\",\"message\":\"File already exist.\"}";
         assertEquals(expectedResult, scenarioController.saveScenario(messageToAPI));
-
-        clearEnv();
     }
 
     @Test
@@ -184,15 +181,11 @@ public class ScenarioControllerTest {
 
         expectedResult = "{\"status\":\"success\",\"result\":\"my scenario\\n\"}";
         assertEquals(expectedResult, scenarioController.listingScenarios());
-
-        clearEnv();
     }
 
-    /**
-     * Clear env in tests
-     */
-    private void clearEnv() {
-        for (File file : Objects.requireNonNull(new File(FileManager.PATH).listFiles())) {
+    @After
+    public void tearDown() throws Exception {
+        for (File file : Objects.requireNonNull(new File(FileManager.dirPath).listFiles())) {
             try {
                 Files.delete(file.toPath());
             } catch (IOException e) {

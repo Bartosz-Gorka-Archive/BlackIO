@@ -8,57 +8,81 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Objects;
 
+/**
+ * File manager in API
+ */
 public class FileManager {
+    /**
+     * Scenarios directory path
+     */
+    public static final String dirPath = "scenarios/";
 
-    public static final String PATH = "Scenarios/";
-    public static final String ERROR_READ_FILE = "File can't be read.";
-    public static final String ERROR_WRITE_FILE = "File can't be write.";
-    public static final String FILE_ALREADY_EXIST = "File already exist.";
-    public static final String FILE_NOT_EXIST = "File not exist.";
-    public static final String FILE_WAS_SAVED = "File was saved.";
-
+    /**
+     * FileManager constructor.
+     * Check exists directory for scenarios (create if not exists).
+     */
     public FileManager() {
-        if (!new File(PATH).exists()) {
-            new File(PATH).mkdir();
+        if (!new File(dirPath).exists()) {
+            new File(dirPath).mkdir();
         }
     }
 
+    /**
+     * Save scenario to file
+     * @param title Scenario title
+     * @param scenario Scenario text
+     * @return Message about action
+     */
     public String saveScenarioText(String title, String scenario) {
         try {
             if (fileExist(title)){
-                return FILE_ALREADY_EXIST;
+                return "File already exist.";
             }
 
-            PrintWriter printWriter = new PrintWriter(PATH + title + ".txt");
+            PrintWriter printWriter = new PrintWriter(dirPath + title + ".txt");
             printWriter.write(scenario);
             printWriter.flush();
-            return FILE_WAS_SAVED;
+            return "File was saved.";
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return ERROR_WRITE_FILE;
+        return "File can't be write.";
     }
 
+    /**
+     * Read scenario from file
+     * @param scenarioName Scenario title to read
+     * @return Scenario text or message about error
+     */
     public String readScenario(String scenarioName) {
         try {
             if (!fileExist(scenarioName)){
-                return FILE_NOT_EXIST;
+                return "File not exist.";
             }
-            return new String(Files.readAllBytes(Paths.get(PATH+scenarioName+".txt")));
+            return new String(Files.readAllBytes(Paths.get(dirPath + scenarioName + ".txt")));
         }catch (IOException e) {
             e.printStackTrace();
         }
-        return ERROR_READ_FILE;
+        return "File can't be read.";
     }
 
+    /**
+     * Check file exists in directory
+     * @param title Scenario title to check file
+     * @return Exists status
+     */
     private boolean fileExist(String title){
-        return new File(PATH + title + ".txt").exists();
+        return new File(dirPath + title + ".txt").exists();
     }
 
+    /**
+     * Listing saved scenario in API
+     * @return List with titles separated new line character
+     */
     public String listSavedScenario() {
         StringBuilder list = new StringBuilder();
-        for (File file : Objects.requireNonNull(new File(PATH).listFiles())){
-            String name = file.getName().substring(0, file.getName().length()-4);
+        for (File file : Objects.requireNonNull(new File(dirPath).listFiles())){
+            String name = file.getName().substring(0, file.getName().length() - 4);
             list.append(name).append("\n");
         }
         return list.toString();

@@ -1,13 +1,12 @@
 package put.io.black.java.core.logic;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Objects;
 
 import static org.junit.Assert.*;
@@ -32,7 +31,7 @@ public class FileManagerTest {
         String title = "title" + getFileIterator();
         String text = "test";
         fileManager.saveScenarioText(title, text);
-        assertTrue(new File(fileManager.PATH + title + ".txt").exists());
+        assertTrue(new File(fileManager.dirPath + title + ".txt").exists());
     }
 
     @Test
@@ -40,8 +39,8 @@ public class FileManagerTest {
         String text = "text";
         String title = "title" + getFileIterator();
         String title2 = "title" + (getFileIterator() - 1);
-        assertEquals(FileManager.FILE_WAS_SAVED, fileManager.saveScenarioText(title, text));
-        assertEquals(FileManager.FILE_ALREADY_EXIST, fileManager.saveScenarioText(title2, text));
+        assertEquals("File was saved.", fileManager.saveScenarioText(title, text));
+        assertEquals("File already exist.", fileManager.saveScenarioText(title2, text));
     }
 
     @Test
@@ -55,7 +54,7 @@ public class FileManagerTest {
     @Test
     public void readNotExistFile() {
         String title = "title" + getFileIterator();
-        assertEquals(FileManager.FILE_NOT_EXIST, fileManager.readScenario(title));
+        assertEquals("File not exist.", fileManager.readScenario(title));
     }
 
     @Test
@@ -76,9 +75,12 @@ public class FileManagerTest {
 
     @After
     public void tearDown() throws Exception {
-        for (File file : Objects.requireNonNull(new File(FileManager.PATH).listFiles())) {
-            Files.delete(file.toPath());
+        for (File file : Objects.requireNonNull(new File(FileManager.dirPath).listFiles())) {
+            try {
+                Files.delete(file.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        Files.delete(Paths.get(FileManager.PATH));
     }
 }

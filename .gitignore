@@ -29,3 +29,6 @@ target/
 
 # Docs
 docs/
+
+# Scenarios results
+Core/scenarios/
