@@ -23,12 +23,24 @@ public class ScenarioManager {
      * All nodes in scenario
      */
     private LinkedList<Visitable> nodes = new LinkedList<>();
+    /**
+     * FileManager
+     */
+    private FileManager fileManager;
 
     /**
      * Empty scenario manager to connection with FileManager service
      */
     public ScenarioManager() {
+        this.fileManager = new FileManager();
+    }
 
+    /**
+     * Set FileManager
+     * @param fileManager FileManager
+     */
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
     }
 
     /**
@@ -36,6 +48,7 @@ public class ScenarioManager {
      * @param scenario Long scenario text lines separated \n
      */
     public ScenarioManager(String scenario) {
+        this.fileManager = new FileManager();
         String[] scenarioLines = scenario.split("\\r\\n|\\n|\\r");
 
         pullOutActors(scenarioLines[0]);
@@ -383,7 +396,7 @@ public class ScenarioManager {
      * @return execution status
      */
     public String saveScenarioToFile(String title){
-        return new FileManager().saveScenarioText(title, getScenario());
+        return this.fileManager.saveScenarioText(title, getScenario());
     }
 
     /**
@@ -470,9 +483,8 @@ public class ScenarioManager {
      * @param title name scenario
      * @return scenario contents or error status
      */
-    public String readScenario(String title){
-        FileManager fileManager = new FileManager();
-        return fileManager.readScenario(title);
+    public String readScenario(String title) {
+        return this.fileManager.readScenario(title);
     }
 
     /**
@@ -480,7 +492,7 @@ public class ScenarioManager {
      * @return list scenario names
      */
     public String[] getListScenarioSaved(){
-        return new FileManager().listSavedScenario().split("\n");
+        return this.fileManager.listSavedScenario().split("\n");
     }
 
     /**

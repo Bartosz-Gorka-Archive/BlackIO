@@ -114,6 +114,7 @@ public class ScenarioGUI {
      * @param endpoint   Endpoint from API to call
      * @param parameters Optional parameters as Map with key, value (Both string)
      * @param checkInput Check input field - not empty required when true
+     * @param checkScenarioTitle Check input with scenario title (not empty value required when true)
      */
     private void callAPI(String endpoint, Map<String, String> parameters, boolean checkInput, boolean checkScenarioTitle) {
         String scenarioText = inputField.getText().trim();
