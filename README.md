@@ -2,7 +2,11 @@
 [![Code coverage](https://codecov.io/gh/bartoszgorka/BlackIO/branch/master/graph/badge.svg)](https://codecov.io/gh/bartoszgorka/BlackIO)
 
 # Black IO
-Software engineering, SQC checker
+Software engineering, SQC checker - study project PUT Poznań 2017.
+
+
+**Important note!**
+>This repository is no longer upgraded. After completion of the project within the subject Software Engineering (PL - Inżynieria Oprogramowania) this repository has been archived.
 
 ## UML
 ![Project UML](../master/UML/UML.png)
